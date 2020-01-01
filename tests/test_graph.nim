@@ -106,3 +106,12 @@ suite "Basic usage":
 
     check g.neighbors(p1) == [p2].toHashSet
     check g.neighbors(p2) == [p1].toHashSet
+
+  test "get edges":
+    var
+      g = newGraph("People")
+      p1 = g.addNode("Person", (name: "John Doe", age: 24))
+      p2 = g.addNode("Person", (name: "Jane Doe", age: 22))
+      r = g.addEdge(p1, p2, "MARRIED_TO", (since: 2012))
+
+    check g.getEdges(p1, p2) == @[g.edges[r]]
