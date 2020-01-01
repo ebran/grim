@@ -26,9 +26,22 @@ type
     nodes*: Table[string, Node]
     edges*: Table[string, Edge]
 
+proc numberOfNodes*(self: Graph): int =
+  ## Return number of Nodes in Graph
+  result = self.nodes.len
+
+proc numberOfEdges*(self: Graph): int =
+  ## Return number of Edges in Graph
+  result = self.edges.len
+
 proc `$`*(g: Graph): string =
   ## Pretty-print Graph
-  result = fmt"I am {g.name}!"
+  let
+    n = g.name
+    i = g.numberOfNodes
+    j = g.numberOfEdges
+
+  result = fmt"<Graph named {n} with {i} node(s) and {j} edge(s)>"
 
 proc `$`*(n: Node): string =
   ## Pretty-print Node
@@ -157,14 +170,6 @@ proc update*[T](self: var T, t: tuple): string =
     self.properties.add(prop, %val)
 
   result = self.oid
-
-proc numberOfNodes*(self: Graph): int =
-  ## Return number of Nodes in Graph
-  result = self.nodes.len
-
-proc numberOfEdges*(self: Graph): int =
-  ## Return number of Edges in Graph
-  result = self.edges.len
 
 proc hasEdge*(self: var Graph, A: string, B: string): bool =
   ## Check if there is an Edge between Nodes A and B.
