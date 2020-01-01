@@ -171,12 +171,14 @@ proc hasEdge*(self: var Graph, A: string, B: string): bool =
   result = A in self.nodes and B in self.nodes[A].adj
 
 proc neighbors*(self: var Graph, n: Node): HashSet[string] =
+  ## Return neighbors to Node `n` in Graph `g`.
   for e in n.adj.values:
     result.incl(e.startsAt.oid)
     result.incl(e.endsAt.oid)
   result.excl(n.oid)
 
 proc neighbors*(self: var Graph, n: string): HashSet[string] =
+  ## Return neighbors to Node `n` in Graph `g`.
   for e in self.nodes[n].adj.values:
     result.incl(e.startsAt.oid)
     result.incl(e.endsAt.oid)
