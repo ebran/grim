@@ -1,5 +1,6 @@
 # To run these tests, simply execute `nimble test`.
 import graph
+import sets
 import unittest
 
 suite "Basic usage":
@@ -96,3 +97,12 @@ suite "Basic usage":
     check g.numberOfNodes == 2
     check g.numberOfEdges == 1
 
+  test "get neighbors":
+    var
+      g = newGraph("People")
+      p1 = g.addNode("Person", (name: "John Doe", age: 24))
+      p2 = g.addNode("Person", (name: "Jane Doe", age: 22))
+      r = g.addEdge(p1, p2, "MARRIED_TO", (since: 2012))
+
+    check g.neighbors(p1) == [p2].toHashSet
+    check g.neighbors(p2) == [p1].toHashSet

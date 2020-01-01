@@ -2,6 +2,7 @@ import json
 import tables
 import oids
 import strformat
+import sets
 
 export json
 export tables
@@ -131,6 +132,7 @@ proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
     return e.oid
 
   self.nodes[A.oid].adj.add(B.oid, e)
+  self.nodes[B.oid].adj.add(A.oid, e)
   self.edges[e.oid] = e
 
   result = e.oid
@@ -144,6 +146,7 @@ proc addEdge*(self: var Graph, A: string, B: string, label: string,
     return e.oid
 
   self.nodes[A].adj.add(B, e)
+  self.nodes[B].adj.add(A, e)
   self.edges[e.oid] = e
 
   result = e.oid
@@ -166,4 +169,16 @@ proc numberOfEdges*(self: Graph): int =
 proc hasEdge*(self: var Graph, A: string, B: string): bool =
   ## Check if there is an Edge between Nodes A and B.
   result = A in self.nodes and B in self.nodes[A].adj
+
+proc neighbors*(self: var Graph, n: Node): HashSet[string] =
+  for e in n.adj.values:
+    result.incl(e.startsAt.oid)
+    result.incl(e.endsAt.oid)
+  result.excl(n.oid)
+
+proc neighbors*(self: var Graph, n: string): HashSet[string] =
+  for e in self.nodes[n].adj.values:
+    result.incl(e.startsAt.oid)
+    result.incl(e.endsAt.oid)
+  result.excl(n)
 
