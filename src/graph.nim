@@ -84,19 +84,35 @@ proc newEdge*(A: Node, B: Node, label: string, properties: tuple = (),
 
 proc addNode*(self: var Graph, label: string, props: tuple = (),
     ident: string = $genOid()): string =
-  ## Add Node to Graph. TODO: Update properties
+  ## Add Node to Graph.
   let n = newNode(label, properties = props, ident = ident)
+
+  if n in self:
+    return n.oid
+
   self.nodes[n.oid] = n
   result = n.oid
 
-proc addNode*(self: var Graph, n: Node, props: tuple = ()): string =
-  ## Add Node to Graph.  TODO: Update properties
+proc addNode*(self: var Graph, n: Node): string =
+  ## Add Node to Graph.
+  if n in self:
+    return n.oid
+
   self.nodes[n.oid] = n
   result = n.oid
+
+proc addEdge*(self: var Graph, e: Edge): string =
+  ## Add Edge to Graph.
+  if e in self:
+    return e.oid
+
+  self.nodes[e.startsAt.oid].adj.add(e.endsAt.oid, e)
+  self.edges[e.oid] = e
+
 
 proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
     props: tuple = (), ident: string = $genOid()): string =
-  ## Add Edge to Graph TODO: Update properties
+  ## Add Edge to Graph
   # Add Nodes to Graph if not already there
   let idA =
     if A in self:
@@ -110,15 +126,23 @@ proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
       self.addNode(B)
 
   let e = newEdge(A, B, label, properties = props, ident = ident)
+
+  if e in self:
+    return e.oid
+
   self.nodes[A.oid].adj.add(B.oid, e)
+  self.edges[e.oid] = e
 
   result = e.oid
 
 proc addEdge*(self: var Graph, A: string, B: string, label: string,
   props: tuple = (), ident: string = $genOid()): string =
-  ## Add Edge to Graph TODO: Update properties
-
+  ## Add Edge to Graph.
   let e = newEdge(self.nodes[A], self.nodes[B], label, properties = props, ident = ident)
+
+  if e in self:
+    return e.oid
+
   self.nodes[A].adj.add(B, e)
   self.edges[e.oid] = e
 
