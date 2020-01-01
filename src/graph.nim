@@ -45,12 +45,16 @@ proc `%`(t: tuple): JsonNode =
   result = %propertyList
 
 proc contains*(self: Graph, key: string): bool =
-  ## Check if Node oid is in Graph
+  ## Check if Node or Edge oid is in Graph
   result = key in self.nodes or key in self.edges
 
 proc contains*(self: Graph, key: Node): bool =
   ## Check if Node object is in Graph
-  result = key.oid in self.nodes or key.oid in self.edges
+  result = key.oid in self.nodes
+
+proc contains*(self: Graph, key: Edge): bool =
+  ## Check if Edge object is in Graph
+  result = key.oid in self.edges
 
 proc newGraph*(name: string = "graph"): Graph =
   ## Create a new Graph
