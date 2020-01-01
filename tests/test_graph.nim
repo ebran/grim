@@ -55,3 +55,44 @@ suite "Basic usage":
     check g.hasEdge(p1, p2)
     check g.numberOfNodes == 2
     check g.numberOfEdges == 1
+
+  test "update node properties":
+    var
+      g = newGraph("People")
+      p1 = g.addNode("Person", (name: "John Doe", age: 24))
+
+    check g.nodes[p1].label == "Person"
+    check g.nodes[p1].properties["name"].getStr() == "John Doe"
+    check g.nodes[p1].properties["age"].getInt() == 24
+    check g.numberOfNodes == 1
+    check g.numberOfEdges == 0
+
+    p1 = g.nodes[p1].update((name: "Jane Doe", age: 22))
+
+    check g.nodes[p1].label == "Person"
+    check g.nodes[p1].properties["name"].getStr() == "Jane Doe"
+    check g.nodes[p1].properties["age"].getInt() == 22
+    check g.numberOfNodes == 1
+    check g.numberOfEdges == 0
+
+  test "update edge properties":
+    var
+      g = newGraph("People")
+      p1 = g.addNode("Person", (name: "John Doe", age: 24))
+      p2 = g.addNode("Person", (name: "Jane Doe", age: 22))
+      r = g.addEdge(p1, p2, "MARRIED_TO", (since: 2012))
+
+    check g.edges[r].label == "MARRIED_TO"
+    check g.edges[r].properties["since"].getInt() == 2012
+    check g.hasEdge(p1, p2)
+    check g.numberOfNodes == 2
+    check g.numberOfEdges == 1
+
+    r = g.edges[r].update((since: 2007))
+
+    check g.edges[r].label == "MARRIED_TO"
+    check g.edges[r].properties["since"].getInt() == 2007
+    check g.hasEdge(p1, p2)
+    check g.numberOfNodes == 2
+    check g.numberOfEdges == 1
+

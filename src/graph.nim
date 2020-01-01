@@ -148,6 +148,13 @@ proc addEdge*(self: var Graph, A: string, B: string, label: string,
 
   result = e.oid
 
+proc update*[T](self: var T, t: tuple): string =
+  ## Update Node or Edge properties
+  for prop, val in t.fieldPairs:
+    self.properties.add(prop, %val)
+
+  result = self.oid
+
 proc numberOfNodes*(self: Graph): int =
   ## Return number of Nodes in Graph
   result = self.nodes.len
