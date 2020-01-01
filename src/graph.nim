@@ -175,17 +175,15 @@ proc hasEdge*(self: var Graph, A: string, B: string): bool =
   ## Check if there is an Edge between Nodes A and B.
   result = A in self.nodes and B in self.nodes[A].adj
 
-proc neighbors*(self: var Graph, n: Node): HashSet[string] =
-  ## Return neighbors to Node `n` in Graph `g`.
-  for e in n.adj.values:
+proc neighbors*(self: Node): HashSet[string] =
+  ## Return neighbors to Node `n`. TODO should be iterator
+  for e in self.adj.values:
     result.incl(e.startsAt.oid)
     result.incl(e.endsAt.oid)
-  result.excl(n.oid)
+  result.excl(self.oid)
 
-proc neighbors*(self: var Graph, n: string): HashSet[string] =
-  ## Return neighbors to Node `n` in Graph `g`.
-  for e in self.nodes[n].adj.values:
-    result.incl(e.startsAt.oid)
-    result.incl(e.endsAt.oid)
-  result.excl(n)
+proc neighbors*(self: Graph, n: string): HashSet[string] =
+  ## Return neighbors to Node `n` in Graph `g`. TODO should be iterator
+  result = self.nodes[n].neighbors
+
 
