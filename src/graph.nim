@@ -83,27 +83,27 @@ proc newGraph*(name: string = "graph"): Graph =
 
   result.name = name
 
-proc newNode*(label: string, properties: tuple = (),
+proc newNode*(label: string, properties: JsonNode = newJObject(),
     ident: string = $genOid()): Node =
   ## Create a new Node
   new result
 
   result.label = label
-  result.properties = %properties
+  result.properties = properties
   result.oid = ident
 
-proc newEdge*(A: Node, B: Node, label: string, properties: tuple = (),
-  ident: string = $genOid()): Edge =
+proc newEdge*(A: Node, B: Node, label: string,
+    properties: JsonNode = newJObject(), ident: string = $genOid()): Edge =
   ## Create a new Edge
   new result
 
   result.startsAt = A
   result.endsAt = B
   result.label = label
-  result.properties = %properties
+  result.properties = properties
   result.oid = ident
 
-proc addNode*(self: var Graph, label: string, props: tuple = (),
+proc addNode*(self: var Graph, label: string, props: JsonNode = newJObject(),
     ident: string = $genOid()): string =
   ## Add Node to Graph.
   let n = newNode(label, properties = props, ident = ident)
@@ -132,7 +132,7 @@ proc addEdge*(self: var Graph, e: Edge): string =
 
 
 proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
-    props: tuple = (), ident: string = $genOid()): string =
+    props: JsonNode = newJObject(), ident: string = $genOid()): string =
   ## Add Edge to Graph
   # Add Nodes to Graph if not already there
   let idA =
@@ -158,7 +158,7 @@ proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
   result = e.oid
 
 proc addEdge*(self: var Graph, A: string, B: string, label: string,
-  props: tuple = (), ident: string = $genOid()): string =
+  props: JsonNode = newJObject(), ident: string = $genOid()): string =
   ## Add Edge to Graph.
   let e = newEdge(self.nodes[A], self.nodes[B], label, properties = props, ident = ident)
 
@@ -171,10 +171,10 @@ proc addEdge*(self: var Graph, A: string, B: string, label: string,
 
   result = e.oid
 
-proc update*[T](self: var T, t: tuple): string =
+proc update*[T](self: var T, j: JsonNode): string =
   ## Update Node or Edge properties
-  for prop, val in t.fieldPairs:
-    self.properties.add(prop, %val)
+  for prop, val in j.pairs:
+    self.properties.add(prop, val)
 
   result = self.oid
 
