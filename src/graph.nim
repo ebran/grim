@@ -34,14 +34,21 @@ proc numberOfEdges*(self: Graph): int =
   ## Return number of Edges in Graph
   result = self.edges.len
 
-proc `$`*(g: Graph): string =
+proc `$`*(self: Graph): string =
   ## Pretty-print Graph
   let
-    n = g.name
-    i = g.numberOfNodes
-    j = g.numberOfEdges
+    m = self.name
+    i = self.numberOfNodes
+    j = self.numberOfEdges
 
-  result = fmt"<Graph named {n} with {i} node(s) and {j} edge(s)>"
+  var nodeStats = newCountTable[string]()
+  var edgeStats = newCountTable[string]()
+  for n in self.nodes.values:
+    nodeStats.inc(n.label)
+  for e in self.edges.values:
+    edgeStats.inc(e.label)
+
+  result = fmt("<Graph \"{m}\" with {i} node(s) {nodeStats} and {j} edge(s) {edgeStats}>")
 
 proc `$`*(n: Node): string =
   ## Pretty-print Node
