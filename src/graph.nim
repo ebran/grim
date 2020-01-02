@@ -58,7 +58,7 @@ proc `$`*(e: Edge): string =
   ## Pretty-print Edge
   result = fmt"<Edge {e.oid}: {e.startsAt.oid} -- {e.label} {e.properties} --> {e.endsAt.oid}>"
 
-proc `%`(t: tuple): JsonNode =
+proc `%`*(t: tuple): JsonNode =
   ## Quick wrapper around the generic JObject constructor.
   var propertyList: seq[tuple[key: string, val: JsonNode]] = @[]
   for prop, val in t.fieldPairs:
