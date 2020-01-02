@@ -135,16 +135,10 @@ proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
     props: JsonNode = newJObject(), ident: string = $genOid()): string =
   ## Add Edge to Graph
   # Add Nodes to Graph if not already there
-  let idA =
-    if A in self:
-      A.oid
-    else:
-      self.addNode(A)
-  let idB =
-    if B in self:
-      B.oid
-    else:
-      self.addNode(B)
+  if A notin self:
+    discard self.addNode(A)
+  if B notin self:
+    discard self.addNode(B)
 
   let e = newEdge(A, B, label, properties = props, ident = ident)
 
