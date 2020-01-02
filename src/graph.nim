@@ -192,3 +192,19 @@ proc getEdges*(self: Graph, A: string, B: string): seq[Edge] =
   for e in self.nodes[A].adj.allValues(B):
     result.add(e)
 
+proc graphFromNodes*(name: string, t: var Table[string, JsonNode]): Graph =
+  result = newGraph(name)
+
+  for label, nodes in t.mpairs:
+    for n in nodes:
+      let oid =
+        if "oid" in n:
+          let x = n{"oid"}.getStr()
+          n.delete("oid")
+          x
+        else:
+          $genOid()
+
+      var node = newNode(label, properties = n, ident = oid)
+      discard result.addNode(node)
+
