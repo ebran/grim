@@ -159,6 +159,22 @@ proc isEmpty*(b: Box): bool =
   ## Check if Box is empty
   result = b.kind == bxNull
 
+proc update*(b: var Box, value: BiggestInt) =
+  ## Update value in integer box
+  b.intVal = value
+
+proc update*(b: var Box, value: float) =
+  ## Update value in float box
+  b.floatVal = value
+
+proc update*(b: var Box, value: string) =
+  ## Update value in string box
+  b.strVal = value
+
+proc update*(b: var Box, value: bool) =
+  ## Update value in boolean box
+  b.boolVal = value
+
 proc len*(t: tuple): int =
   for _ in t.fields:
     result.inc
