@@ -1,5 +1,5 @@
 # To run these tests, simply execute `nimble test`.
-import graph
+import grim
 import tables
 import sets
 import unittest
@@ -131,32 +131,3 @@ suite "Basic usage":
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
     check g.getEdges(p1, p2) == @[g.edges[r]]
-
-  test "build graph from table of nodes":
-    let name = "People and pets"
-    var data = {
-      "Person": %*
-      [
-        {"name": "John Doe", "age": 24, "oid": "unknown John"},
-        {"name": "Jane Doe", "age": 22, "oid": "unknown Jane"},
-        {"name": "Adam Smith", "age": 83, "smoker": true, "oid": "famous Adam"},
-        {"name": "Jane Austen", "age": 37.2, "oid": "famous Jane"},
-      ],
-      "Pet": %*
-      [
-        {"name": "Fluffy", "kind": "cat", "age": 5, "oid": "regular cat"},
-        {"name": "Fido", "kind": "dog", "age": 2, "oid": "regular dog"},
-        {"name": "Piglet", "kind": "pig", "age": 3, "oid": "cute pig"}
-      ]
-      }.toTable
-
-    var g = graphFromNodes(name, data)
-
-    check:
-      "unknown John" in g
-      "unknown Jane" in g
-      "famous Adam" in g
-      "famous Jane" in g
-      "regular cat" in g
-      "regular dog" in g
-      "cute pig" in g

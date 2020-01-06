@@ -2,13 +2,9 @@
 
 version       = "0.1.0"
 author        = "Erik G. Brandt"
-description   = "Network graph data structure"
+description   = "Graphs in nim!"
 license       = "MIT"
 srcDir        = "src"
-
-# Binaries
-
-bin = @["graph"]
 
 # Dependencies
 
