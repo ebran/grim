@@ -11,12 +11,16 @@ type
   BoxKind = enum
     bxNull,
     bxInt,
+    bxFloat,
+    bxBool,
     bxStr
 
   Box* = object
     case kind: BoxKind
     of bxInt: intVal: BiggestInt
     of bxStr: strVal: string
+    of bxFloat: floatVal: float
+    of bxBool: boolVal: bool
     of bxNull: discard
 
   Edge = ref object
@@ -75,6 +79,10 @@ proc `$`(bx: BoxKind): string =
       result = "integer"
     of bxStr:
       result = "string"
+    of bxFloat:
+      result = "float"
+    of bxBool:
+      result = "boolean"
     of bxNull:
       result = "empty"
 
@@ -85,6 +93,10 @@ proc `$`*(b: Box): string =
       result = $b.intVal & result
     of bxStr:
       result = $b.strVal & result
+    of bxFloat:
+      result = $b.floatVal & result
+    of bxBool:
+      result = $b.boolVal & result
     of bxNull:
       discard
 
@@ -107,6 +119,14 @@ proc initBox*(value: string): Box =
   ## Init a new String Box
   result = Box(kind: bxStr, strVal: value)
 
+proc initBox*(value: float): Box =
+  ## Init a new float Box
+  result = Box(kind: bxFloat, floatVal: value)
+
+proc initBox*(value: bool): Box =
+  ## Init a new boolean Box
+  result = Box(kind: bxBool, boolVal: value)
+
 proc getStr*(b: Box, default = ""): string =
   result =
     if b.kind == bxStr:
@@ -118,6 +138,20 @@ proc getInt*(b: Box, default = 0): BiggestInt =
   result =
     if b.kind == bxInt:
       b.intVal
+    else:
+      default
+
+proc getFloat*(b: Box, default = 0.0): float =
+  result =
+    if b.kind == bxFloat:
+      b.floatVal
+    else:
+      default
+
+proc getBool*(b: Box, default = false): bool =
+  result =
+    if b.kind == bxBool:
+      b.boolVal
     else:
       default
 
