@@ -155,6 +155,10 @@ proc getBool*(b: Box, default = false): bool =
     else:
       default
 
+proc isEmpty*(b: Box): bool =
+  ## Check if Box is empty
+  result = b.kind == bxNull
+
 proc len*(t: tuple): int =
   for _ in t.fields:
     result.inc
