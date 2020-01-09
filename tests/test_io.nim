@@ -45,3 +45,16 @@ suite "Input and output":
       rels[1].properties["amount"].getFloat == 1937.2
 
       g.numberOfEdges == 2
+
+  test "Test saving graph to YAML":
+    var g = loadYaml(getAppDir() / "example.yaml")
+
+    g.saveYaml(getAppDir() / "example2.yaml", overwrite = true)
+
+    let
+      first = readFile(getAppDir() / "example.yaml")
+      second = readFile(getAppDir() / "example2.yaml")
+
+    check first == second
+
+
