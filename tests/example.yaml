@@ -1,0 +1,26 @@
+graph:
+  name: Happy People
+  nodes:
+    - label: Person
+      oid: new guy
+      properties:
+        name: John Doe
+        age: 24
+        weight: 37.2
+    - label: Person
+      oid: new gal
+      properties:
+        name: Jane Doe
+        age: 22
+        smoker: true
+  edges:
+    - label: MARRIED_TO
+      startsAt: new gal
+      endsAt: new guy
+      properties:
+        since: 2012
+    - label: INHERITS
+      startsAt: new gal
+      endsAt: new guy
+      properties:
+        amount: 1937.2

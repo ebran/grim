@@ -1,0 +1,5 @@
+* TO DO List before release
+- [ ] All function should be explicitly imported and/or called by module (A.x vs x)
+- [ ] ~graph.nodes~ and ~graph.edges~ should be iterators
+- [ ] 
+- [ ] 

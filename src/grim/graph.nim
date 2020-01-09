@@ -7,20 +7,20 @@ import oids
 import box
 
 type
-  Edge = ref object
+  Edge* = ref object
     oid*: string
     label*: string
     startsAt*: Node
     endsAt*: Node
     properties*: Table[string, Box]
 
-  Node = ref object
+  Node* = ref object
     oid*: string
     label*: string
     properties*: Table[string, Box]
     adj: Table[string, Edge]
 
-  Graph = ref object
+  Graph* = ref object
     name*: string
     nodes*: Table[string, Node]
     edges*: Table[string, Edge]
