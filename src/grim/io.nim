@@ -32,7 +32,10 @@ proc guessBox(s: string): Box =
     else:
       initBox(s)
 
+proc toYaml*[T](n: T): YamlNode =
   ## Cast object as new YamlNode
+  newYamlNode(n)
+
 proc toTable(node: YamlNode): Table[string, Box] =
   ## Convert YamlNode mapping to table
   # Only for mappings
