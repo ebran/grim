@@ -7,16 +7,20 @@ from strformat import fmt
 
 proc toPropertyString(statements: NimNode): string =
   ## Helper proc to parse properties as string
+  # Check that we have a statement list
   expectKind(statements, nnkStmtList)
   result.add("%(")
 
   for node in statements:
+    # Check that we have a call node
     expectKind(node, nnkCall)
 
+    # Read its label and value
     let label = node[0].strVal
     let value = node[1][0]
 
     result.add(label & ": ")
+    # Parse the value to proper type
     case value.kind:
       of nnkStrLit:
         result.add("\"" & value.strVal & "\"")
@@ -25,11 +29,14 @@ proc toPropertyString(statements: NimNode): string =
       else:
         discard
     result.add(", ")
+
+  # Clean up trailing comma
   result.delete(result.len-2, result.len)
   result.add(")")
 
 macro graph*(varName: untyped, statements: untyped): untyped =
   ## Macro to build graph with DSL
+  # Check that we have a command node
   expectKind(varName, nnkCommand)
   result = newStmtList()
 
@@ -61,12 +68,14 @@ macro graph*(varName: untyped, statements: untyped): untyped =
 
     for node in nodeKind[1]:
       let
+        # Parse oid if available
         oid =
           if node.len == 0:
             node.strVal
           else:
             node[0].strVal
 
+        # Parse properties if available
         properties =
           if node.len == 0:
             ""

@@ -117,6 +117,7 @@ proc addNode*(self: var Graph, label: string, props: Table[string,
   ## Add Node to Graph.
   let n = newNode(label, properties = props, ident = ident)
 
+  # Don't add if node already in graph
   if n in self:
     return n.oid
 
@@ -125,6 +126,7 @@ proc addNode*(self: var Graph, label: string, props: Table[string,
 
 proc addNode*(self: var Graph, n: Node): string =
   ## Add Node to Graph.
+  # Don't add if node already in graph
   if n in self:
     return n.oid
 
@@ -133,6 +135,7 @@ proc addNode*(self: var Graph, n: Node): string =
 
 proc addEdge*(self: var Graph, e: Edge): string =
   ## Add Edge to Graph.
+  # Don't add if edge already in graph
   if e in self:
     return e.oid
 
@@ -151,9 +154,11 @@ proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
 
   let e = newEdge(A, B, label, properties = props, ident = ident)
 
+  # Don't add if edge already in graph
   if e in self:
     return e.oid
 
+  # Add edge to edges and to adjancy lists
   self.nodes[A.oid].adj.add(B.oid, e)
   self.nodes[B.oid].adj.add(A.oid, e)
   self.edges[e.oid] = e
@@ -165,9 +170,11 @@ proc addEdge*(self: var Graph, A: string, B: string, label: string,
   ## Add Edge to Graph.
   let e = newEdge(self.nodes[A], self.nodes[B], label, properties = props, ident = ident)
 
+  # Don't add if edge already in graph
   if e in self:
     return e.oid
 
+  # Add edge to edges and to adjancy lists
   self.nodes[A].adj.add(B, e)
   self.nodes[B].adj.add(A, e)
   self.edges[e.oid] = e
