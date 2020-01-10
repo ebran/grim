@@ -66,6 +66,12 @@ proc loadYaml*(fileName: string): Graph =
 
   # Load edges
   for edge in dom.root["graph"]["edges"]:
+    let oid =
+      if "oid" in toSeq(edge.pairs).map(x => x[0].content):
+        edge["oid"].content
+      else:
+        $genOid()
+
     let properties =
       if "properties" in toSeq(edge.pairs).map(x => x[0].content):
         edge["properties"].toTable
@@ -77,6 +83,7 @@ proc loadYaml*(fileName: string): Graph =
       edge["endsAt"].content,
       edge["label"].content,
       properties,
+      ident = oid
     )
 
 proc saveYaml*(g: Graph, fileName: string, force_overwrite: bool = false) =
