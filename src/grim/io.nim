@@ -43,7 +43,9 @@ proc toTable(node: YamlNode): Table[string, Box] =
 proc loadYaml*(fileName: string): Graph =
   ## Read graph from YAML document
   # Load YAML as Document Object Model (DOM)
-  let dom = loadDom(newFileStream(fileName, fmRead))
+  var strm = newFileStream(fileName, fmRead)
+  var dom = loadDom(strm)
+  strm.close()
 
   # Setup graph
   result = newGraph(dom.root["graph"]["name"].content)
