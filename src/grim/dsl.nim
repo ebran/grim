@@ -1,7 +1,9 @@
+# standard library imports
 import macros
 import tables
 import strutils
-import strformat
+
+from strformat import fmt
 
 proc toPropertyString(statements: NimNode): string =
   ## Helper proc to parse properties as string

@@ -1,17 +1,20 @@
-import os
-import oids
+# standard library imports
 import tables
-import grim/graph
-import grim/box
-import yaml
-import streams
 import sequtils
 import strutils
-import strformat
+
+from streams import newFileStream, close
+from os import fileExists
+from strformat import fmt
+from oids import genOid
 from sugar import `=>`
 
-proc toYaml*[T](n: T): YamlNode =
-  newYamlNode(n)
+# grim modules
+import graph
+import box
+
+# 3:rd party imports
+import yaml
 
 proc guessBox(s: string): Box =
   ## Return Box corresponding to (guessed) type contained in string

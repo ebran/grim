@@ -1,9 +1,12 @@
+# Standard library imports
 import tables
-import strformat
 import strutils
 import sets
-import oids
 
+from oids import genOid
+from strformat import fmt
+
+# grim modules
 import box
 
 type
