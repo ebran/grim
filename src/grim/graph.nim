@@ -207,5 +207,3 @@ proc getEdges*(self: Graph, A: string, B: string): seq[Edge] =
   ## Return all edges between `A` and `B`. # TODO should be iterator
   for e in self.nodes[A].adj.allValues(B):
     result.add(e)
-
-
