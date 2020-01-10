@@ -61,6 +61,7 @@ proc `$`*(e: Edge): string =
   result = fmt"<Edge {e.oid}: {e.startsAt.oid} -- {e.label} {e.properties} --> {e.endsAt.oid}>"
 
 proc `$`*(t: Table[string, Box]): string =
+  ## Pretty-print String table with Boxes
   result.add("{")
   for key, val in t.pairs:
     result.add(key & ": " & $val & ", ")
@@ -68,6 +69,7 @@ proc `$`*(t: Table[string, Box]): string =
   result.add("}")
 
 proc `%`*(t: tuple): Table[string, Box] =
+  ## Convert tuple to Table[string, Box]
   for label, value in t.fieldPairs:
     result[label] = initBox(value)
 

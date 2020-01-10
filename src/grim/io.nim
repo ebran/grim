@@ -32,6 +32,7 @@ proc guessBox(s: string): Box =
     else:
       initBox(s)
 
+  ## Cast object as new YamlNode
 proc toTable(node: YamlNode): Table[string, Box] =
   ## Convert YamlNode mapping to table
   if node.kind != yMapping:
@@ -90,6 +91,7 @@ proc loadYaml*(fileName: string): Graph =
     )
 
 proc saveYaml*(g: Graph, fileName: string, force_overwrite: bool = false) =
+  ## Save graph as YAML file
   if fileExists(fileName) and force_overwrite == false:
     raise newException(IOError, fmt"Error: {fileName} exists, use force_overwrite flag to bypass.")
 
