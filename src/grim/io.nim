@@ -52,19 +52,31 @@ proc loadYaml*(fileName: string): Graph =
 
   # Load nodes
   for node in dom.root["graph"]["nodes"]:
+    let properties =
+      if "properties" in toSeq(node.pairs).map(x => x[0].content):
+        node["properties"].toTable
+      else:
+        initTable[string, Box]()
+
     discard result.addNode(
       node["label"].content,
-      node["properties"].toTable,
+      properties,
       ident = node["oid"].content
     )
 
   # Load edges
   for edge in dom.root["graph"]["edges"]:
+    let properties =
+      if "properties" in toSeq(edge.pairs).map(x => x[0].content):
+        edge["properties"].toTable
+      else:
+        initTable[string, Box]()
+
     discard result.addEdge(
       edge["startsAt"].content,
       edge["endsAt"].content,
       edge["label"].content,
-      edge["properties"].toTable
+      properties,
     )
 
 proc saveYaml*(g: Graph, fileName: string, force_overwrite: bool = false) =
