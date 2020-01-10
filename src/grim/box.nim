@@ -28,6 +28,19 @@ proc `$`(bx: BoxKind): string =
       result = "empty"
 
 proc `$`*(b: Box): string =
+  case b.kind:
+    of bxInt:
+      result = $b.intVal
+    of bxStr:
+      result = $b.strVal
+    of bxFloat:
+      result = $b.floatVal
+    of bxBool:
+      result = $b.boolVal
+    of bxNull:
+      discard
+
+proc describe*(b: Box): string =
   result = " (" & $b.kind & ")"
   case b.kind:
     of bxInt:
