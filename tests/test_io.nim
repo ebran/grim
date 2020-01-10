@@ -1,21 +1,24 @@
 import grim
-import sets
-import os
 import unittest
+import sets
+from os import getAppDir, `/`
 
 suite "Input and output":
-  test "Test YAML reader":
+  setup:
     var g = loadYaml(getAppDir() / "example.yaml")
 
+  test "Test YAML reader on example file":
     let
       p1 = g.nodes["new gal"]
       p2 = g.nodes["new guy"]
+      p3 = g.nodes["young gun"]
       rels = g.getEdges("new guy", "new gal")
 
     check:
       g.name == "Happy People"
       "new gal" in g
       "new guy" in g
+      "young gun" in g
 
       p1.label == "Person"
       p1.properties["name"].getStr == "Jane Doe"
@@ -27,7 +30,9 @@ suite "Input and output":
       p2.properties["age"].getInt == 24
       p2.properties["weight"].getFloat == 37.2
 
-      g.numberOfNodes == 2
+      p3.label == "Person"
+
+      g.numberOfNodes == 3
 
     for r in rels:
       check:
@@ -35,26 +40,30 @@ suite "Input and output":
         r.startsAt == p1
         r.endsAt == p2
 
+      case r.label:
+        of "MARRIED_TO":
+          check r.properties["since"].getInt == 2012
+        of "INHERITS":
+          check r.properties["amount"].getFloat == 1937.2
+        else:
+          discard
+
     check:
       g.neighbors("new gal") == @["new guy"].toHashSet
       g.neighbors("new guy") == @["new gal"].toHashSet
-
-      rels[0].label == "MARRIED_TO"
-      rels[0].properties["since"].getInt == 2012
-      rels[1].label == "INHERITS"
-      rels[1].properties["amount"].getFloat == 1937.2
-
       g.numberOfEdges == 2
 
-  test "Test saving graph to YAML":
-    var g = loadYaml(getAppDir() / "example.yaml")
+  test "Test saving graph to YAML by round-tripping":
+    # Round-trip: save => load => save => load => save
+    g.saveYaml(getAppDir() / "example_test1.yaml", force_overwrite = true)
 
-    g.saveYaml(getAppDir() / "example2.yaml", overwrite = true)
+    var g1 = loadYaml(getAppDir() / "example_test1.yaml")
+    g1.saveYaml(getAppDir() / "example_test2.yaml", force_overwrite = true)
+    var g2 = loadYaml(getAppDir() / "example_test2.yaml")
+    g2.saveYaml(getAppDir() / "example_test3.yaml", force_overwrite = true)
 
     let
-      first = readFile(getAppDir() / "example.yaml")
-      second = readFile(getAppDir() / "example2.yaml")
+      before = readFile(getAppDir() / "example_test2.yaml")
+      after = readFile(getAppDir() / "example_test3.yaml")
 
-    check first == second
-
-
+    check before == after
