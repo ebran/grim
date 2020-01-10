@@ -1,4 +1,4 @@
-# grim brings graphs to Nim
+# :dog2: grim brings graphs to Nim
 
 A graph data structure for the Nim language, written in the Nim language.
 
