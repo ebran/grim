@@ -95,7 +95,7 @@ proc loadYaml*(fileName: string): Graph =
       edge["endsAt"].content,
       edge["label"].content,
       properties,
-      ident = oid
+      oid = oid
     )
 
 proc saveYaml*(g: var Graph, fileName: string, force_overwrite: bool = false) =
