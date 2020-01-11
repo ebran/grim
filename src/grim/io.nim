@@ -110,7 +110,7 @@ proc saveYaml*(g: Graph, fileName: string, force_overwrite: bool = false) =
     domEdges: seq[YamlNode] = @[]
 
   # Build nodes as YamlNodes for DOM
-  for node in g.nodes.values:
+  for node in g.nodes:
     var n = @[
       ("label".toYaml, node.label.toYaml),
       ("oid".toYaml, node.oid.toYaml)
@@ -123,7 +123,7 @@ proc saveYaml*(g: Graph, fileName: string, force_overwrite: bool = false) =
     domNodes.add(n.toYaml)
 
   # Build edges as YamlNodes for DOM
-  for edge in g.edges.values:
+  for edge in g.edges:
     var e = @[
       ("label".toYaml, edge.label.toYaml),
       ("oid".toYaml, edge.oid.toYaml),

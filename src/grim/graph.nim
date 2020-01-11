@@ -36,6 +36,16 @@ proc numberOfEdges*(self: Graph): int =
   result = self.edgeTable.len
 
 proc `$`*(self: Graph): string =
+iterator nodes*(self: var Graph): Node =
+  ## Iterator for all nodes in graph
+  for n in self.nodeTable.values:
+    yield n
+
+iterator edges*(self: var Graph): Edge =
+  ## Iterator for all edges in graph
+  for e in self.edgeTable.values:
+    yield e
+
   ## Pretty-print Graph
   let
     m = self.name
@@ -44,9 +54,9 @@ proc `$`*(self: Graph): string =
 
   var nodeStats = newCountTable[string]()
   var edgeStats = newCountTable[string]()
-  for n in self.nodes.values:
+  for n in self.nodes:
     nodeStats.inc(n.label)
-  for e in self.edges.values:
+  for e in self.edges:
     edgeStats.inc(e.label)
 
   result = fmt("<Graph \"{m}\" with {i} node(s) {nodeStats} and {j} edge(s) {edgeStats}>")
