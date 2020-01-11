@@ -204,6 +204,14 @@ proc hasEdge*(self: var Graph, A: string, B: string): bool =
 
 proc neighbors*(self: Node): HashSet[string] =
   ## Return neighbors to Node `n`. TODO should be iterator
+proc getNode*(self: var Graph, node: string): var Node =
+  ## Return oid for `node` in graph
+  result = self.nodeTable[node]
+
+proc getEdge*(self: var Graph, edge: string): var Edge =
+  ## Return oid for `egde` in graph
+  result = self.edgeTable[edge]
+
   for e in self.adj.values:
     result.incl(e.startsAt.oid)
     result.incl(e.endsAt.oid)
@@ -213,7 +221,8 @@ proc neighbors*(self: Graph, n: string): HashSet[string] =
   ## Return neighbors to Node `n` in Graph `g`. TODO should be iterator
   result = self.nodes[n].neighbors
 
-proc getEdges*(self: Graph, A: string, B: string): seq[Edge] =
-  ## Return all edges between `A` and `B`. # TODO should be iterator
-  for e in self.nodes[A].adj.allValues(B):
-    result.add(e)
+
+iterator getEdges*(self: var Graph, A: string, B: string): Edge =
+  ## Iterator for all edges between `A` and `B`.
+  for e in self.nodeTable[A].adj.allValues(B):
+    yield e
