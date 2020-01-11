@@ -20,8 +20,8 @@ suite "DSL":
             since: 2012
 
     let
-      p1 = g.nodes["new gal"]
-      p2 = g.nodes["new guy"]
+      p1 = g.getNode("new gal")
+      p2 = g.getNode("new guy")
 
     check:
       p1 in g
@@ -37,19 +37,16 @@ suite "DSL":
 
       g.numberOfNodes == 2
 
-    let rels = g.getEdges("new guy", "new gal")
-
-    for r in rels:
+    for r in g.getEdges("new guy", "new gal"):
       check:
         r in g
         r.startsAt == p1
         r.endsAt == p2
+        r.label == "MARRIED_TO"
+        r.properties["since"].getInt == 2012
 
     check:
-      g.neighbors("new gal") == @["new guy"].toHashSet
-      g.neighbors("new guy") == @["new gal"].toHashSet
-
-      rels[0].label == "MARRIED_TO"
-      rels[0].properties["since"].getInt == 2012
+      toSeq(g.neighbors("new gal")) == @["new guy"]
+      toSeq(g.neighbors("new guy")) == @["new gal"]
 
       g.numberOfEdges == 1

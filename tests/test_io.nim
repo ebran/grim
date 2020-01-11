@@ -9,10 +9,9 @@ suite "Input and output":
 
   test "Test YAML reader on example file":
     let
-      p1 = g.nodes["new gal"]
-      p2 = g.nodes["new guy"]
-      p3 = g.nodes["young gun"]
-      rels = g.getEdges("new guy", "new gal")
+      p1 = g.getNode("new gal")
+      p2 = g.getNode("new guy")
+      p3 = g.getNode("young gun")
 
     check:
       g.name == "Happy People"
@@ -34,7 +33,7 @@ suite "Input and output":
 
       g.numberOfNodes == 3
 
-    for r in rels:
+    for r in g.getEdges("new guy", "new gal"):
       check:
         r in g
         r.startsAt == p1
@@ -49,8 +48,8 @@ suite "Input and output":
           discard
 
     check:
-      g.neighbors("new gal") == @["new guy"].toHashSet
-      g.neighbors("new guy") == @["new gal"].toHashSet
+      toSeq(g.neighbors("new gal")) == @["new guy"]
+      toSeq(g.neighbors("new guy")) == @["new gal"]
       g.numberOfEdges == 2
 
   test "Test saving graph to YAML by round-tripping":

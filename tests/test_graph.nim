@@ -6,7 +6,7 @@ import unittest
 
 suite "Basic usage":
   test "create graph":
-    let g = newGraph("Test")
+    var g = newGraph("Test")
 
     check:
       g.name == "Test"
@@ -35,7 +35,7 @@ suite "Basic usage":
 
     check:
       oid in g
-      g.nodes[oid].label == "Person"
+      g.getNode(oid).label == "Person"
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
@@ -46,9 +46,9 @@ suite "Basic usage":
 
     check:
       oid in g
-      g.nodes[oid].label == "Person"
-      g.nodes[oid].properties["name"].getStr() == "John Doe"
-      g.nodes[oid].properties["age"].getInt() == 24
+      g.getNode(oid).label == "Person"
+      g.getNode(oid).properties["name"].getStr() == "John Doe"
+      g.getNode(oid).properties["age"].getInt() == 24
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
@@ -61,8 +61,8 @@ suite "Basic usage":
 
     check:
       r in g
-      g.edges[r].label == "MARRIED_TO"
-      g.edges[r].properties["since"].getInt() == 2012
+      g.getEdge(r).label == "MARRIED_TO"
+      g.getEdge(r).properties["since"].getInt() == 2012
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
@@ -73,18 +73,18 @@ suite "Basic usage":
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
 
     check:
-      g.nodes[p1].label == "Person"
-      g.nodes[p1].properties["name"].getStr() == "John Doe"
-      g.nodes[p1].properties["age"].getInt() == 24
+      g.getNode(p1).label == "Person"
+      g.getNode(p1).properties["name"].getStr() == "John Doe"
+      g.getNode(p1).properties["age"].getInt() == 24
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
-    p1 = g.nodes[p1].update(%(name: "Jane Doe", age: 22))
+    p1 = g.getNode(p1).update(%(name: "Jane Doe", age: 22))
 
     check:
-      g.nodes[p1].label == "Person"
-      g.nodes[p1].properties["name"].getStr() == "Jane Doe"
-      g.nodes[p1].properties["age"].getInt() == 22
+      g.getNode(p1).label == "Person"
+      g.getNode(p1).properties["name"].getStr() == "Jane Doe"
+      g.getNode(p1).properties["age"].getInt() == 22
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
@@ -96,17 +96,17 @@ suite "Basic usage":
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
     check:
-      g.edges[r].label == "MARRIED_TO"
-      g.edges[r].properties["since"].getInt() == 2012
+      g.getEdge(r).label == "MARRIED_TO"
+      g.getEdge(r).properties["since"].getInt() == 2012
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
 
-    r = g.edges[r].update(%(since: 2007))
+    r = g.getEdge(r).update(%(since: 2007))
 
     check:
-      g.edges[r].label == "MARRIED_TO"
-      g.edges[r].properties["since"].getInt() == 2007
+      g.getEdge(r).label == "MARRIED_TO"
+      g.getEdge(r).properties["since"].getInt() == 2007
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
@@ -120,8 +120,8 @@ suite "Basic usage":
     discard g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
     check:
-      g.neighbors(p1) == [p2].toHashSet
-      g.neighbors(p2) == [p1].toHashSet
+      toSeq(g.neighbors(p1)) == @[p2]
+      toSeq(g.neighbors(p2)) == @[p1]
 
   test "get edges":
     var
@@ -130,4 +130,4 @@ suite "Basic usage":
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
-    check g.getEdges(p1, p2) == @[g.edges[r]]
+    check toSeq(g.getEdges(p1, p2)) == @[g.getEdge(r)]
