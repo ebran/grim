@@ -71,7 +71,7 @@ proc loadYaml*(fileName: string): Graph =
     discard result.addNode(
       node["label"].content,
       properties,
-      ident = node["oid"].content
+      oid = node["oid"].content
     )
 
   # Load edges

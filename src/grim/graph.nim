@@ -91,17 +91,17 @@ proc newGraph*(name: string = "graph"): Graph =
   result.name = name
 
 proc newNode*(label: string, properties: Table[string, Box] = initTable[string,
-    Box](), ident: string = $genOid()): Node =
+    Box](), oid: string = $genOid()): Node =
   ## Create a new Node
   new result
 
   result.label = label
   result.properties = properties
-  result.oid = ident
+  result.oid = oid
 
 proc newEdge*(A: Node, B: Node, label: string,
     properties: Table[string, Box] = initTable[string, Box](),
-        ident: string = $genOid()): Edge =
+        oid: string = $genOid()): Edge =
   ## Create a new Edge
   new result
 
@@ -109,12 +109,12 @@ proc newEdge*(A: Node, B: Node, label: string,
   result.endsAt = B
   result.label = label
   result.properties = properties
-  result.oid = ident
+  result.oid = oid
 
 proc addNode*(self: var Graph, label: string, props: Table[string,
-    Box] = initTable[string, Box](), ident: string = $genOid()): string =
+    Box] = initTable[string, Box](), oid: string = $genOid()): string =
   ## Add Node to Graph.
-  let n = newNode(label, properties = props, ident = ident)
+  let n = newNode(label, properties = props, oid = oid)
 
   # Don't add if node already in graph
   if n in self:
@@ -143,7 +143,7 @@ proc addEdge*(self: var Graph, e: Edge): string =
 
 proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
     props: Table[string, Box] = initTable[string, Box](),
-        ident: string = $genOid()): string =
+        oid: string = $genOid()): string =
   ## Add Edge to Graph
   # Add Nodes to Graph if not already there
   if A notin self:
@@ -151,7 +151,7 @@ proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
   if B notin self:
     discard self.addNode(B)
 
-  let e = newEdge(A, B, label, properties = props, ident = ident)
+  let e = newEdge(A, B, label, properties = props, oid = oid)
 
   # Don't add if edge already in graph
   if e in self:
@@ -165,9 +165,10 @@ proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
   result = e.oid
 
 proc addEdge*(self: var Graph, A: string, B: string, label: string,
-  props: Table[string, Box] = initTable[string, Box](), ident: string = $genOid()): string =
+  props: Table[string, Box] = initTable[string, Box](), oid: string = $genOid()): string =
   ## Add Edge to Graph.
-  let e = newEdge(self.nodes[A], self.nodes[B], label, properties = props, ident = ident)
+  let e = newEdge(self.nodeTable[A], self.nodeTable[B], label,
+      properties = props, oid = oid)
 
   # Don't add if edge already in graph
   if e in self:

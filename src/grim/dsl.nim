@@ -81,7 +81,7 @@ macro graph*(varName: untyped, statements: untyped): untyped =
           else:
             node[1].toPropertyString & ","
 
-        addNodeString = fmt("discard {g}.addNode(\"{nodeLabel}\", {properties} ident=\"{oid}\")")
+        addNodeString = fmt("discard {g}.addNode(\"{nodeLabel}\", {properties} oid=\"{oid}\")")
 
       # Add nodes to graph
       result.add(addNodeString.parseExpr)
