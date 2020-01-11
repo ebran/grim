@@ -24,16 +24,16 @@ type
 
   Graph* = ref object
     name*: string
-    nodes*: Table[string, Node]
-    edges*: Table[string, Edge]
+    nodeTable: Table[string, Node]
+    edgeTable: Table[string, Edge]
 
 proc numberOfNodes*(self: Graph): int =
   ## Return number of Nodes in Graph
-  result = self.nodes.len
+  result = self.nodeTable.len
 
 proc numberOfEdges*(self: Graph): int =
   ## Return number of Edges in Graph
-  result = self.edges.len
+  result = self.edgeTable.len
 
 proc `$`*(self: Graph): string =
   ## Pretty-print Graph
@@ -74,15 +74,15 @@ proc `%`*(t: tuple): Table[string, Box] =
 
 proc contains*(self: Graph, key: string): bool =
   ## Check if Node or Edge oid is in Graph
-  result = key in self.nodes or key in self.edges
+  result = key in self.nodeTable or key in self.edgeTable
 
 proc contains*(self: Graph, key: Node): bool =
   ## Check if Node object is in Graph
-  result = key.oid in self.nodes
+  result = key.oid in self.nodeTable
 
 proc contains*(self: Graph, key: Edge): bool =
   ## Check if Edge object is in Graph
-  result = key.oid in self.edges
+  result = key.oid in self.edgeTable
 
 proc newGraph*(name: string = "graph"): Graph =
   ## Create a new Graph
@@ -120,7 +120,7 @@ proc addNode*(self: var Graph, label: string, props: Table[string,
   if n in self:
     return n.oid
 
-  self.nodes[n.oid] = n
+  self.nodeTable[n.oid] = n
   result = n.oid
 
 proc addNode*(self: var Graph, n: Node): string =
@@ -129,7 +129,7 @@ proc addNode*(self: var Graph, n: Node): string =
   if n in self:
     return n.oid
 
-  self.nodes[n.oid] = n
+  self.nodeTable[n.oid] = n
   result = n.oid
 
 proc addEdge*(self: var Graph, e: Edge): string =
@@ -138,8 +138,8 @@ proc addEdge*(self: var Graph, e: Edge): string =
   if e in self:
     return e.oid
 
-  self.nodes[e.startsAt.oid].adj.add(e.endsAt.oid, e)
-  self.edges[e.oid] = e
+  self.nodeTable[e.startsAt.oid].adj.add(e.endsAt.oid, e)
+  self.edgeTable[e.oid] = e
 
 proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
     props: Table[string, Box] = initTable[string, Box](),
@@ -158,9 +158,9 @@ proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
     return e.oid
 
   # Add edge to edges and to adjancy lists
-  self.nodes[A.oid].adj.add(B.oid, e)
-  self.nodes[B.oid].adj.add(A.oid, e)
-  self.edges[e.oid] = e
+  self.nodeTable[A.oid].adj.add(B.oid, e)
+  self.nodeTable[B.oid].adj.add(A.oid, e)
+  self.edgeTable[e.oid] = e
 
   result = e.oid
 
@@ -175,9 +175,9 @@ proc addEdge*(self: var Graph, A: string, B: string, label: string,
     return e.oid
 
   # Add edge to edges and to adjancy lists
-  self.nodes[A].adj.add(B, e)
-  self.nodes[B].adj.add(A, e)
-  self.edges[e.oid] = e
+  self.nodeTable[A].adj.add(B, e)
+  self.nodeTable[B].adj.add(A, e)
+  self.edgeTable[e.oid] = e
 
   result = e.oid
 
@@ -190,7 +190,7 @@ proc update*[T](self: var T, p: Table[string, Box]): string =
 
 proc hasEdge*(self: var Graph, A: string, B: string): bool =
   ## Check if there is an Edge between Nodes A and B.
-  result = A in self.nodes and B in self.nodes[A].adj
+  result = A in self.nodeTable and B in self.nodeTable[A].adj
 
 proc neighbors*(self: Node): HashSet[string] =
   ## Return neighbors to Node `n`. TODO should be iterator
