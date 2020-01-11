@@ -1,8 +1,0 @@
-* TO DO list before release
-- [X] Write saveYaml function for saving graph as YAML file
-- [X] All function should be explicitly imported and/or called by module (A.x vs x)
-- [X] ~graph.nodes~ and ~graph.edges~ should be iterators
-- [X] Documentation
-- [X] Readme file
-* TODO Bugs [1/5]
-- [X] Don't overwrite edge oids when loading Yaml
