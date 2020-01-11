@@ -61,6 +61,14 @@ proc `$`*(self: var Graph): string =
 
   result = fmt("<Graph \"{m}\" with {i} node(s) {nodeStats} and {j} edge(s) {edgeStats}>")
 
+proc `$`*(t: Table[string, Box]): string =
+  ## Pretty-print String table with Boxes
+  result.add("{")
+  for key, val in t.pairs:
+    result.add(key & ": " & val.describe & ", ")
+  result.delete(result.len-2, result.len)
+  result.add("}")
+
 proc `$`*(n: Node): string =
   ## Pretty-print Node
   result = fmt"<Node {n.oid} ({n.label}): {n.properties}>"
@@ -68,14 +76,6 @@ proc `$`*(n: Node): string =
 proc `$`*(e: Edge): string =
   ## Pretty-print Edge
   result = fmt"<Edge {e.oid}: {e.startsAt.oid} -- {e.label} {e.properties} --> {e.endsAt.oid}>"
-
-proc `$`*(t: Table[string, Box]): string =
-  ## Pretty-print String table with Boxes
-  result.add("{")
-  for key, val in t.pairs:
-    result.add(key & ": " & $val & ", ")
-  result.delete(result.len-2, result.len)
-  result.add("}")
 
 proc `%`*(t: tuple): Table[string, Box] =
   ## Convert tuple to Table[string, Box]
