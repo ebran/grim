@@ -202,8 +202,6 @@ proc hasEdge*(self: var Graph, A: string, B: string): bool =
   ## Check if there is an Edge between Nodes A and B.
   result = A in self.nodeTable and B in self.nodeTable[A].adj
 
-proc neighbors*(self: Node): HashSet[string] =
-  ## Return neighbors to Node `n`. TODO should be iterator
 proc getNode*(self: var Graph, node: string): var Node =
   ## Return oid for `node` in graph
   result = self.nodeTable[node]
@@ -212,15 +210,26 @@ proc getEdge*(self: var Graph, edge: string): var Edge =
   ## Return oid for `egde` in graph
   result = self.edgeTable[edge]
 
+iterator neighbors*(self: Node): string =
+  ## Return neighbors to Node `n`.
+  var seen: HashSet[string]
   for e in self.adj.values:
-    result.incl(e.startsAt.oid)
-    result.incl(e.endsAt.oid)
-  result.excl(self.oid)
+    let
+      a = e.startsAt.oid
+      b = e.endsAt.oid
 
-proc neighbors*(self: Graph, n: string): HashSet[string] =
-  ## Return neighbors to Node `n` in Graph `g`. TODO should be iterator
-  result = self.nodes[n].neighbors
+    if a notin seen and a != self.oid:
+      yield a
+    if b notin seen and b != self.oid:
+      yield b
 
+    seen.incl(a)
+    seen.incl(b)
+
+iterator neighbors*(self: var Graph, n: string): string =
+  ## Return neighbors to Node `n` in Graph `g`.
+  for n in self.nodeTable[n].neighbors:
+    yield n
 
 iterator getEdges*(self: var Graph, A: string, B: string): Edge =
   ## Iterator for all edges between `A` and `B`.
