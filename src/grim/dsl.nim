@@ -25,8 +25,13 @@ proc toPropertyString(statements: NimNode): string =
         result.add("\"" & value.strVal & "\"")
       of nnkIntLit:
         result.add($value.intVal)
+      of nnkFloatLit:
+        result.add($value.floatVal)
       else:
-        discard
+        try:
+          result.add($parseBool(value.strVal))
+        except ValueError:
+          result.add("\"\"")
     result.add(", ")
 
   # Clean up trailing comma
