@@ -1,6 +1,6 @@
 import grim
 import unittest
-import sets
+import sequtils
 
 suite "DSL":
   test "build graph":

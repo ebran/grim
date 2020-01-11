@@ -2,9 +2,8 @@
 import tables
 import strutils
 import sets
-
-from oids import genOid
-from strformat import fmt
+import oids
+import strformat
 
 # grim modules
 import box

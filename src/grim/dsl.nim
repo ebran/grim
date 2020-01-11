@@ -2,8 +2,7 @@
 import macros
 import tables
 import strutils
-
-from strformat import fmt
+import strformat
 
 proc toPropertyString(statements: NimNode): string =
   ## Helper proc to parse properties as string

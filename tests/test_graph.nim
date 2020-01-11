@@ -1,7 +1,7 @@
 # To run these tests, simply execute `nimble test`.
 import grim
 import tables
-import sets
+import sequtils
 import unittest
 
 suite "Basic usage":

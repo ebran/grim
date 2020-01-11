@@ -1,6 +1,6 @@
 import grim
 import unittest
-import sets
+import sequtils
 from os import getAppDir, `/`
 
 suite "Input and output":

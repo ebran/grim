@@ -2,11 +2,11 @@
 import tables
 import sequtils
 import strutils
+import strformat
+import oids
 
 from streams import newFileStream, close
 from os import fileExists
-from strformat import fmt
-from oids import genOid
 from sugar import `=>`
 
 # grim modules
