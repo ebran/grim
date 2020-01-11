@@ -31,7 +31,7 @@ proc toPropertyString(statements: NimNode): string =
         try:
           result.add($parseBool(value.strVal))
         except ValueError:
-          result.add("\"\"")
+          result.add("\"" & value.strVal & "\"")
     result.add(", ")
 
   # Clean up trailing comma
