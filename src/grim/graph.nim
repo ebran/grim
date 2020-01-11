@@ -27,15 +27,14 @@ type
     nodeTable: Table[string, Node]
     edgeTable: Table[string, Edge]
 
-proc numberOfNodes*(self: Graph): int =
+proc numberOfNodes*(self: var Graph): int =
   ## Return number of Nodes in Graph
   result = self.nodeTable.len
 
-proc numberOfEdges*(self: Graph): int =
+proc numberOfEdges*(self: var Graph): int =
   ## Return number of Edges in Graph
   result = self.edgeTable.len
 
-proc `$`*(self: Graph): string =
 iterator nodes*(self: var Graph): Node =
   ## Iterator for all nodes in graph
   for n in self.nodeTable.values:
@@ -46,6 +45,7 @@ iterator edges*(self: var Graph): Edge =
   for e in self.edgeTable.values:
     yield e
 
+proc `$`*(self: var Graph): string =
   ## Pretty-print Graph
   let
     m = self.name
@@ -82,15 +82,15 @@ proc `%`*(t: tuple): Table[string, Box] =
   for label, value in t.fieldPairs:
     result[label] = initBox(value)
 
-proc contains*(self: Graph, key: string): bool =
+proc contains*(self: var Graph, key: string): bool =
   ## Check if Node or Edge oid is in Graph
   result = key in self.nodeTable or key in self.edgeTable
 
-proc contains*(self: Graph, key: Node): bool =
+proc contains*(self: var Graph, key: Node): bool =
   ## Check if Node object is in Graph
   result = key.oid in self.nodeTable
 
-proc contains*(self: Graph, key: Edge): bool =
+proc contains*(self: var Graph, key: Edge): bool =
   ## Check if Edge object is in Graph
   result = key.oid in self.edgeTable
 
