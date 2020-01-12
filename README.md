@@ -1,4 +1,4 @@
-![grim-icon-small](/home/ebran/OneDrive/Cubist/devops/grim/static/grim-icon-small.png)
+![grim-icon-small](static/grim-icon-small.png)
 
 # grim - brings graphs to Nim
 
