@@ -17,7 +17,7 @@ You need the Nim compiler, obviously. See the [nim-lang homepage](https://nim-la
 grim is easily used with the nimble package manager. To install on your local computer use
 
 ```
-nimble install https://www.github.com/ebran/grim
+nimble install grim
 ```
 
 To use it in your own project add as requirement to the .nimble file:
