@@ -10,14 +10,14 @@ import box
 
 type
   Edge* = ref object
-    oid*: string
+    oid: string
     label*: string
     startsAt*: Node
     endsAt*: Node
     properties*: Table[string, Box]
 
   Node* = ref object
-    oid*: string
+    oid: string
     label*: string
     properties*: Table[string, Box]
     adj: Table[string, Edge]
@@ -190,6 +190,14 @@ proc addEdge*(self: var Graph, A: string, B: string, label: string,
   self.edgeTable[e.oid] = e
 
   result = e.oid
+
+proc oid*(self: Node): string =
+  ## Get node oid
+  result = self.oid
+
+proc oid*(self: Edge): string =
+  ## Get edge oid
+  result = self.oid
 
 proc update*[T](self: var T, p: Table[string, Box]): string =
   ## Update Node or Edge properties
