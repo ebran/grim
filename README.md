@@ -34,7 +34,7 @@ grim is hopefully quite easy to use. Some use cases can be found in the tests/ f
 
 A graph consists of nodes and edges. Both nodes and edges carry a label for categorization, and both nodes and edges can store data attributes in key/value pairs. First, create a new graph:
 
-```
+```nim
 import grim
 
 var g = newGraph("my graph")
