@@ -6,11 +6,12 @@ description   = "Graphs in nim!"
 license       = "MIT"
 srcDir        = "src"
 
-# custom task for documentation
+# build HTML documentation in docs/
 task docs, "Build the documentation (HTML)":
-   exec "nim doc --outdir:docs/ --project --index:on --git.url:https://www.github.com/ebran/grim src/grim.nim"
-   exec "nim buildIndex --out:docs/index.html docs"
+   selfExec "doc --outdir:docs/ --project --index:on --git.url:https://www.github.com/ebran/grim src/grim.nim"
+   selfExec "buildIndex --out:docs/index.html docs"
    "docs/grim.html".mvFile("docs/index.html")
+   exec "sed -i '1d' docs/index.html"
 
 # Dependencies
 
