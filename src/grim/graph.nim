@@ -94,6 +94,14 @@ proc contains*(self: var Graph, key: Edge): bool =
   ## Check if Edge object is in Graph
   result = key.oid in self.edgeTable
 
+proc `==`*(self, other: Node): bool =
+  ## Check if two Nodes are equal
+  result = self.oid == other.oid
+
+proc `==`*(self, other: Edge): bool =
+  ## Check if two Edges are equal
+  result = self.oid == other.oid
+
 proc newGraph*(name: string = "graph"): Graph =
   ## Create a new Graph
   new result
