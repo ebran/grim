@@ -105,7 +105,7 @@ Graph structures can be loaded and saved in YAML format. grim uses the NimYAML l
 import grim
 
 var g = loadYaml("example.yaml")  # Load graph from YAML file
-saveYaml("example2.yaml")         # Save a copy of the file
+g.saveYaml("example2.yaml")         # Save a copy of the file
 ```
 
 
