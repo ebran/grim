@@ -14,16 +14,16 @@ You need the Nim compiler, obviously. See the [nim-lang homepage](https://nim-la
 
 ### Installing
 
-Hopefully, grim can become included in the nimble package repository for easy install and use in your own projects. For now, clone this repo:
+grim is easily used with the nimble package manager. To install on your local computer use
 
 ```
-git clone https://www.github.com/ebran/grim
+nimble install https://www.github.com/ebran/grim
 ```
 
-Go to the root folder of the grim source code and install with nimble
+To use it in your own project add as requirement to the .nimble file:
 
 ```
-nimble install
+requires "grim"
 ```
 
 ## Usage
