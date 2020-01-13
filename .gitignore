@@ -7,3 +7,4 @@ bin/*
 tests/sandbox*
 TODO.org
 *.exe
+*.bin
