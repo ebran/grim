@@ -864,10 +864,6 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="box: describe(b: Box): string" href="grim/box.html#describe%2CBox">box: describe(b: Box): string</a></li>
           </ul></dd>
-<dt><a name="Edge" href="#Edge"><span>Edge:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="graph: Edge" href="grim/graph.html#Edge">graph: Edge</a></li>
-          </ul></dd>
 <dt><a name="edges" href="#edges"><span>edges:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graph: edges(self: var Graph): Edge" href="grim/graph.html#edges.i%2CGraph">graph: edges(self: var Graph): Edge</a></li>
@@ -924,6 +920,22 @@ function main() {
           <li><a class="reference external"
           data-doc-search-tag="box: initBox(value: string): Box" href="grim/box.html#initBox%2Cstring">box: initBox(value: string): Box</a></li>
           </ul></dd>
+<dt><a name="initEdge" href="#initEdge"><span>initEdge:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: initEdge(A: Node; B: Node; label: string;
+         properties: Table[string, Box] = initTable(); oid: string = $genOid()): Edge" href="grim/graph.html#initEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: initEdge(A: Node; B: Node; label: string;
+         properties: Table[string, Box] = initTable(); oid: string = $genOid()): Edge</a></li>
+          </ul></dd>
+<dt><a name="initGraph" href="#initGraph"><span>initGraph:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: initGraph(name: string = &quot;graph&quot;): Graph" href="grim/graph.html#initGraph%2Cstring">graph: initGraph(name: string = &quot;graph&quot;): Graph</a></li>
+          </ul></dd>
+<dt><a name="initNode" href="#initNode"><span>initNode:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: initNode(label: string; properties: Table[string, Box] = initTable();
+         oid: string = $genOid()): Node" href="grim/graph.html#initNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: initNode(label: string; properties: Table[string, Box] = initTable();
+         oid: string = $genOid()): Node</a></li>
+          </ul></dd>
 <dt><a name="isEmpty" href="#isEmpty"><span>isEmpty:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="box: isEmpty(b: Box): bool" href="grim/box.html#isEmpty%2CBox">box: isEmpty(b: Box): bool</a></li>
@@ -937,22 +949,6 @@ function main() {
           data-doc-search-tag="graph: neighbors(self: var Graph; n: string): string" href="grim/graph.html#neighbors.i%2CGraph%2Cstring">graph: neighbors(self: var Graph; n: string): string</a></li>
           <li><a class="reference external"
           data-doc-search-tag="graph: neighbors(self: Node): string" href="grim/graph.html#neighbors.i%2CNode">graph: neighbors(self: Node): string</a></li>
-          </ul></dd>
-<dt><a name="newEdge" href="#newEdge"><span>newEdge:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="graph: newEdge(A: Node; B: Node; label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Edge" href="grim/graph.html#newEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: newEdge(A: Node; B: Node; label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Edge</a></li>
-          </ul></dd>
-<dt><a name="newGraph" href="#newGraph"><span>newGraph:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="graph: newGraph(name: string = &quot;graph&quot;): Graph" href="grim/graph.html#newGraph%2Cstring">graph: newGraph(name: string = &quot;graph&quot;): Graph</a></li>
-          </ul></dd>
-<dt><a name="newNode" href="#newNode"><span>newNode:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="graph: newNode(label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Node" href="grim/graph.html#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: newNode(label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Node</a></li>
           </ul></dd>
 <dt><a name="Node" href="#Node"><span>Node:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -969,12 +965,6 @@ function main() {
 <dt><a name="numberOfNodes" href="#numberOfNodes"><span>numberOfNodes:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graph: numberOfNodes(self: var Graph): int" href="grim/graph.html#numberOfNodes%2CGraph">graph: numberOfNodes(self: var Graph): int</a></li>
-          </ul></dd>
-<dt><a name="oid" href="#oid"><span>oid:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="graph: oid(self: Edge): string" href="grim/graph.html#oid%2CEdge">graph: oid(self: Edge): string</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="graph: oid(self: Node): string" href="grim/graph.html#oid%2CNode">graph: oid(self: Node): string</a></li>
           </ul></dd>
 <dt><a name="saveYaml" href="#saveYaml"><span>saveYaml:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1001,7 +991,7 @@ function main() {
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-01-12 21:58:36 UTC</small>
+        <small>Made with Nim. Generated: 2020-01-13 21:55:15 UTC</small>
       </div>
     </div>
   </div>
