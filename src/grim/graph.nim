@@ -9,20 +9,20 @@ import strformat
 import box
 
 type
-  Edge* = ref object
-    oid: string
+  Edge = object
+    oid*: string
     label*: string
     startsAt*: Node
     endsAt*: Node
     properties*: Table[string, Box]
 
-  Node* = ref object
-    oid: string
+  Node* = object
+    oid*: string
     label*: string
     properties*: Table[string, Box]
     adj: Table[string, Edge]
 
-  Graph* = ref object
+  Graph* = object
     name*: string
     nodeTable: Table[string, Node]
     edgeTable: Table[string, Edge]
@@ -52,8 +52,8 @@ proc `$`*(self: var Graph): string =
     i = self.numberOfNodes
     j = self.numberOfEdges
 
-  var nodeStats = newCountTable[string]()
-  var edgeStats = newCountTable[string]()
+  var nodeStats = initCountTable[string]()
+  var edgeStats = initCountTable[string]()
   for n in self.nodes:
     nodeStats.inc(n.label)
   for e in self.edges:
@@ -102,37 +102,25 @@ proc `==`*(self, other: Edge): bool =
   ## Check if two Edges are equal
   result = self.oid == other.oid
 
-proc newGraph*(name: string = "graph"): Graph =
-  ## Create a new Graph
-  new result
+proc initGraph*(name: string = "graph"): Graph =
+  ## Initialize a graph
+  result = Graph(name: name)
 
-  result.name = name
-
-proc newNode*(label: string, properties: Table[string, Box] = initTable[string,
+proc initNode*(label: string, properties: Table[string, Box] = initTable[string,
     Box](), oid: string = $genOid()): Node =
-  ## Create a new Node
-  new result
+  ## Initialize a node
+  result = Node(label: label, properties: properties, oid: oid)
 
-  result.label = label
-  result.properties = properties
-  result.oid = oid
-
-proc newEdge*(A: Node, B: Node, label: string,
+proc initEdge*(A: Node, B: Node, label: string,
     properties: Table[string, Box] = initTable[string, Box](),
         oid: string = $genOid()): Edge =
-  ## Create a new Edge
-  new result
-
-  result.startsAt = A
-  result.endsAt = B
-  result.label = label
-  result.properties = properties
-  result.oid = oid
+  ## Initialize an edge
+  result = Edge(startsAt: A, endsAt: B, label: label, properties: properties, oid: oid)
 
 proc addNode*(self: var Graph, label: string, props: Table[string,
     Box] = initTable[string, Box](), oid: string = $genOid()): string =
-  ## Add Node to Graph.
-  let n = newNode(label, properties = props, oid = oid)
+  ## Add node to graph.
+  let n = initNode(label, properties = props, oid = oid)
 
   # Don't add if node already in graph
   if n in self:
@@ -142,7 +130,7 @@ proc addNode*(self: var Graph, label: string, props: Table[string,
   result = n.oid
 
 proc addNode*(self: var Graph, n: Node): string =
-  ## Add Node to Graph.
+  ## Add node to graph.
   # Don't add if node already in graph
   if n in self:
     return n.oid
@@ -151,7 +139,7 @@ proc addNode*(self: var Graph, n: Node): string =
   result = n.oid
 
 proc addEdge*(self: var Graph, e: Edge): string =
-  ## Add Edge to Graph.
+  ## Add edge to graph.
   # Don't add if edge already in graph
   if e in self:
     return e.oid
@@ -162,14 +150,14 @@ proc addEdge*(self: var Graph, e: Edge): string =
 proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
     props: Table[string, Box] = initTable[string, Box](),
         oid: string = $genOid()): string =
-  ## Add Edge to Graph
-  # Add Nodes to Graph if not already there
+  ## Add edge to graph
+  # Add nodes to graph if not already there
   if A notin self:
     discard self.addNode(A)
   if B notin self:
     discard self.addNode(B)
 
-  let e = newEdge(A, B, label, properties = props, oid = oid)
+  let e = initEdge(A, B, label, properties = props, oid = oid)
 
   # Don't add if edge already in graph
   if e in self:
@@ -184,8 +172,8 @@ proc addEdge*(self: var Graph, A: Node, B: Node, label: string,
 
 proc addEdge*(self: var Graph, A: string, B: string, label: string,
   props: Table[string, Box] = initTable[string, Box](), oid: string = $genOid()): string =
-  ## Add Edge to Graph.
-  let e = newEdge(self.nodeTable[A], self.nodeTable[B], label,
+  ## Add edge to graph.
+  let e = initEdge(self.nodeTable[A], self.nodeTable[B], label,
       properties = props, oid = oid)
 
   # Don't add if edge already in graph
@@ -199,23 +187,15 @@ proc addEdge*(self: var Graph, A: string, B: string, label: string,
 
   result = e.oid
 
-proc oid*(self: Node): string =
-  ## Get node oid
-  result = self.oid
-
-proc oid*(self: Edge): string =
-  ## Get edge oid
-  result = self.oid
-
 proc update*[T](self: var T, p: Table[string, Box]): string =
-  ## Update Node or Edge properties
+  ## Update node or edge properties
   for prop, val in p.pairs:
     self.properties[prop] = val
 
   result = self.oid
 
 proc hasEdge*(self: var Graph, A: string, B: string): bool =
-  ## Check if there is an Edge between Nodes A and B.
+  ## Check if there is an edge between nodes A and B.
   result = A in self.nodeTable and B in self.nodeTable[A].adj
 
 proc getNode*(self: var Graph, node: string): var Node =
@@ -227,7 +207,7 @@ proc getEdge*(self: var Graph, edge: string): var Edge =
   result = self.edgeTable[edge]
 
 iterator neighbors*(self: Node): string =
-  ## Return neighbors to Node `n`.
+  ## Return neighbors to node `n`.
   var seen: HashSet[string]
   for e in self.adj.values:
     let
@@ -243,7 +223,7 @@ iterator neighbors*(self: Node): string =
     seen.incl(b)
 
 iterator neighbors*(self: var Graph, n: string): string =
-  ## Return neighbors to Node `n` in Graph `g`.
+  ## Return neighbors to node `n` in graph `g`.
   for n in self.nodeTable[n].neighbors:
     yield n
 

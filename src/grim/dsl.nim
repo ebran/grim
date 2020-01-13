@@ -48,10 +48,10 @@ macro graph*(varName: untyped, statements: untyped): untyped =
   let
     g = varName[0].strVal
     name = varName[1].strVal
-    newGraphString = "var " & g & " = newGraph(\"" & name & "\")"
+    initGraphString = "var " & g & " = initGraph(\"" & name & "\")"
 
   # Create empty graph
-  result.add(newGraphString.parseExpr)
+  result.add(initGraphString.parseExpr)
 
   # Find sections for nodes and edges
   expectKind(statements, nnkStmtList)
