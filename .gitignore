@@ -1,0 +1,9 @@
+.gitignore
+\#*
+*~
+.vscode/*
+.files/*
+bin/*
+tests/sandbox*
+TODO.org
+*.exe
