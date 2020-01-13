@@ -1,11 +1,11 @@
 import grim
 import unittest
 import sequtils
-from os import getAppDir, `/`
+from os import getAppDir, `/`, ParDir
 
 suite "Input and output":
   setup:
-    var g = loadYaml(getAppDir() / "example.yaml")
+    var g = loadYaml(getAppDir() / ParDir / "tests" / "example.yaml")
 
   test "Test YAML reader on example file":
     let
@@ -54,15 +54,18 @@ suite "Input and output":
 
   test "Test saving graph to YAML by round-tripping":
     # Round-trip: save => load => save => load => save
-    g.saveYaml(getAppDir() / "example_test1.yaml", force_overwrite = true)
+    g.saveYaml(getAppDir() / ParDir / "tests" / "example_test1.yaml",
+        force_overwrite = true)
 
-    var g1 = loadYaml(getAppDir() / "example_test1.yaml")
-    g1.saveYaml(getAppDir() / "example_test2.yaml", force_overwrite = true)
-    var g2 = loadYaml(getAppDir() / "example_test2.yaml")
-    g2.saveYaml(getAppDir() / "example_test3.yaml", force_overwrite = true)
+    var g1 = loadYaml(getAppDir() / ParDir / "tests" / "example_test1.yaml")
+    g1.saveYaml(getAppDir() / ParDir / "tests" / "example_test2.yaml",
+        force_overwrite = true)
+    var g2 = loadYaml(getAppDir() / ParDir / "tests" / "example_test2.yaml")
+    g2.saveYaml(getAppDir() / ParDir / "tests" / "example_test3.yaml",
+        force_overwrite = true)
 
     let
-      before = readFile(getAppDir() / "example_test2.yaml")
-      after = readFile(getAppDir() / "example_test3.yaml")
+      before = readFile(getAppDir() / ParDir / "tests" / "example_test2.yaml")
+      after = readFile(getAppDir() / ParDir / "tests" / "example_test3.yaml")
 
     check before == after

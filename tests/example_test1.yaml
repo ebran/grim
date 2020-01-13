@@ -1,0 +1,37 @@
+%YAML 1.2
+--- 
+graph: 
+  name: Happy People
+  edges: 
+    - 
+      properties: 
+        since: 2012
+      oid: 5e1cd36c5d6e5d3f5542a6ef
+      endsAt: new guy
+      startsAt: new gal
+      label: MARRIED_TO
+    - 
+      properties: 
+        amount: 1937.2
+      oid: 5e1cd36c5d6e5d3f5542a6f0
+      endsAt: new guy
+      startsAt: new gal
+      label: INHERITS
+  nodes: 
+    - 
+      label: Person
+      oid: young gun
+    - 
+      label: Person
+      properties: 
+        name: Jane Doe
+        smoker: true
+        age: 22
+      oid: new gal
+    - 
+      label: Person
+      properties: 
+        weight: 37.2
+        name: John Doe
+        age: 24
+      oid: new guy
