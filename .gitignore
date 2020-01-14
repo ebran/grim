@@ -4,6 +4,7 @@
 .vscode/*
 .files/*
 bin/*
+tutorials/bin/*
 tests/sandbox*
 TODO.org
 *.exe
