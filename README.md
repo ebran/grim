@@ -1,4 +1,6 @@
-<img src="static/grim-icon.svg" alt="grim-icon-small" align="center" style="zoom:25%;" />
+<p align="center">
+<img src="static/grim-icon.svg" alt="grim" width=100>
+</p>
 
 # grim - brings graphs to Nim
 
