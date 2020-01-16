@@ -1,8 +1,9 @@
 import sequtils
 import strutils
 import sugar
-import grim
+import tables
 import db_sqlite
+import grim
 
 # Read database
 let db = open("Northwind_small.sqlite", "", "", "")
@@ -11,16 +12,31 @@ let db = open("Northwind_small.sqlite", "", "", "")
 var g = initGraph("northwind")
 
 # Define SQL queries
-const
-  tableQuery = "SELECT * FROM $1"
-  headerQuery = "SELECT name FROM PRAGMA_TABLE_INFO('$1')"
+const queries = {
+  "table": "SELECT * FROM \"$1\"",
+  "header": "SELECT name FROM PRAGMA_TABLE_INFO('$1')"
+  }.toTable
 
-for tbl in ["Customer", "Supplier", "Product", "Employee", "Category"]:
+const foreignKeys = {
+  "Customer": "",
+  "Supplier": "",
+  "Product": "",
+  "Employee": "",
+  "Category": "",
+  "Order": "EmployeeId"
+}.toTable
+
+for tbl in foreignKeys.keys:
   # Read column names for table
-  var headers = db.getAllRows(sql(headerQuery.format(tbl))).map(x => x[0])
+  var headers = db.getAllRows(sql(query["header"].format(tbl))).map(x => x[0])
 
   # Iterate over table and add nodes
-  for row in db.fastRows(sql(tableQuery.format(tbl))):
+  for row in db.fastRows(sql(query["table"].format(tbl))):
     discard g.addNode(tbl, zip(headers, row.map(x => x.initBox)).toTable)
 
-echo g
+# create relationships of orders to products and employees.
+for node in g.nodes:
+  if node.label == "Order":
+    echo node
+    break
+
