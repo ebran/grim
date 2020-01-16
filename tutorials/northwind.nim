@@ -1,25 +1,26 @@
 import sequtils
+import strutils
 import sugar
 import grim
 import db_sqlite
 
-var
-  db: DbConn
-  headers: seq[string]
-  g: Graph
+# Read database
+let db = open("Northwind_small.sqlite", "", "", "")
 
 # Initialize graph
-g = initGraph("northwind")
+var g = initGraph("northwind")
 
-# Read database
-db = open("Northwind_small.sqlite", "", "", "")
+# Define SQL queries
+const
+  tableQuery = "SELECT * FROM $1"
+  headerQuery = "SELECT name FROM PRAGMA_TABLE_INFO('$1')"
 
-# Read column names for customers
-headers = db.getAllRows(sql"SELECT name FROM PRAGMA_TABLE_INFO('Customer')").map(
-    x => x[0])
+for tbl in ["Customer", "Supplier", "Product", "Employee", "Category"]:
+  # Read column names for table
+  var headers = db.getAllRows(sql(headerQuery.format(tbl))).map(x => x[0])
 
-# Iterate over customers and add as nodes
-for row in db.fastRows(sql"SELECT * FROM Customer"):
-  discard g.addNode("Customer", zip(headers, row.map(x => initBox(x))).toTable)
+  # Iterate over table and add nodes
+  for row in db.fastRows(sql(tableQuery.format(tbl))):
+    discard g.addNode(tbl, zip(headers, row.map(x => x.initBox)).toTable)
 
 echo g
