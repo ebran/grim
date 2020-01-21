@@ -68,7 +68,9 @@ proc `$`*(t: Table[string, Box]): string =
   result.add("{")
   for key, val in t.pairs:
     result.add(key & ": " & val.describe & ", ")
-  result.delete(result.len-2, result.len)
+  if t.len > 0:
+    # Delete trailing comma
+    result.delete(result.len-2, result.len)
   result.add("}")
 
 proc `$`*(n: Node): string =
