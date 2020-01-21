@@ -267,7 +267,7 @@ proc getNode*(self: Graph, node: string): var Node =
   result = self.nodeTable[node]
 
 proc getEdge*(self: Graph, edge: string): var Edge =
-  ## Return oid for `egde` in graph
+  ## Return `egde` in graph
   result = self.edgeTable[edge]
 
 iterator neighbors*(n: Node): string =
