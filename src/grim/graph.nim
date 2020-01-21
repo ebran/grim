@@ -43,6 +43,40 @@ proc numberOfEdges*(self: Graph): int =
   ## Return number of Edges in Graph
   result = self.edgeTable.len
 
+iterator nodes*(self: Graph, labels: varargs[string]): Node =
+  ## Iterator for nodes with `labels` in graph
+  # Empty `labels` means use all labels
+  let markers =
+    if labels.len == 0:
+      self.nodeLabels
+    else:
+      @labels
+
+  # Iterate over markers
+  for label in markers:
+    if label notin self.nodeLabels:
+      continue
+    # Iterate over nodes with same label
+    for n in self.nodeIndex[label]:
+      yield self.nodeTable[n]
+
+iterator edges*(self: Graph, labels: varargs[string]): Edge =
+  ## Iterator for edges with `labels` in graph
+  # Empty `labels` means use all labels
+  let markers =
+    if labels.len == 0:
+      self.edgeLabels
+    else:
+      @labels
+
+  # Iterate over markers
+  for label in markers:
+    if label notin self.edgeLabels:
+      continue
+    # Iterate over nodes with same label
+    for e in self.edgeIndex[label]:
+      yield self.edgeTable[e]
+
 proc `$`*(self: Graph): string =
   ## Pretty-print Graph
   let
@@ -233,40 +267,6 @@ proc nodeLabels*(self: Graph): seq[string] =
 proc edgeLabels*(self: Graph): seq[string] =
   for label in self.edgeIndex.keys:
     result.add(label)
-
-iterator nodes*(self: Graph, labels: varargs[string]): Node =
-  ## Iterator for nodes with `labels` in graph
-  # Empty `labels` means use all labels
-  let markers =
-    if labels.len == 0:
-      self.nodeLabels
-    else:
-      @labels
-
-  # Iterate over markers
-  for label in markers:
-    if label notin self.nodeLabels:
-      continue
-    # Iterate over nodes with same label
-    for n in self.nodeIndex[label]:
-      yield self.nodeTable[n]
-
-iterator edges*(self: Graph, labels: varargs[string]): Edge =
-  ## Iterator for edges with `labels` in graph
-  # Empty `labels` means use all labels
-  let markers =
-    if labels.len == 0:
-      self.edgeLabels
-    else:
-      @labels
-
-  # Iterate over markers
-  for label in markers:
-    if label notin self.edgeLabels:
-      continue
-    # Iterate over nodes with same label
-    for e in self.edgeIndex[label]:
-      yield self.edgeTable[e]
 
 iterator neighbors*(n: Node): string =
   ## Return neighbors to node `n`.
