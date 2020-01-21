@@ -270,14 +270,6 @@ proc getEdge*(self: Graph, edge: string): var Edge =
   ## Return oid for `egde` in graph
   result = self.edgeTable[edge]
 
-proc nodeLabels*(self: Graph): seq[string] =
-  for label in self.nodeIndex.keys:
-    result.add(label)
-
-proc edgeLabels*(self: Graph): seq[string] =
-  for label in self.edgeIndex.keys:
-    result.add(label)
-
 iterator neighbors*(n: Node): string =
   ## Return neighbors to node `n`.
   for oid in n.adj.keys:
