@@ -218,7 +218,6 @@ proc getEdge*(self: Graph, edge: string): var Edge =
   ## Return oid for `egde` in graph
   result = self.edgeTable[edge]
 
-iterator neighbors*(self: Node): string =
 proc nodeLabels*(self: Graph): seq[string] =
   for label in self.nodeIndex.keys:
     result.add(label)
@@ -261,23 +260,13 @@ iterator edges*(self: Graph, labels: varargs[string]): Edge =
     for e in self.edgeIndex[label]:
       yield self.edgeTable[e]
 
+iterator neighbors*(n: Node): string =
   ## Return neighbors to node `n`.
-  var seen: HashSet[string]
-  for e in self.adj.values:
-    let
-      a = e.startsAt.oid
-      b = e.endsAt.oid
+  for oid in n.adj.keys:
+    yield oid
 
-    if a notin seen and a != self.oid:
-      yield a
-    if b notin seen and b != self.oid:
-      yield b
-
-    seen.incl(a)
-    seen.incl(b)
-
-iterator neighbors*(self: var Graph, n: string): string =
-  ## Return neighbors to node `n` in graph `g`.
+iterator neighbors*(self: Graph, n: string): string =
+  ## Return neighbors to node oid `n` in graph `g`.
   for n in self.nodeTable[n].neighbors:
     yield n
 
