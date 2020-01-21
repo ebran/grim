@@ -26,6 +26,8 @@ type
     name*: string
     nodeTable: Table[string, Node]
     edgeTable: Table[string, Edge]
+    nodeIndex: Table[string, seq[string]]
+    edgeIndex: Table[string, seq[string]]
 
 proc numberOfNodes*(self: Graph): int =
   ## Return number of Nodes in Graph
@@ -139,6 +141,7 @@ proc addNode*(self: Graph, label: string, props: Table[string,
     return n.oid
 
   self.nodeTable[n.oid] = n
+  self.nodeIndex.mgetOrPut(label, newSeq[string]()).add(n.oid)
   result = n.oid
 
 proc addNode*(self: Graph, n: Node): string =
@@ -148,6 +151,7 @@ proc addNode*(self: Graph, n: Node): string =
     return n.oid
 
   self.nodeTable[n.oid] = n
+  self.nodeIndex.mgetOrPut(n.label, newSeq[string]()).add(n.oid)
   result = n.oid
 
 proc addEdge*(self: Graph, e: Edge): string =
@@ -159,6 +163,7 @@ proc addEdge*(self: Graph, e: Edge): string =
   self.nodeTable[e.startsAt.oid].adj.mgetOrPut(e.endsAt.oid, newSeq[Edge]()).add(e)
   self.nodeTable[e.endsAt.oid].adj.mgetOrPut(e.startsAt.oid, newSeq[Edge]()).add(e)
   self.edgeTable[e.oid] = e
+  self.edgeIndex.mgetOrPut(e.label, newSeq[string]()).add(e.oid)
 
 proc addEdge*(self: Graph, A: Node, B: Node, label: string,
     props: Table[string, Box] = initTable[string, Box](),
@@ -198,6 +203,7 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
   self.nodeTable[A].adj.mgetOrPut(B, newSeq[Edge]()).add(e)
   self.nodeTable[B].adj.mgetOrPut(A, newSeq[Edge]()).add(e)
   self.edgeTable[e.oid] = e
+  self.edgeIndex.mgetOrPut(e.label, newSeq[string]()).add(e.oid)
 
   result = e.oid
 
