@@ -117,11 +117,11 @@ proc `$`*(t: Table[string, Box]): string =
 
 proc `$`*(n: Node): string =
   ## Pretty-print Node
-  result = fmt"<Node {n.oid} ({n.label}): {n.properties}>"
+  result = fmt("<Node {n.label} \"{n.oid}\">")
 
 proc `$`*(e: Edge): string =
   ## Pretty-print Edge
-  result = fmt"<Edge {e.oid}: {e.startsAt.oid} -- {e.label} {e.properties} --> {e.endsAt.oid}>"
+  result = fmt("<Edge {e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\">")
 
 proc `%`*(t: tuple): Table[string, Box] =
   ## Convert tuple to Table[string, Box]
