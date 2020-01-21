@@ -1,7 +1,6 @@
 # standard library imports
 import tables
 import sequtils
-import strutils
 import strformat
 import oids
 
@@ -15,22 +14,6 @@ import box
 
 # 3:rd party imports
 import yaml
-
-proc guessBox(s: string): Box =
-  ## Return Box corresponding to (guessed) type contained in string
-  case s.guessType:
-    of yTypeInteger:
-      initBox(s.parseBiggestInt)
-    of yTypeFloat:
-      initBox(s.parseFloat)
-    of yTypeBoolFalse:
-      initBox(false)
-    of yTypeBoolTrue:
-      initBox(true)
-    of yTypeNull:
-      initBox()
-    else:
-      initBox(s)
 
 proc toYaml*[T](n: T): YamlNode =
   ## Cast object as new YamlNode
