@@ -43,6 +43,16 @@ proc numberOfEdges*(self: Graph): int =
   ## Return number of Edges in Graph
   result = self.edgeTable.len
 
+proc nodeLabels*(self: Graph): seq[string] =
+  ## Return all node labels in the graph
+  for label in self.nodeIndex.keys:
+    result.add(label)
+
+proc edgeLabels*(self: Graph): seq[string] =
+  ## Return all edge labels in the graph
+  for label in self.edgeIndex.keys:
+    result.add(label)
+
 iterator nodes*(self: Graph, labels: varargs[string]): Node =
   ## Iterator for nodes with `labels` in graph
   # Empty `labels` means use all labels
