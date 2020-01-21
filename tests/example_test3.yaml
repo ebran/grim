@@ -5,18 +5,18 @@ graph:
   edges: 
     - 
       properties: 
-        amount: 1937.2
-      oid: 5e1ce56fc57fcb5713cb881f
-      endsAt: new guy
-      startsAt: new gal
-      label: INHERITS
-    - 
-      properties: 
         since: 2012
-      oid: 5e1ce56fc57fcb5713cb881e
+      oid: 5e270b028435d32e5134ed4b
       endsAt: new guy
       startsAt: new gal
       label: MARRIED_TO
+    - 
+      properties: 
+        amount: 1937.2
+      oid: 5e270b028435d32e5134ed4c
+      endsAt: new guy
+      startsAt: new gal
+      label: INHERITS
   nodes: 
     - 
       label: Person
