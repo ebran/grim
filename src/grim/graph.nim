@@ -44,8 +44,10 @@ proc `$`*(self: Graph): string =
     i = self.numberOfNodes
     j = self.numberOfEdges
 
-  var nodeStats = initCountTable[string]()
-  var edgeStats = initCountTable[string]()
+  var
+    nodeStats = initCountTable[string]()
+    edgeStats = initCountTable[string]()
+
   for n in self.nodes:
     nodeStats.inc(n.label)
   for e in self.edges:
