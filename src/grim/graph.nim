@@ -219,6 +219,14 @@ proc getEdge*(self: Graph, edge: string): var Edge =
   result = self.edgeTable[edge]
 
 iterator neighbors*(self: Node): string =
+proc nodeLabels*(self: Graph): seq[string] =
+  for label in self.nodeIndex.keys:
+    result.add(label)
+
+proc edgeLabels*(self: Graph): seq[string] =
+  for label in self.edgeIndex.keys:
+    result.add(label)
+
 iterator nodes*(self: Graph, labels: varargs[string]): Node =
   ## Iterator for nodes with `labels` in graph
   # Empty `labels` means use all labels
