@@ -6,7 +6,7 @@ import unittest
 
 suite "Basic usage":
   test "create graph":
-    var g = initGraph("Test")
+    var g = newGraph("Test")
 
     check:
       g.name == "Test"
@@ -15,8 +15,8 @@ suite "Basic usage":
 
   test "create nodes":
     let
-      p1 = initNode("Person", %(name: "John Doe", age: 24), "new guy")
-      p2 = initNode("Person", %(name: "Jane Doe", age: 22))
+      p1 = newNode("Person", %(name: "John Doe", age: 24), "new guy")
+      p2 = newNode("Person", %(name: "Jane Doe", age: 22))
 
     check:
       p1.label == "Person"
@@ -30,7 +30,7 @@ suite "Basic usage":
 
   test "add node with label":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       oid = g.addNode("Person")
 
     check:
@@ -41,7 +41,7 @@ suite "Basic usage":
 
   test "add node with label and properties":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       oid = g.addNode("Person", %(name: "John Doe", age: 24))
 
     check:
@@ -54,7 +54,7 @@ suite "Basic usage":
 
   test "add edge with label and properties":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
@@ -69,7 +69,7 @@ suite "Basic usage":
 
   test "update node properties":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
 
     check:
@@ -90,7 +90,7 @@ suite "Basic usage":
 
   test "update edge properties":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
@@ -113,7 +113,7 @@ suite "Basic usage":
 
   test "get neighbors":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
 
@@ -125,7 +125,7 @@ suite "Basic usage":
 
   test "get edges":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))

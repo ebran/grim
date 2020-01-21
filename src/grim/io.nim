@@ -57,7 +57,7 @@ proc loadYaml*(fileName: string): Graph =
   strm.close()
 
   # Setup graph
-  result = initGraph(dom.root["graph"]["name"].content)
+  result = newGraph(dom.root["graph"]["name"].content)
 
   # Load nodes
   for node in dom.root["graph"]["nodes"]:

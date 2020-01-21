@@ -39,7 +39,7 @@ A graph consists of nodes and edges. Both nodes and edges carry a label for cate
 ```nim
 import grim
 
-var g = initGraph("my graph")
+var g = newGraph("my graph")
 echo g.name    # "my graph"
 doAssert g.numberOfNodes == 0 and g.numberOfEdges == 0
 ```
