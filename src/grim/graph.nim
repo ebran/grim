@@ -20,7 +20,7 @@ type
     oid*: string
     label*: string
     properties*: Table[string, Box]
-    adj: Table[string, Edge]
+    adj: Table[string, seq[Edge]]
 
   Graph* = ref object
     name*: string
@@ -156,7 +156,8 @@ proc addEdge*(self: Graph, e: Edge): string =
   if e in self:
     return e.oid
 
-  self.nodeTable[e.startsAt.oid].adj.add(e.endsAt.oid, e)
+  self.nodeTable[e.startsAt.oid].adj.mgetOrPut(e.endsAt.oid, newSeq[Edge]()).add(e)
+  self.nodeTable[e.endsAt.oid].adj.mgetOrPut(e.startsAt.oid, newSeq[Edge]()).add(e)
   self.edgeTable[e.oid] = e
 
 proc addEdge*(self: Graph, A: Node, B: Node, label: string,
@@ -194,8 +195,8 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
     return e.oid
 
   # Add edge to edges and to adjancy lists
-  self.nodeTable[A].adj.add(B, e)
-  self.nodeTable[B].adj.add(A, e)
+  self.nodeTable[A].adj.mgetOrPut(B, newSeq[Edge]()).add(e)
+  self.nodeTable[B].adj.mgetOrPut(A, newSeq[Edge]()).add(e)
   self.edgeTable[e.oid] = e
 
   result = e.oid
@@ -242,5 +243,5 @@ iterator neighbors*(self: var Graph, n: string): string =
 
 iterator getEdges*(self: Graph, A: string, B: string): Edge =
   ## Iterator for all edges between `A` and `B`.
-  for e in self.nodeTable[A].adj.allValues(B):
+  for e in self.nodeTable[A].adj[B]:
     yield e
