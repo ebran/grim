@@ -284,3 +284,120 @@ iterator getEdges*(self: Graph, A: string, B: string): Edge =
   ## Iterator for all edges between `A` and `B`.
   for e in self.nodeTable[A].adj[B]:
     yield e
+
+proc describe*(e: Edge, lineWidth: int = 100, propertyWidth: int = 20): string =
+  ## Return a nice pretty-printed summary of the edge
+  # Edge header
+  result.add(fmt("{e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"") & "\n")
+  result.add("=".repeat(lineWidth) & "\n")
+
+  # Pretty-print properties
+  for prop, val in e.properties.pairs:
+    result.add(prop.alignLeft(propertyWidth, '.')[
+        0..propertyWidth-1] & " ")
+
+    let desc = wrapWords($val, 72, false).indent(propertyWidth+1)[
+        propertyWidth+1..^1]
+    result.add(desc & "\n")
+
+  if e.properties.len == 0:
+    result.add("No properties")
+
+proc describe*(n: Node, lineWidth: int = 100, propertyWidth: int = 20): string =
+  ## Return a nice pretty-printed summary of the node
+  # Node header
+  result.add(fmt("{n.label} \"{n.oid}\"") & "\n")
+  result.add("=".repeat(lineWidth) & "\n")
+
+  # Pretty-print properties
+  for prop, val in n.properties.pairs:
+    result.add(prop.alignLeft(propertyWidth, '.')[
+        0..propertyWidth-1] & " ")
+
+    let desc = wrapWords($val, 72, false).indent(propertyWidth+1)[
+        propertyWidth+1..^1]
+    result.add(desc & "\n")
+
+  if n.properties.len == 0:
+    result.add("No properties")
+
+proc describe*(g: Graph, lineWidth = 100): string =
+  ## Return a nice pretty-printed summary of the graph `g`
+  let
+    # Longest node and edge labels
+    longestNodeLabel = g.nodeLabels.map(x => x.len).foldl(max(a, b))
+    longestEdgeLabel = g.edgeLabels.map(x => x.len).foldl(max(a, b))
+    # Largest number of digits in node and edges
+    longestNodeNumber = ($g.nodeLabels.map(x => g.nodeIndex[x].len).foldl(max(a, b))).len
+    longestEdgeNumber = ($g.edgeLabels.map(x => g.edgeIndex[x].len).foldl(max(a, b))).len
+    # Longest label and numbers
+    longestLabel = max(longestNodeLabel, longestEdgeLabel)
+    longestNumber = max(longestNodeNumber, longestEdgeNumber)
+    # Calculate indent level
+    indentLevel = longestLabel + longestNumber + 4
+
+  var
+    line: string
+    info: string
+    propertyCounter: CountTable[string]
+
+  # Print headers
+  line = "Graph \"$1\"".format(g.name)
+  result.add("\n" & line.center(lineWidth) & "\n\n")
+
+  # Print node information
+  result.add("NODES".center(lineWidth) & "\n\n")
+  for label, oids in g.nodeIndex.pairs:
+    # Count properties for node type
+    propertyCounter = initCountTable[string]()
+    for oid in oids:
+      propertyCounter.merge(toSeq(g.getNode(oid).properties.keys).toCountTable)
+    propertyCounter.sort()
+
+    # Pretty-print node properties
+    info = ""
+    for key, value in propertyCounter.pairs:
+      info.add("$1 ($2), ".format(key, value))
+    if propertyCounter.len > 0:
+      # delete trailing comma
+      info.delete(info.len-2, info.len)
+    info = indent(info.wrapWords(72, false), indentLevel)
+    info = info & "\n"
+
+    # Paste label before node properties
+    info[0..indentLevel-1] = "$1 ($2):".format(label, g.nodeIndex[
+        label].len).alignLeft(indentLevel)
+
+    # Horizontal separator
+    info.add("-".repeat(lineWidth) & "\n")
+
+    result.add(info)
+
+  # Print edge information
+  result.add("EDGES".center(lineWidth) & "\n\n")
+  for label, oids in g.edgeIndex.pairs:
+    # Count properties for edge type
+    propertyCounter = initCountTable[string]()
+    for oid in oids:
+      propertyCounter.merge(toSeq(g.getEdge(oid).properties.keys).toCountTable)
+    propertyCounter.sort()
+
+    # Pretty-print edge properties
+    info = ""
+    for key, value in propertyCounter.pairs:
+      info.add("$1 ($2), ".format(key, value))
+    if propertyCounter.len > 0:
+      # delete trailing comma
+      info.delete(info.len-2, info.len)
+    info = indent(info.wrapWords(72, false), indentLevel)
+    info = info & "\n"
+
+    # Paste label before edge properties
+    info[0..indentLevel-1] = "$1 ($2):".format(label, g.edgeIndex[
+        label].len).alignLeft(indentLevel)
+
+    # Horizontal separator
+    info.add("-".repeat(lineWidth) & "\n")
+
+    result.add(info)
+
