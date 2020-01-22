@@ -255,7 +255,7 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
 
   result = e.oid
 
-proc update*[T](self: var T, p: Table[string, Box]): string =
+proc update*[T](self: T, p: Table[string, Box]): string =
   ## Update node or edge properties
   for prop, val in p.pairs:
     self.properties[prop] = val
