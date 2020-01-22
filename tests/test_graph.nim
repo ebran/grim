@@ -1,7 +1,9 @@
 # To run these tests, simply execute `nimble test`.
 import grim
 import tables
+import algorithm
 import sequtils
+import sugar
 import unittest
 
 suite "Basic usage":
@@ -131,3 +133,95 @@ suite "Basic usage":
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
     check toSeq(g.getEdges(p1, p2)) == @[g.getEdge(r)]
+
+suite "node/edge iterators for getting and setting":
+  setup:
+    graph g "People and Pets":
+      nodes:
+        Person:
+          "new gal":
+            name: "Jane Doe"
+            age: 22
+          "new guy":
+            name: "John Doe"
+            age: 24
+        Pet:
+          "famous cat":
+            name: "Tom"
+      edges:
+        "new gal" -> "new guy":
+          MARRIED_TO:
+            since: 2012
+        "new gal" -> "new guy":
+          INHERITS:
+            amount: 20004.5
+        "new guy" -> "famous cat":
+          OWNS:
+            insured: true
+            since: 2014
+
+  test "getting through node iterators":
+    let
+      allNames = toSeq(g.nodes).map(x => x.properties["name"].getStr).sorted
+      someNames = toSeq(g.nodes("Person")).map(x => x.properties[
+          "name"].getStr).sorted
+
+    check:
+      allNames == @["Jane Doe", "John Doe", "Tom"]
+      someNames == @["Jane Doe", "John Doe"]
+
+  test "getting through edge iterators":
+    var
+      allP: seq[string]
+      someP: seq[string]
+
+    for edge in g.edges:
+      allP = concat(allP, toSeq(edge.properties.keys))
+    for edge in g.edges("MARRIED_TO", "OWNS"):
+      someP = concat(someP, toSeq(edge.properties.keys))
+
+    check:
+      allP.sorted == @["amount", "insured", "since", "since"]
+      someP.sorted == @["insured", "since", "since"]
+
+  test "setting through node iterators":
+    for node in g.nodes("Pet"):
+      discard node.update(%(name: "Garfield"))
+
+    check g.getNode("famous cat").properties["name"].getStr == "Garfield"
+
+  test "setting through edge iterators":
+    for edge in g.edges("MARRIED_TO", "OWNS"):
+      discard edge.update(%(since: 2011))
+
+    check:
+      toSeq(g.getEdges("new gal", "new guy"))[0].properties["since"].getInt == 2011
+      toSeq(g.getEdges("new guy", "famous cat"))[0].properties[
+          "since"].getInt == 2011
+
+suite "node/edge labels for getting and setting":
+  setup:
+    graph g "People and Pets":
+      nodes:
+        Person:
+          "new gal":
+            name: "Jane Doe"
+            age: 22
+          "new guy":
+            name: "John Doe"
+            age: 24
+        Pet:
+          "famous cat":
+            name: "Tom"
+      edges:
+        "new gal" -> "new guy":
+          MARRIED_TO:
+            since: 2012
+        "new gal" -> "new guy":
+          INHERITS:
+            amount: 20004.5
+        "new guy" -> "famous cat":
+          OWNS:
+            insured: true
+            since: 2014
+
