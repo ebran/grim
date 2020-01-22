@@ -5,22 +5,19 @@ graph:
   edges: 
     - 
       properties: 
-        since: 2012
-      oid: 5e270b028435d32e5134ed4b
-      endsAt: new guy
-      startsAt: new gal
-      label: MARRIED_TO
-    - 
-      properties: 
         amount: 1937.2
-      oid: 5e270b028435d32e5134ed4c
+      oid: 5e2776c76665185b7c9e3468
       endsAt: new guy
       startsAt: new gal
       label: INHERITS
-  nodes: 
     - 
-      label: Person
-      oid: young gun
+      properties: 
+        since: 2012
+      oid: 5e2776c76665185b7c9e3467
+      endsAt: new guy
+      startsAt: new gal
+      label: MARRIED_TO
+  nodes: 
     - 
       label: Person
       properties: 
@@ -35,3 +32,6 @@ graph:
         name: John Doe
         age: 24
       oid: new guy
+    - 
+      label: Person
+      oid: young gun
