@@ -53,8 +53,8 @@ proc edgeLabels*(self: Graph): seq[string] =
   for label in self.edgeIndex.keys:
     result.add(label)
 
-iterator nodes*(self: Graph, labels: varargs[string]): Node =
-  ## Iterator for nodes with `labels` in graph
+proc nodes*(self: Graph, labels: varargs[string]): (iterator: Node) =
+  ## Return iterator for nodes with `labels` in graph
   # Empty `labels` means use all labels
   let markers =
     if labels.len == 0:
@@ -62,16 +62,18 @@ iterator nodes*(self: Graph, labels: varargs[string]): Node =
     else:
       @labels
 
-  # Iterate over markers
-  for label in markers:
-    if label notin self.nodeLabels:
-      continue
-    # Iterate over nodes with same label
-    for n in self.nodeIndex[label]:
-      yield self.nodeTable[n]
+  # Create closure iterator for nodes
+  iterator it: Node {.closure.} =
+    for label in markers:
+      if label notin self.nodeLabels:
+        continue
+      for n in self.nodeIndex[label]:
+        yield self.nodeTable[n]
 
-iterator edges*(self: Graph, labels: varargs[string]): Edge =
-  ## Iterator for edges with `labels` in graph
+  return it
+
+proc edges*(self: Graph, labels: varargs[string]): (iterator: Edge) =
+  ## Return iterator for edges with `labels` in graph
   # Empty `labels` means use all labels
   let markers =
     if labels.len == 0:
@@ -79,13 +81,15 @@ iterator edges*(self: Graph, labels: varargs[string]): Edge =
     else:
       @labels
 
-  # Iterate over markers
-  for label in markers:
-    if label notin self.edgeLabels:
-      continue
-    # Iterate over nodes with same label
-    for e in self.edgeIndex[label]:
-      yield self.edgeTable[e]
+  # Create closure iterator for edges
+  iterator it: Edge {.closure.} =
+    for label in markers:
+      if label notin self.edgeLabels:
+        continue
+      for e in self.edgeIndex[label]:
+        yield self.edgeTable[e]
+
+  return it
 
 proc `$`*(self: Graph): string =
   ## Pretty-print Graph
