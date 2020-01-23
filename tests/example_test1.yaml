@@ -6,14 +6,14 @@ graph:
     - 
       properties: 
         amount: 1937.2
-      oid: 5e2776c76665185b7c9e3468
+      oid: 5e296601fd03ad0f5127018b
       endsAt: new guy
       startsAt: new gal
       label: INHERITS
     - 
       properties: 
         since: 2012
-      oid: 5e2776c76665185b7c9e3467
+      oid: 5e296601fd03ad0f5127018a
       endsAt: new guy
       startsAt: new gal
       label: MARRIED_TO
