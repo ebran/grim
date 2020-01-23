@@ -267,11 +267,11 @@ proc hasEdge*(self: Graph, A: string, B: string): bool =
   ## Check if there is an edge between nodes A and B.
   result = A in self.nodeTable and B in self.nodeTable[A].adj
 
-proc getNode*(self: Graph, node: string): var GrimNode =
+proc getNode*(self: Graph, node: string): GrimNode =
   ## Return `node` in graph
   result = self.nodeTable[node]
 
-proc getEdge*(self: Graph, edge: string): var GrimEdge =
+proc getEdge*(self: Graph, edge: string): GrimEdge =
   ## Return `egde` in graph
   result = self.edgeTable[edge]
 
