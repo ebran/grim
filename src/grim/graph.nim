@@ -100,13 +100,12 @@ proc `$`*(self: Graph): string =
     j = self.numberOfEdges
 
   var
-    nodeStats = initCountTable[string]()
-    edgeStats = initCountTable[string]()
+    nodeStats, edgeStats: Table[string, int]
 
-  for n in self.nodes:
-    nodeStats.inc(n.label)
-  for e in self.edges:
-    edgeStats.inc(e.label)
+  for label, nodes in self.nodeIndex.pairs:
+    nodeStats[label] = nodes.len
+  for label, edges in self.edgeIndex.pairs:
+    edgeStats[label] = edges.len
 
   result = fmt("<Graph \"{m}\" with {i} node(s) {nodeStats} and {j} edge(s) {edgeStats}>")
 
