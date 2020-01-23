@@ -199,7 +199,7 @@ suite "node/edge iterators for getting and setting":
       toSeq(g.getEdges("new guy", "famous cat"))[0].properties[
           "since"].getInt == 2011
 
-suite "node/edge labels for getting and setting":
+suite "getting node/edge labels":
   setup:
     graph g "People and Pets":
       nodes:
@@ -225,3 +225,8 @@ suite "node/edge labels for getting and setting":
             insured: true
             since: 2014
 
+  test "getting node labels":
+    check g.nodeLabels.sorted == @["Person", "Pet"]
+
+  test "getting edge labels":
+    check g.edgeLabels.sorted == @["INHERITS", "MARRIED_TO", "OWNS"]
