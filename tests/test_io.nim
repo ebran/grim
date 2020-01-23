@@ -1,11 +1,16 @@
 import grim
 import unittest
 import sequtils
-from os import getAppDir, `/`, ParDir
+from os import tryRemoveFile, getAppDir, `/`, ParDir
 
 suite "Input and output":
   setup:
     var g = loadYaml(getAppDir() / ParDir / "tests" / "example.yaml")
+
+  teardown:
+    discard tryRemoveFile(getAppDir() / ParDir / "tests" / "example_test1.yaml")
+    discard tryRemoveFile(getAppDir() / ParDir / "tests" / "example_test2.yaml")
+    discard tryRemoveFile(getAppDir() / ParDir / "tests" / "example_test3.yaml")
 
   test "Test YAML reader on example file":
     let
