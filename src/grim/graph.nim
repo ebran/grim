@@ -12,7 +12,6 @@ from std/wordwrap import wrapWords
 
 # grim modules
 import box
-import dsl
 
 type
   GrimNodeOid = string
