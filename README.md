@@ -2,39 +2,39 @@
 <img src="static/grim-icon.svg" alt="grim" width=100>
 </p>
 
-# grim - brings graphs to Nim
+# grim - brings the property graph to Nim!
 
-grim is a graph data structure for the Nim language, written in the Nim language, and inspired by the Neo4j database. Data is stored in **Nodes** and **Edges**. Each Node and Edge has a label for grouping data, and can store an arbitrary of (Json-like) properties. 
+grim provides a (labeled) [property graph](https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph) structure for the Nim language, written in the Nim language, similar to the data storage model implemented in the [Neo4j](https://neo4j.com) database. The model consists of **Nodes** and **Edges** with labels, where data is stored in key/value-pairs on either nodes or edges. 
 
-## Getting up and running
+## Using grim
 
-grim is packaged with the nimble, the Nim package manager and should be easy to use with a recent Nim distribution.
+grim is packaged with the Nimble package manager and can be used off-the-shelf with a recent Nim distribution.
 
 ### Prerequisites
 
-You need the Nim compiler, obviously. See the [nim-lang homepage](https://nim-lang.org) for easy installation instructions.
+A Nim compiler, see the [nim-lang homepage](https://nim-lang.org) for installation instructions.
 
 ### Installing
 
-grim is easily used with the nimble package manager. To install on your local computer use
+Install grim on your local machine via nimble:
 
-```
+```bash
 nimble install grim
 ```
 
 To use it in your own project add as requirement to the .nimble file:
 
-```
+```nim
 requires "grim"
 ```
 
 ## Usage
 
-grim is hopefully quite easy to use. Some use cases can be found in the tests/ folder. Here are some other examples. The auto-generated documentation can be found here.
+grim is designed to be easy to use. Use cases can be found in the tests/ folder, and there is a partial [tutorial](./tutorials/Northwind.nim) on the Northwind data set that demonstrates how to translate a relational SQL model to a property graph in grim. The auto-generated documentation is found [here](https://ebran.github.io/grim). I hope to improve it soon. Below are some other simple use cases. 
 
 ### Basic
 
-A graph consists of nodes and edges. Both nodes and edges carry a label for categorization, and both nodes and edges can store data attributes in key/value pairs. First, create a new graph:
+Create a new graph:
 
 ```nim
 import grim
@@ -43,8 +43,7 @@ var g = newGraph("my graph")
 echo g.name    # "my graph"
 doAssert g.numberOfNodes == 0 and g.numberOfEdges == 0
 ```
-
-The graph variable must be mutable. Second, add some data to the graph. First, nodes:
+Next, let's add data to the graph. First, nodes:
 
 ```nim
 let 
@@ -56,19 +55,17 @@ let
   o2 = g.addNode("Organization", %(name: "EU", founded: 1993, active: true))
   o3 = g.addNode("Organization", %(name: "Nordic Council", founded: 1952))
 ```
+Note:
+- The `%`operator on tuples pairs of key/value store properties in heterogeneous data tables.
+- `addNode` and `addEdge` return the `oid` for the node/edge. The `oid` is a unique string that is either specified with the `oid=` argument when creating the node or auto-generated.
 
-- The `%`operator can be used on tuples of key/value pairs to store properties in heterogeneous tables.
-
-- `addNode` and `addEdge` return the `oid` for the node/edge. The `oid` is a unique string that is either specified with the `oid=` argument when creating the node or else auto-generated. If the `oid` is not desired, it must be explicitly discarded.
-
-Read data from the graph:
+Here's how one can get data out of the graph:
 
 ```nim
 doAssert g.getNode(c1).label == "Country"
-doAssert g.getNode(c1).properties["name"] == "Sweden"
+doAssert g.getNode(c1)["name"] == "Sweden"
 ```
-
-  Now, add edges to the graph:
+Now, add edges:
 
 ```nim
 let
@@ -76,32 +73,37 @@ let
   e2 = g.addEdge(c1, o3, "MEMBER_OF", %(since: 1952))
   e3 = g.addEdge(c2, o3, "MEMBER_OF", %(since: 1952, membership: "full"))
 ```
-
-The `oids`of the nodes are used to create a new edge (with label "MEMBER_OF")  with properties. Some information of the graph:
+Note how the node `oids` are used to create the new edges (labeled "MEMBER_OF") with key/value properties. Here's how to get iterators over nodes and edges:
 
 ```nim
 # Iterator over all nodes
 for node in g.nodes:
-  echo node.label, ": ", node.properties
+  echo node.label, ": ", node     # prints node properties
+
+# Iterator over all nodes with a certain label
+for node in g.nodes("Country"):
+  echo node.label, ": ", node     # prints node properties
 
 # Iterator over all edges
 for edge in g.edges:
-  echo edge.label, ": ", edge.properties
+  echo edge.label, ": ", edge     # prints edge properties
+
+# Iterator over all edges with a certain label
+for edge in g.edges("MEMBER_OF"):
+  echo edge.label, ": ", edge     # prints edge properties
 
 # Iterator over all edges between two nodes
 for edge in g.getEdges(c1, o3):
-  echo edge.label, ": ", edge.properties
+  echo edge.label, ": ", edge     # prints edge properties
   
 # Iterator over neighbor nodes
 for node in g.neighbors(c1):
-  echo node.label, ": ", node.properties
+  echo node.label, ": ", node     # prints node properties
 ```
-
-
 
 ### Loading and saving graphs
 
-Graph structures can be loaded and saved in YAML format. grim uses the NimYAML library for this. The two procs `loadYaml` and `saveYaml` are available.
+Graph structures can be loaded and saved in YAML format. grim uses the NimYAML library for this. Two procs `loadYaml` and `saveYaml` are available. Check the tests/ folder for an example of a graph YAML structure.
 
 ```nim
 import grim
@@ -110,11 +112,9 @@ var g = loadYaml("example.yaml")  # Load graph from YAML file
 g.saveYaml("example2.yaml")         # Save a copy of the file
 ```
 
+### DSL for building graphs
 
-
-### DSL for specifying graphs
-
-A small DSL is provided to construct graphs. Consider this toy example:
+A small DSL is provided to build graphs. A toy example:
 
 ```nim
 import grim
@@ -134,7 +134,7 @@ graph g "Some people":
         category: "writing material"
         value: 204
 ```
-This will make the graph structure available to the rest of the code as a mutable variable `g`. This example shows how to access the graph properties.
+This will make the graph available to the rest of the code as a mutable variable `g`. This example shows how to access graph properties.
 
 ```nim
 let
@@ -142,18 +142,16 @@ let
   p2 = g.getNode("a smart girl")
 
 doAssert p1.label == "Character" and p2.label == "Character"
-doAssert p1.properties["name"].getStr == "Santa Claus"
-doAssert p1.properties["age"].getInt == 108
-doAssert p2.properties["name"].getStr == "Jane Austen"
-doAssert p2.properties["wealth"].getFloat == 10304.3
+doAssert p1["name"].getStr == "Santa Claus"
+doAssert p1["age"].getInt == 108
+doAssert p2["name"].getStr == "Jane Austen"
+doAssert p2["wealth"].getFloat == 10304.3
 
 for e in g.getEdges("a nice guy", "a smart girl"):
   doAssert e.label == "DELIVERS"
-  doAssert e.properties["category"].getStr == "writing material"
-  doAssert e.properties["value"].getInt == 204
+  doAssert e["category"].getStr == "writing material"
+  doAssert e["value"].getInt == 204
 ```
-
-
 
 ## Running the tests
 
