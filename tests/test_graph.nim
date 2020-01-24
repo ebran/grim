@@ -236,10 +236,11 @@ suite "node/edge iterators for getting and setting":
     for edge in g.edges("MARRIED_TO", "OWNS"):
       discard edge.update(%(since: 2011))
 
-    check:
-      toSeq(g.getEdges("new gal", "new guy"))[0].properties["since"].getInt == 2011
-      toSeq(g.getEdges("new guy", "famous cat"))[0].properties[
-          "since"].getInt == 2011
+    for edge in g.getEdges("new gal", "new guy"):
+      if edge.label == "MARRIED_TO":
+        check edge["since"].getInt == 2011
+    check toSeq(g.getEdges("new guy", "famous cat"))[0][
+        "since"].getInt == 2011
 
 suite "getting node/edge labels":
   setup:
