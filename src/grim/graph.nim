@@ -359,7 +359,7 @@ iterator neighbors*(self: Graph, n: string): string =
     yield n
 
 iterator getEdges*(self: Graph, A: string, B: string): GrimEdge =
-  ## Iterator for all edges between `A` and `B`.
+  ## Iterator for all edges between nodes `A` and `B`.
   for e in self.nodeTable[A].adj[B].values:
     yield e
 
