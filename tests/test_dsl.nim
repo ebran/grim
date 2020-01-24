@@ -28,12 +28,12 @@ suite "DSL":
       p2 in g
 
       p1.label == "Person"
-      p1.properties["name"].getStr == "Jane Doe"
-      p1.properties["age"].getInt == 22
+      p1["name"].getStr == "Jane Doe"
+      p1["age"].getInt == 22
 
       p2.label == "Person"
-      p2.properties["name"].getStr == "John Doe"
-      p2.properties["age"].getInt == 24
+      p2["name"].getStr == "John Doe"
+      p2["age"].getInt == 24
 
       g.numberOfNodes == 2
 
@@ -43,7 +43,7 @@ suite "DSL":
         r.startsAt == p1
         r.endsAt == p2
         r.label == "MARRIED_TO"
-        r.properties["since"].getInt == 2012
+        r["since"].getInt == 2012
 
     check:
       toSeq(g.neighbors("new gal")) == @["new guy"]

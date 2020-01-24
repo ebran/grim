@@ -1,7 +1,6 @@
 # standard library imports
 import tables
 import sequtils
-import strutils
 import strformat
 import oids
 
@@ -15,22 +14,6 @@ import box
 
 # 3:rd party imports
 import yaml
-
-proc guessBox(s: string): Box =
-  ## Return Box corresponding to (guessed) type contained in string
-  case s.guessType:
-    of yTypeInteger:
-      initBox(s.parseBiggestInt)
-    of yTypeFloat:
-      initBox(s.parseFloat)
-    of yTypeBoolFalse:
-      initBox(false)
-    of yTypeBoolTrue:
-      initBox(true)
-    of yTypeNull:
-      initBox()
-    else:
-      initBox(s)
 
 proc toYaml*[T](n: T): YamlNode =
   ## Cast object as new YamlNode
@@ -57,7 +40,7 @@ proc loadYaml*(fileName: string): Graph =
   strm.close()
 
   # Setup graph
-  result = initGraph(dom.root["graph"]["name"].content)
+  result = newGraph(dom.root["graph"]["name"].content)
 
   # Load nodes
   for node in dom.root["graph"]["nodes"]:
@@ -116,8 +99,8 @@ proc saveYaml*(g: var Graph, fileName: string, force_overwrite: bool = false) =
       ("oid".toYaml, node.oid.toYaml)
     ]
 
-    if node.properties.len > 0:
-      let v = toSeq(node.properties.pairs).map(x => (x[0].toYaml, ($x[1]).toYaml))
+    if node.len > 0:
+      let v = toSeq(node.pairs).map(x => (x[0].toYaml, ($x[1]).toYaml))
       n.add(("properties".toYaml, v.toYaml))
 
     domNodes.add(n.toYaml)
@@ -131,8 +114,8 @@ proc saveYaml*(g: var Graph, fileName: string, force_overwrite: bool = false) =
       ("endsAt".toYaml, edge.endsAt.oid.toYaml)
     ]
 
-    if edge.properties.len > 0:
-      let v = toSeq(edge.properties.pairs).map(x => (x[0].toYaml, ($x[1]).toYaml))
+    if edge.len > 0:
+      let v = toSeq(edge.pairs).map(x => (x[0].toYaml, ($x[1]).toYaml))
       e.add(("properties".toYaml, v.toYaml))
 
     domEdges.add(e.toYaml)

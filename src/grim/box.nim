@@ -1,3 +1,9 @@
+# stdlib imports
+import strutils
+
+# 3:rd party imports
+from yaml import guessType, TypeHint
+
 type
   BoxKind = enum
     bxNull,
@@ -73,6 +79,22 @@ proc initBox*(value: float): Box =
 proc initBox*(value: bool): Box =
   ## Init a new boolean Box
   result = Box(kind: bxBool, boolVal: value)
+
+proc guessBox*(s: string): Box =
+  ## Return Box corresponding to (guessed) type contained in string
+  case s.guessType:
+    of yTypeInteger:
+      initBox(s.parseBiggestInt)
+    of yTypeFloat:
+      initBox(s.parseFloat)
+    of yTypeBoolFalse:
+      initBox(false)
+    of yTypeBoolTrue:
+      initBox(true)
+    of yTypeNull:
+      initBox()
+    else:
+      initBox(s)
 
 proc getStr*(b: Box, default = ""): string =
   result =

@@ -1,12 +1,14 @@
 # To run these tests, simply execute `nimble test`.
 import grim
 import tables
+import algorithm
 import sequtils
+import sugar
 import unittest
 
 suite "Basic usage":
   test "create graph":
-    var g = initGraph("Test")
+    var g = newGraph("Test")
 
     check:
       g.name == "Test"
@@ -15,22 +17,22 @@ suite "Basic usage":
 
   test "create nodes":
     let
-      p1 = initNode("Person", %(name: "John Doe", age: 24), "new guy")
-      p2 = initNode("Person", %(name: "Jane Doe", age: 22))
+      p1 = newNode("Person", %(name: "John Doe", age: 24), "new guy")
+      p2 = newNode("Person", %(name: "Jane Doe", age: 22))
 
     check:
       p1.label == "Person"
-      p1.properties["name"].getStr() == "John Doe"
-      p1.properties["age"].getInt() == 24
+      p1["name"].getStr() == "John Doe"
+      p1["age"].getInt() == 24
       p1.oid == "new guy"
 
       p2.label == "Person"
-      p2.properties["name"].getStr() == "Jane Doe"
-      p2.properties["age"].getInt() == 22
+      p2["name"].getStr() == "Jane Doe"
+      p2["age"].getInt() == 22
 
   test "add node with label":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       oid = g.addNode("Person")
 
     check:
@@ -41,20 +43,20 @@ suite "Basic usage":
 
   test "add node with label and properties":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       oid = g.addNode("Person", %(name: "John Doe", age: 24))
 
     check:
       oid in g
       g.getNode(oid).label == "Person"
-      g.getNode(oid).properties["name"].getStr() == "John Doe"
-      g.getNode(oid).properties["age"].getInt() == 24
+      g.getNode(oid)["name"].getStr() == "John Doe"
+      g.getNode(oid)["age"].getInt() == 24
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
   test "add edge with label and properties":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
@@ -62,20 +64,20 @@ suite "Basic usage":
     check:
       r in g
       g.getEdge(r).label == "MARRIED_TO"
-      g.getEdge(r).properties["since"].getInt() == 2012
+      g.getEdge(r)["since"].getInt() == 2012
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
 
   test "update node properties":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
 
     check:
       g.getNode(p1).label == "Person"
-      g.getNode(p1).properties["name"].getStr() == "John Doe"
-      g.getNode(p1).properties["age"].getInt() == 24
+      g.getNode(p1)["name"].getStr() == "John Doe"
+      g.getNode(p1)["age"].getInt() == 24
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
@@ -83,21 +85,21 @@ suite "Basic usage":
 
     check:
       g.getNode(p1).label == "Person"
-      g.getNode(p1).properties["name"].getStr() == "Jane Doe"
-      g.getNode(p1).properties["age"].getInt() == 22
+      g.getNode(p1)["name"].getStr() == "Jane Doe"
+      g.getNode(p1)["age"].getInt() == 22
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
   test "update edge properties":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
     check:
       g.getEdge(r).label == "MARRIED_TO"
-      g.getEdge(r).properties["since"].getInt() == 2012
+      g.getEdge(r)["since"].getInt() == 2012
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
@@ -106,14 +108,14 @@ suite "Basic usage":
 
     check:
       g.getEdge(r).label == "MARRIED_TO"
-      g.getEdge(r).properties["since"].getInt() == 2007
+      g.getEdge(r)["since"].getInt() == 2007
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
 
   test "get neighbors":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
 
@@ -125,9 +127,149 @@ suite "Basic usage":
 
   test "get edges":
     var
-      g = initGraph("People")
+      g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
     check toSeq(g.getEdges(p1, p2)) == @[g.getEdge(r)]
+
+suite "delete nodes and edges":
+  setup:
+    var
+      g = newGraph("People")
+      p1 = g.addNode("Person", %(name: "John Doe", age: 24))
+      p2 = g.addNode("Person", %(name: "Jane Smith", age: 22))
+      p3 = g.addNode("Person", %(name: "Thomas Smith", age: 37))
+      r1 = g.addEdge(p1, p2, "MARRIED_TO", %(began: 2008, ended: 2012))
+      r2 = g.addEdge(p2, p3, "MARRIED_TO", %(began: 2014, ended: 2020))
+
+  test "delete edge":
+    check:
+      # g has 3 Persons (John, Jane, Thomas) and 2 edges (John->Jane, Jane->Thomas)
+      g.delEdge(r2)
+      # g has 3 Persons (John, Jane, Thomas) and 1 edge (John->Jane)
+      p1 in g
+      p2 in g
+      p3 in g
+      r1 in g
+      r2 notin g
+      g.numberOfNodes == 3
+      g.numberOfEdges == 1
+      g.hasEdge(p1, p2) == true
+      g.hasEdge(p2, p3) == false
+
+  test "delete node":
+    check:
+      # g has 3 Persons (John, Jane, Thomas) and 2 edges (John->Jane, Jane->Thomas)
+      g.delEdge(r2)
+      # g has 3 Persons (John, Jane, Thomas) and 1 edge (John->Jane)
+      g.delNode(p1)
+      # g has 2 Persons (Jane, Thomas) and 0 edges
+      p1 notin g
+      p2 in g
+      p3 in g
+      r1 notin g
+      r2 notin g
+      g.numberOfNodes == 2
+      g.numberOfEdges == 0
+      g.hasEdge(p1, p2) == false
+      g.hasEdge(p2, p3) == false
+
+suite "node/edge iterators for getting and setting":
+  setup:
+    graph g "People and Pets":
+      nodes:
+        Person:
+          "new gal":
+            name: "Jane Doe"
+            age: 22
+          "new guy":
+            name: "John Doe"
+            age: 24
+        Pet:
+          "famous cat":
+            name: "Tom"
+      edges:
+        "new gal" -> "new guy":
+          MARRIED_TO:
+            since: 2012
+        "new gal" -> "new guy":
+          INHERITS:
+            amount: 20004.5
+        "new guy" -> "famous cat":
+          OWNS:
+            insured: true
+            since: 2014
+
+  test "getting through node iterators":
+    let
+      allNames = toSeq(items(g.nodes)).map(x => x["name"].getStr).sorted
+      someNames = toSeq(items(g.nodes("Person"))).map(x => x[
+          "name"].getStr).sorted
+
+    check:
+      allNames == @["Jane Doe", "John Doe", "Tom"]
+      someNames == @["Jane Doe", "John Doe"]
+
+  test "getting through edge iterators":
+    var
+      allP: seq[string]
+      someP: seq[string]
+
+    for edge in g.edges:
+      allP = concat(allP, toSeq(edge.keys))
+    for edge in g.edges("MARRIED_TO", "OWNS"):
+      someP = concat(someP, toSeq(edge.keys))
+
+    check:
+      allP.sorted == @["amount", "insured", "since", "since"]
+      someP.sorted == @["insured", "since", "since"]
+
+  test "setting through node iterators":
+    for node in g.nodes("Pet"):
+      discard node.update(%(name: "Garfield"))
+
+    check g.getNode("famous cat")["name"].getStr == "Garfield"
+
+  test "setting through edge iterators":
+    for edge in g.edges("MARRIED_TO", "OWNS"):
+      discard edge.update(%(since: 2011))
+
+    for edge in g.getEdges("new gal", "new guy"):
+      if edge.label == "MARRIED_TO":
+        check edge["since"].getInt == 2011
+    check toSeq(g.getEdges("new guy", "famous cat"))[0][
+        "since"].getInt == 2011
+
+suite "getting node/edge labels":
+  setup:
+    graph g "People and Pets":
+      nodes:
+        Person:
+          "new gal":
+            name: "Jane Doe"
+            age: 22
+          "new guy":
+            name: "John Doe"
+            age: 24
+        Pet:
+          "famous cat":
+            name: "Tom"
+      edges:
+        "new gal" -> "new guy":
+          MARRIED_TO:
+            since: 2012
+        "new gal" -> "new guy":
+          INHERITS:
+            amount: 20004.5
+        "new guy" -> "famous cat":
+          OWNS:
+            insured: true
+            since: 2014
+
+  test "getting node labels":
+    check g.nodeLabels.sorted == @["Person", "Pet"]
+
+  test "getting edge labels":
+    check g.edgeLabels.sorted == @["INHERITS", "MARRIED_TO", "OWNS"]

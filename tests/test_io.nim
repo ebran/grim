@@ -1,11 +1,16 @@
 import grim
 import unittest
 import sequtils
-from os import getAppDir, `/`, ParDir
+from os import tryRemoveFile, getAppDir, `/`, ParDir
 
 suite "Input and output":
   setup:
     var g = loadYaml(getAppDir() / ParDir / "tests" / "example.yaml")
+
+  teardown:
+    discard tryRemoveFile(getAppDir() / ParDir / "tests" / "example_test1.yaml")
+    discard tryRemoveFile(getAppDir() / ParDir / "tests" / "example_test2.yaml")
+    discard tryRemoveFile(getAppDir() / ParDir / "tests" / "example_test3.yaml")
 
   test "Test YAML reader on example file":
     let
@@ -20,14 +25,14 @@ suite "Input and output":
       "young gun" in g
 
       p1.label == "Person"
-      p1.properties["name"].getStr == "Jane Doe"
-      p1.properties["age"].getInt == 22
-      p1.properties["smoker"].getBool == true
+      p1["name"].getStr == "Jane Doe"
+      p1["age"].getInt == 22
+      p1["smoker"].getBool == true
 
       p2.label == "Person"
-      p2.properties["name"].getStr == "John Doe"
-      p2.properties["age"].getInt == 24
-      p2.properties["weight"].getFloat == 37.2
+      p2["name"].getStr == "John Doe"
+      p2["age"].getInt == 24
+      p2["weight"].getFloat == 37.2
 
       p3.label == "Person"
 
@@ -41,9 +46,9 @@ suite "Input and output":
 
       case r.label:
         of "MARRIED_TO":
-          check r.properties["since"].getInt == 2012
+          check r["since"].getInt == 2012
         of "INHERITS":
-          check r.properties["amount"].getFloat == 1937.2
+          check r["amount"].getFloat == 1937.2
         else:
           discard
 

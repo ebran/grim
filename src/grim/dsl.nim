@@ -35,7 +35,8 @@ proc toPropertyString(statements: NimNode): string =
     result.add(", ")
 
   # Clean up trailing comma
-  result.delete(result.len-2, result.len)
+  if statements.len > 0:
+    result.delete(result.len-2, result.len)
   result.add(")")
 
 macro graph*(varName: untyped, statements: untyped): untyped =
@@ -48,10 +49,10 @@ macro graph*(varName: untyped, statements: untyped): untyped =
   let
     g = varName[0].strVal
     name = varName[1].strVal
-    initGraphString = "var " & g & " = initGraph(\"" & name & "\")"
+    newGraphString = "var " & g & " = newGraph(\"" & name & "\")"
 
   # Create empty graph
-  result.add(initGraphString.parseExpr)
+  result.add(newGraphString.parseExpr)
 
   # Find sections for nodes and edges
   expectKind(statements, nnkStmtList)
@@ -115,7 +116,7 @@ macro graph*(varName: untyped, statements: untyped): untyped =
           if rel.len == 0:
             ""
           else:
-            ", props = " & rel[1].toPropertyString
+            ", properties = " & rel[1].toPropertyString
 
         addEdgeString = fmt("discard {g}.addEdge(\"{oidA}\", \"{oidB}\", \"{edgeLabel}\"{properties})")
 
