@@ -439,6 +439,8 @@ proc describe*(e: GrimEdge, lineWidth: int = 100,
   if e.len == 0:
     result.add("No properties")
 
+  result.add("\n")
+
 proc describe*(n: GrimNode, lineWidth: int = 100,
     propertyWidth: int = 20): string =
   ## Return a nice pretty-printed summary of the node
@@ -457,6 +459,8 @@ proc describe*(n: GrimNode, lineWidth: int = 100,
 
   if n.len == 0:
     result.add("No properties")
+
+  result.add("\n")
 
 proc describe*(g: Graph, lineWidth = 100): string =
   ## Return a nice pretty-printed summary of the graph `g`
