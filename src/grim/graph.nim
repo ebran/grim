@@ -217,10 +217,10 @@ proc newEdge*(A: GrimNode, B: GrimNode, label: string,
   result.properties = properties
   result.oid = oid
 
-proc addNode*(self: Graph, label: string, props: Table[string,
+proc addNode*(self: Graph, label: string, properties: Table[string,
     Box] = initTable[string, Box](), oid: string = $genOid()): string =
   ## Add node to graph.
-  let n = newNode(label, properties = props, oid = oid)
+  let n = newNode(label, properties = properties, oid = oid)
 
   # Don't add if node already in graph
   if n in self:
@@ -274,7 +274,7 @@ proc addEdge*(self: Graph, e: GrimEdge): string =
     .mgetOrPut(e.oid, e)
 
 proc addEdge*(self: Graph, A: GrimNode, B: GrimNode, label: string,
-    props: Table[string, Box] = initTable[string, Box](),
+    properties: Table[string, Box] = initTable[string, Box](),
         oid: string = $genOid()): string =
   ## Add edge to graph
   # Add nodes to graph if not already there
@@ -283,7 +283,7 @@ proc addEdge*(self: Graph, A: GrimNode, B: GrimNode, label: string,
   if B notin self:
     discard self.addNode(B)
 
-  let e = newEdge(A, B, label, properties = props, oid = oid)
+  let e = newEdge(A, B, label, properties = properties, oid = oid)
 
   # Don't add if edge already in graph
   if e in self:
@@ -311,10 +311,11 @@ proc addEdge*(self: Graph, A: GrimNode, B: GrimNode, label: string,
   result = e.oid
 
 proc addEdge*(self: Graph, A: string, B: string, label: string,
-  props: Table[string, Box] = initTable[string, Box](), oid: string = $genOid()): string =
+  properties: Table[string, Box] = initTable[string, Box](),
+      oid: string = $genOid()): string =
   ## Add edge to graph.
   let e = newEdge(self.nodeTable[A], self.nodeTable[B], label,
-      properties = props, oid = oid)
+      properties = properties, oid = oid)
 
   # Don't add if edge already in graph
   if e in self:

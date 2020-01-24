@@ -116,7 +116,7 @@ macro graph*(varName: untyped, statements: untyped): untyped =
           if rel.len == 0:
             ""
           else:
-            ", props = " & rel[1].toPropertyString
+            ", properties = " & rel[1].toPropertyString
 
         addEdgeString = fmt("discard {g}.addEdge(\"{oidA}\", \"{oidB}\", \"{edgeLabel}\"{properties})")
 
