@@ -15,25 +15,28 @@ import box
 import dsl
 
 type
+  GrimNodeOid = string
+  GrimEdgeOid = string
+
   GrimEdge = ref object
-    oid*: string
+    oid*: GrimEdgeOid
     label*: string
     startsAt*: GrimNode
     endsAt*: GrimNode
     properties*: Table[string, Box]
 
   GrimNode* = ref object
-    oid*: string
+    oid*: GrimNodeOid
     label*: string
     properties*: Table[string, Box]
-    adj: Table[string, seq[GrimEdge]]
+    adj: Table[GrimNodeOid, Table[GrimEdgeOid, GrimEdge]]
 
   Graph* = ref object
     name*: string
-    nodeTable: Table[string, GrimNode]
-    edgeTable: Table[string, GrimEdge]
-    nodeIndex: Table[string, seq[string]]
-    edgeIndex: Table[string, seq[string]]
+    nodeTable: Table[GrimNodeOid, GrimNode]
+    edgeTable: Table[GrimEdgeOid, GrimEdge]
+    nodeIndex: Table[string, Table[GrimNodeOid, GrimNode]]
+    edgeIndex: Table[string, Table[GrimEdgeOid, GrimEdge]]
 
 proc numberOfNodes*(self: Graph): int =
   ## Return number of Nodes in Graph
@@ -67,8 +70,8 @@ proc nodes*(self: Graph, labels: varargs[string]): (iterator: GrimNode) =
     for label in markers:
       if label notin self.nodeLabels:
         continue
-      for n in self.nodeIndex[label]:
-        yield self.nodeTable[n]
+      for node in self.nodeIndex[label].values:
+        yield node
 
   return it
 
@@ -87,8 +90,8 @@ proc edges*(self: Graph, labels: varargs[string]): (
     for label in markers:
       if label notin self.edgeLabels:
         continue
-      for e in self.edgeIndex[label]:
-        yield self.edgeTable[e]
+      for e in self.edgeIndex[label].values:
+        yield e
 
   return it
 
@@ -102,10 +105,10 @@ proc `$`*(self: Graph): string =
   var
     nodeStats, edgeStats: Table[string, int]
 
-  for label, nodes in self.nodeIndex.pairs:
-    nodeStats[label] = nodes.len
-  for label, edges in self.edgeIndex.pairs:
-    edgeStats[label] = edges.len
+  for label, nodeTable in self.nodeIndex.pairs:
+    nodeStats[label] = nodeTable.len
+  for label, edgeTable in self.edgeIndex.pairs:
+    edgeStats[label] = edgeTable.len
 
   result = fmt("<Graph \"{m}\" with {i} node(s) {nodeStats} and {j} edge(s) {edgeStats}>")
 
@@ -189,7 +192,11 @@ proc addNode*(self: Graph, label: string, props: Table[string,
     return n.oid
 
   self.nodeTable[n.oid] = n
-  self.nodeIndex.mgetOrPut(label, newSeq[string]()).add(n.oid)
+  discard self
+    .nodeIndex
+    .mgetOrPut(label, initTable[GrimNodeOid, GrimNode]())
+    .mgetOrPut(n.oid, n)
+
   result = n.oid
 
 proc addNode*(self: Graph, n: GrimNode): string =
@@ -199,7 +206,11 @@ proc addNode*(self: Graph, n: GrimNode): string =
     return n.oid
 
   self.nodeTable[n.oid] = n
-  self.nodeIndex.mgetOrPut(n.label, newSeq[string]()).add(n.oid)
+  discard self
+    .nodeIndex
+    .mgetOrPut(n.label, initTable[GrimNodeOid, GrimNode]())
+    .mgetOrPut(n.oid, n)
+
   result = n.oid
 
 proc addEdge*(self: Graph, e: GrimEdge): string =
@@ -208,10 +219,24 @@ proc addEdge*(self: Graph, e: GrimEdge): string =
   if e in self:
     return e.oid
 
-  self.nodeTable[e.startsAt.oid].adj.mgetOrPut(e.endsAt.oid, newSeq[GrimEdge]()).add(e)
-  self.nodeTable[e.endsAt.oid].adj.mgetOrPut(e.startsAt.oid, newSeq[GrimEdge]()).add(e)
+  # Add B to the adjacency list of A
+  discard self
+    .nodeTable[e.startsAt.oid].adj
+    .mgetOrPut(e.endsAt.oid, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.oid, e)
+
+  # Add A to the adjacency list of B
+  discard self
+    .nodeTable[e.endsAt.oid].adj
+    .mgetOrPut(e.startsAt.oid, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.oid, e)
+
+  # Add edge to main index and label index
   self.edgeTable[e.oid] = e
-  self.edgeIndex.mgetOrPut(e.label, newSeq[string]()).add(e.oid)
+  discard self
+    .edgeIndex
+    .mgetOrPut(e.label, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.oid, e)
 
 proc addEdge*(self: Graph, A: GrimNode, B: GrimNode, label: string,
     props: Table[string, Box] = initTable[string, Box](),
@@ -229,11 +254,24 @@ proc addEdge*(self: Graph, A: GrimNode, B: GrimNode, label: string,
   if e in self:
     return e.oid
 
-  # Add edge to edges and to adjancy lists
-  self.nodeTable[A.oid].adj.mgetOrPut(B.oid, newSeq[GrimEdge]()).add(e)
-  self.nodeTable[B.oid].adj.mgetOrPut(A.oid, newSeq[GrimEdge]()).add(e)
+  # Add B to the adjacency list of A
+  discard self
+    .nodeTable[A.oid].adj
+    .mgetOrPut(B.oid, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.oid, e)
+
+  # Add A to the adjacency list of B
+  discard self
+    .nodeTable[B.oid].adj
+    .mgetOrPut(A.oid, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.oid, e)
+
+  # Add edge to main index and label index
   self.edgeTable[e.oid] = e
-  self.edgeIndex.mgetOrPut(e.label, newSeq[string]()).add(e.oid)
+  discard self
+    .edgeIndex
+    .mgetOrPut(e.label, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.oid, e)
 
   result = e.oid
 
@@ -247,11 +285,24 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
   if e in self:
     return e.oid
 
-  # Add edge to edges and to adjancy lists
-  self.nodeTable[A].adj.mgetOrPut(B, newSeq[GrimEdge]()).add(e)
-  self.nodeTable[B].adj.mgetOrPut(A, newSeq[GrimEdge]()).add(e)
+  # Add B to the adjacency list of A
+  discard self
+    .nodeTable[A].adj
+    .mgetOrPut(B, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.oid, e)
+
+  # Add A to the adjacency list of B
+  discard self
+    .nodeTable[B].adj
+    .mgetOrPut(A, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.oid, e)
+
+  # Add edge to main index and label index
   self.edgeTable[e.oid] = e
-  self.edgeIndex.mgetOrPut(e.label, newSeq[string]()).add(e.oid)
+  discard self
+    .edgeIndex
+    .mgetOrPut(e.label, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.oid, e)
 
   result = e.oid
 
@@ -286,7 +337,7 @@ iterator neighbors*(self: Graph, n: string): string =
 
 iterator getEdges*(self: Graph, A: string, B: string): GrimEdge =
   ## Iterator for all edges between `A` and `B`.
-  for e in self.nodeTable[A].adj[B]:
+  for e in self.nodeTable[A].adj[B].values:
     yield e
 
 proc describe*(e: GrimEdge, lineWidth: int = 100,
@@ -353,10 +404,10 @@ proc describe*(g: Graph, lineWidth = 100): string =
 
   # Print node information
   result.add("NODES".center(lineWidth) & "\n\n")
-  for label, oids in g.nodeIndex.pairs:
+  for label, nodeTable in g.nodeIndex.pairs:
     # Count properties for node type
     propertyCounter = initCountTable[string]()
-    for oid in oids:
+    for oid in nodeTable.keys:
       propertyCounter.merge(toSeq(g.getNode(oid).properties.keys).toCountTable)
     propertyCounter.sort()
 
@@ -381,10 +432,10 @@ proc describe*(g: Graph, lineWidth = 100): string =
 
   # Print edge information
   result.add("EDGES".center(lineWidth) & "\n\n")
-  for label, oids in g.edgeIndex.pairs:
+  for label, edgeTable in g.edgeIndex.pairs:
     # Count properties for edge type
     propertyCounter = initCountTable[string]()
-    for oid in oids:
+    for oid in edgeTable.keys:
       propertyCounter.merge(toSeq(g.getEdge(oid).properties.keys).toCountTable)
     propertyCounter.sort()
 
