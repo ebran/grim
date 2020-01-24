@@ -22,13 +22,13 @@ suite "Basic usage":
 
     check:
       p1.label == "Person"
-      p1.properties["name"].getStr() == "John Doe"
-      p1.properties["age"].getInt() == 24
+      p1["name"].getStr() == "John Doe"
+      p1["age"].getInt() == 24
       p1.oid == "new guy"
 
       p2.label == "Person"
-      p2.properties["name"].getStr() == "Jane Doe"
-      p2.properties["age"].getInt() == 22
+      p2["name"].getStr() == "Jane Doe"
+      p2["age"].getInt() == 22
 
   test "add node with label":
     var
@@ -49,8 +49,8 @@ suite "Basic usage":
     check:
       oid in g
       g.getNode(oid).label == "Person"
-      g.getNode(oid).properties["name"].getStr() == "John Doe"
-      g.getNode(oid).properties["age"].getInt() == 24
+      g.getNode(oid)["name"].getStr() == "John Doe"
+      g.getNode(oid)["age"].getInt() == 24
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
@@ -64,7 +64,7 @@ suite "Basic usage":
     check:
       r in g
       g.getEdge(r).label == "MARRIED_TO"
-      g.getEdge(r).properties["since"].getInt() == 2012
+      g.getEdge(r)["since"].getInt() == 2012
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
@@ -76,8 +76,8 @@ suite "Basic usage":
 
     check:
       g.getNode(p1).label == "Person"
-      g.getNode(p1).properties["name"].getStr() == "John Doe"
-      g.getNode(p1).properties["age"].getInt() == 24
+      g.getNode(p1)["name"].getStr() == "John Doe"
+      g.getNode(p1)["age"].getInt() == 24
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
@@ -85,8 +85,8 @@ suite "Basic usage":
 
     check:
       g.getNode(p1).label == "Person"
-      g.getNode(p1).properties["name"].getStr() == "Jane Doe"
-      g.getNode(p1).properties["age"].getInt() == 22
+      g.getNode(p1)["name"].getStr() == "Jane Doe"
+      g.getNode(p1)["age"].getInt() == 22
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
@@ -99,7 +99,7 @@ suite "Basic usage":
 
     check:
       g.getEdge(r).label == "MARRIED_TO"
-      g.getEdge(r).properties["since"].getInt() == 2012
+      g.getEdge(r)["since"].getInt() == 2012
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
@@ -108,7 +108,7 @@ suite "Basic usage":
 
     check:
       g.getEdge(r).label == "MARRIED_TO"
-      g.getEdge(r).properties["since"].getInt() == 2007
+      g.getEdge(r)["since"].getInt() == 2007
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
@@ -176,9 +176,9 @@ suite "node/edge iterators for getting and setting":
       someP: seq[string]
 
     for edge in g.edges:
-      allP = concat(allP, toSeq(edge.properties.keys))
+      allP = concat(allP, toSeq(edge.keys))
     for edge in g.edges("MARRIED_TO", "OWNS"):
-      someP = concat(someP, toSeq(edge.properties.keys))
+      someP = concat(someP, toSeq(edge.keys))
 
     check:
       allP.sorted == @["amount", "insured", "since", "since"]
@@ -188,7 +188,7 @@ suite "node/edge iterators for getting and setting":
     for node in g.nodes("Pet"):
       discard node.update(%(name: "Garfield"))
 
-    check g.getNode("famous cat").properties["name"].getStr == "Garfield"
+    check g.getNode("famous cat")["name"].getStr == "Garfield"
 
   test "setting through edge iterators":
     for edge in g.edges("MARRIED_TO", "OWNS"):

@@ -99,8 +99,8 @@ proc saveYaml*(g: var Graph, fileName: string, force_overwrite: bool = false) =
       ("oid".toYaml, node.oid.toYaml)
     ]
 
-    if node.properties.len > 0:
-      let v = toSeq(node.properties.pairs).map(x => (x[0].toYaml, ($x[1]).toYaml))
+    if node.len > 0:
+      let v = toSeq(node.pairs).map(x => (x[0].toYaml, ($x[1]).toYaml))
       n.add(("properties".toYaml, v.toYaml))
 
     domNodes.add(n.toYaml)
@@ -114,8 +114,8 @@ proc saveYaml*(g: var Graph, fileName: string, force_overwrite: bool = false) =
       ("endsAt".toYaml, edge.endsAt.oid.toYaml)
     ]
 
-    if edge.properties.len > 0:
-      let v = toSeq(edge.properties.pairs).map(x => (x[0].toYaml, ($x[1]).toYaml))
+    if edge.len > 0:
+      let v = toSeq(edge.pairs).map(x => (x[0].toYaml, ($x[1]).toYaml))
       e.add(("properties".toYaml, v.toYaml))
 
     domEdges.add(e.toYaml)
