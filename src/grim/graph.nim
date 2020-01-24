@@ -348,18 +348,6 @@ proc update*[T](self: T, p: Table[string, Box]): string =
 
   result = self.oid
 
-proc hasEdge*(self: Graph, A: string, B: string): bool =
-  ## Check if there is an edge between nodes A and B.
-  result = A in self.nodeTable and B in self.nodeTable[A].adj
-
-proc getNode*(self: Graph, node: string): GrimNode =
-  ## Return `node` in graph
-  result = self.nodeTable[node]
-
-proc getEdge*(self: Graph, edge: string): GrimEdge =
-  ## Return `egde` in graph
-  result = self.edgeTable[edge]
-
 iterator neighbors*(n: GrimNode): string =
   ## Return neighbors to node `n`.
   for oid in n.adj.keys:
@@ -374,6 +362,18 @@ iterator getEdges*(self: Graph, A: string, B: string): GrimEdge =
   ## Iterator for all edges between `A` and `B`.
   for e in self.nodeTable[A].adj[B].values:
     yield e
+
+proc getNode*(self: Graph, node: string): GrimNode =
+  ## Return `node` in graph
+  result = self.nodeTable[node]
+
+proc getEdge*(self: Graph, edge: string): GrimEdge =
+  ## Return `egde` in graph
+  result = self.edgeTable[edge]
+
+proc hasEdge*(self: Graph, A: string, B: string): bool =
+  ## Check if there is an edge between nodes A and B.
+  result = A in self.nodeTable and B in self.nodeTable[A].adj
 
 proc describe*(e: GrimEdge, lineWidth: int = 100,
     propertyWidth: int = 20): string =
