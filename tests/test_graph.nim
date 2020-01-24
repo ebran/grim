@@ -204,8 +204,8 @@ suite "node/edge iterators for getting and setting":
 
   test "getting through node iterators":
     let
-      allNames = toSeq(g.nodes).map(x => x.properties["name"].getStr).sorted
-      someNames = toSeq(g.nodes("Person")).map(x => x.properties[
+      allNames = toSeq(items(g.nodes)).map(x => x["name"].getStr).sorted
+      someNames = toSeq(items(g.nodes("Person"))).map(x => x[
           "name"].getStr).sorted
 
     check:
