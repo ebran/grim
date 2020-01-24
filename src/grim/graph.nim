@@ -371,6 +371,51 @@ proc getEdge*(self: Graph, edge: string): GrimEdge =
   ## Return `egde` in graph
   result = self.edgeTable[edge]
 
+proc delEdge*(self: Graph, oid: string): bool =
+  ## Delete edge with `oid` in graph, return true if edge was in graph and false otherwise.
+  let
+    e = self.edgeTable[oid]
+    A = e.startsAt
+    B = e.endsAt
+
+  if oid notin self or A notin self or B notin self:
+    return false
+
+  # Remove edge from global edgeTable and edgeIndex
+  self.edgeTable.del(oid)
+  self.edgeIndex[e.label].del(oid)
+
+  # Remove edge from involved nodes' adjacency lists
+  A.adj[B.oid].del(oid)
+  B.adj[A.oid].del(oid)
+  # Delete empty tables if adjacency lsit is empty
+  if A.adj[B.oid].len == 0:
+    A.adj.del(B.oid)
+  if B.adj[A.oid].len == 0:
+    B.adj.del(A.oid)
+
+  result = true
+
+proc delNode*(self: Graph, oid: string): bool =
+  ## Delete node with `oid` in graph, return true if node was in graph and false otherwise.
+  if oid notin self:
+    return false
+
+  var ok: bool
+
+  # Delete all edges that node is involved in.
+  # Need seqs because we can not modify iterators in-place
+  for n in toSeq(self.neighbors(oid)):
+    for e in toSeq(self.getEdges(oid, n)):
+      ok = self.delEdge(e.oid)
+
+  result = ok
+
+  # Delete node from nodeTable and nodeIndex
+  let n = self.nodeTable[oid]
+  self.nodeTable.del(n.oid)
+  self.nodeIndex[n.label].del(n.oid)
+
 proc hasEdge*(self: Graph, A: string, B: string): bool =
   ## Check if there is an edge between nodes A and B.
   result = A in self.nodeTable and B in self.nodeTable[A].adj
