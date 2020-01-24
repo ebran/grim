@@ -23,12 +23,12 @@ type
     label*: string
     startsAt*: GrimNode
     endsAt*: GrimNode
-    properties*: Table[string, Box]
+    properties: Table[string, Box]
 
   GrimNode* = ref object
     oid*: GrimNodeOid
     label*: string
-    properties*: Table[string, Box]
+    properties: Table[string, Box]
     adj: Table[GrimNodeOid, Table[GrimEdgeOid, GrimEdge]]
 
   Graph* = ref object
@@ -154,6 +154,41 @@ proc `==`*(self, other: GrimNode): bool =
 proc `==`*(self, other: GrimEdge): bool =
   ## Check if two Edges are equal
   result = self.oid == other.oid
+
+proc `[]`*(node: GrimNode, property: string): Box =
+  ## Get `property` of `node`
+  result = node.properties[property]
+
+proc `[]=`*(node: GrimNode, property: string, value: Box) =
+  ## Set `property` of `node` to `value`
+  node.properties[property] = value
+
+proc `[]`*(edge: GrimEdge, property: string): Box =
+  ## Get `property` of `edge`
+  result = edge.properties[property]
+
+proc `[]=`*(edge: GrimEdge, property: string, value: Box) =
+  ## Set `property` of `edge` to `value`
+  edge.properties[property] = value
+
+proc len*[T: GrimNode | GrimEdge](obj: T): int =
+  ## Return number of properties of node or edge
+  result = obj.properties.len
+
+iterator pairs*[T: GrimNode | GrimEdge](obj: T): (string, Box) =
+  ## Iterate over property pairs
+  for property, value in obj.properties.pairs:
+    yield (property, value)
+
+iterator keys*[T: GrimNode | GrimEdge](obj: T): string =
+  ## Iterate over property keys
+  for property in obj.properties.keys:
+    yield property
+
+iterator values*[T: GrimNode | GrimEdge](obj: T): Box =
+  ## Iterate over property values
+  for value in obj.properties.values:
+    yield value
 
 proc newGraph*(name: string = "graph"): Graph =
   ## Create a new graph
@@ -309,7 +344,7 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
 proc update*[T](self: T, p: Table[string, Box]): string =
   ## Update node or edge properties
   for prop, val in p.pairs:
-    self.properties[prop] = val
+    self[prop] = val
 
   result = self.oid
 
@@ -348,7 +383,7 @@ proc describe*(e: GrimEdge, lineWidth: int = 100,
   result.add("=".repeat(lineWidth) & "\n")
 
   # Pretty-print properties
-  for prop, val in e.properties.pairs:
+  for prop, val in e.pairs:
     result.add(prop.alignLeft(propertyWidth, '.')[
         0..propertyWidth-1] & " ")
 
@@ -356,7 +391,7 @@ proc describe*(e: GrimEdge, lineWidth: int = 100,
         propertyWidth+1..^1]
     result.add(desc & "\n")
 
-  if e.properties.len == 0:
+  if e.len == 0:
     result.add("No properties")
 
 proc describe*(n: GrimNode, lineWidth: int = 100,
@@ -367,7 +402,7 @@ proc describe*(n: GrimNode, lineWidth: int = 100,
   result.add("=".repeat(lineWidth) & "\n")
 
   # Pretty-print properties
-  for prop, val in n.properties.pairs:
+  for prop, val in n.pairs:
     result.add(prop.alignLeft(propertyWidth, '.')[
         0..propertyWidth-1] & " ")
 
@@ -375,7 +410,7 @@ proc describe*(n: GrimNode, lineWidth: int = 100,
         propertyWidth+1..^1]
     result.add(desc & "\n")
 
-  if n.properties.len == 0:
+  if n.len == 0:
     result.add("No properties")
 
 proc describe*(g: Graph, lineWidth = 100): string =
@@ -408,7 +443,7 @@ proc describe*(g: Graph, lineWidth = 100): string =
     # Count properties for node type
     propertyCounter = initCountTable[string]()
     for oid in nodeTable.keys:
-      propertyCounter.merge(toSeq(g.getNode(oid).properties.keys).toCountTable)
+      propertyCounter.merge(toSeq(g.getNode(oid).keys).toCountTable)
     propertyCounter.sort()
 
     # Pretty-print node properties
@@ -436,7 +471,7 @@ proc describe*(g: Graph, lineWidth = 100): string =
     # Count properties for edge type
     propertyCounter = initCountTable[string]()
     for oid in edgeTable.keys:
-      propertyCounter.merge(toSeq(g.getEdge(oid).properties.keys).toCountTable)
+      propertyCounter.merge(toSeq(g.getEdge(oid).keys).toCountTable)
     propertyCounter.sort()
 
     # Pretty-print edge properties
