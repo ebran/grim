@@ -861,14 +861,22 @@ function main() {
     title="initBox(value: bool): Box"><wbr />init<wbr />Box<span class="attachedType">Box</span></a></li>
   <li><a class="reference" href="#guessBox%2Cstring"
     title="guessBox(s: string): Box"><wbr />guess<wbr />Box<span class="attachedType">Box</span></a></li>
+  <li><a class="reference" href="#getStr%2CBox"
+    title="getStr(b: Box): string"><wbr />get<wbr />Str<span class="attachedType">Box</span></a></li>
   <li><a class="reference" href="#getStr%2CBox%2Cstring"
-    title="getStr(b: Box; default = &quot;&quot;): string"><wbr />get<wbr />Str<span class="attachedType">Box</span></a></li>
-  <li><a class="reference" href="#getInt%2CBox%2Cint"
-    title="getInt(b: Box; default = 0): BiggestInt"><wbr />get<wbr />Int<span class="attachedType">Box</span></a></li>
+    title="getStr(b: Box; default: string): string"><wbr />get<wbr />Str<span class="attachedType">Box</span></a></li>
+  <li><a class="reference" href="#getInt%2CBox"
+    title="getInt(b: Box): BiggestInt"><wbr />get<wbr />Int<span class="attachedType">Box</span></a></li>
+  <li><a class="reference" href="#getInt%2CBox%2CBiggestInt"
+    title="getInt(b: Box; default: BiggestInt): BiggestInt"><wbr />get<wbr />Int<span class="attachedType">Box</span></a></li>
+  <li><a class="reference" href="#getFloat%2CBox"
+    title="getFloat(b: Box): float"><wbr />get<wbr />Float<span class="attachedType">Box</span></a></li>
   <li><a class="reference" href="#getFloat%2CBox%2Cfloat"
-    title="getFloat(b: Box; default = 0.0): float"><wbr />get<wbr />Float<span class="attachedType">Box</span></a></li>
+    title="getFloat(b: Box; default: float): float"><wbr />get<wbr />Float<span class="attachedType">Box</span></a></li>
   <li><a class="reference" href="#getBool%2CBox"
-    title="getBool(b: Box; default = false): bool"><wbr />get<wbr />Bool<span class="attachedType">Box</span></a></li>
+    title="getBool(b: Box): bool"><wbr />get<wbr />Bool<span class="attachedType">Box</span></a></li>
+  <li><a class="reference" href="#getBool%2CBox%2Cbool"
+    title="getBool(b: Box; default: bool): bool"><wbr />get<wbr />Bool<span class="attachedType">Box</span></a></li>
   <li><a class="reference" href="#isEmpty%2CBox"
     title="isEmpty(b: Box): bool"><wbr />is<wbr />Empty<span class="attachedType">Box</span></a></li>
   <li><a class="reference" href="#update%2CBox%2CBiggestInt"
@@ -1009,8 +1017,8 @@ class="link-seesrc" target="_blank">Source</a>
 <a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L83" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
-<a id="getStr,Box,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#getStr%2CBox%2Cstring"><span class="Identifier">getStr</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">;</span> <span class="Identifier">default</span> <span class="Other">=</span> <span class="StringLit">&quot;&quot;</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getStr,Box"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getStr%2CBox"><span class="Identifier">getStr</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1020,30 +1028,74 @@ class="link-seesrc" target="_blank">Source</a>
 <a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L99" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
-<a id="getInt,Box,int"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#getInt%2CBox%2Cint"><span class="Identifier">getInt</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">;</span> <span class="Identifier">default</span> <span class="Other">=</span> <span class="DecNumber">0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">BiggestInt</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<a id="getStr,Box,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getStr%2CBox%2Cstring"><span class="Identifier">getStr</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">;</span> <span class="Identifier">default</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L106"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L102"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L106" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L102" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="getInt,Box"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getInt%2CBox"><span class="Identifier">getInt</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">BiggestInt</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L105"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L105" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="getInt,Box,BiggestInt"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getInt%2CBox%2CBiggestInt"><span class="Identifier">getInt</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">;</span> <span class="Identifier">default</span><span class="Other">:</span> <span class="Identifier">BiggestInt</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">BiggestInt</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L108"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L108" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="getFloat,Box"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getFloat%2CBox"><span class="Identifier">getFloat</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L111"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L111" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="getFloat,Box,float"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#getFloat%2CBox%2Cfloat"><span class="Identifier">getFloat</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">;</span> <span class="Identifier">default</span> <span class="Other">=</span> <span class="FloatNumber">0.0</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#getFloat%2CBox%2Cfloat"><span class="Identifier">getFloat</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">;</span> <span class="Identifier">default</span><span class="Other">:</span> <span class="Identifier">float</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">float</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L113"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L114"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L113" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L114" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="getBool,Box"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#getBool%2CBox"><span class="Identifier">getBool</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">;</span> <span class="Identifier">default</span> <span class="Other">=</span> <span class="Identifier">false</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#getBool%2CBox"><span class="Identifier">getBool</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L117"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L117" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="getBool,Box,bool"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#getBool%2CBox%2Cbool"><span class="Identifier">getBool</span></a><span class="Other">(</span><span class="Identifier">b</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">;</span> <span class="Identifier">default</span><span class="Other">:</span> <span class="Identifier">bool</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 
@@ -1059,9 +1111,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if Box is empty
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L127"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L123"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L127" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L123" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,Box,BiggestInt"></a>
@@ -1070,9 +1122,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Update value in integer box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L131"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L127"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L131" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L127" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,Box,float"></a>
@@ -1081,9 +1133,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Update value in float box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L135"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L131"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L135" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L131" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,Box,string"></a>
@@ -1092,9 +1144,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Update value in string box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L139"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L135"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L139" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L135" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,Box,bool"></a>
@@ -1103,9 +1155,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Update value in boolean box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L143"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L139"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L143" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L139" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1118,7 +1170,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-01-24 19:38:11 UTC</small>
+        <small>Made with Nim. Generated: 2020-01-26 21:02:20 UTC</small>
       </div>
     </div>
   </div>

@@ -96,33 +96,29 @@ proc guessBox*(s: string): Box =
     else:
       initBox(s)
 
-proc getStr*(b: Box, default = ""): string =
-  result =
-    if b.kind == bxStr:
-      b.strVal
-    else:
-      default
+proc getStr*(b: Box): string =
+  result = b.strVal
 
-proc getInt*(b: Box, default = 0): BiggestInt =
-  result =
-    if b.kind == bxInt:
-      b.intVal
-    else:
-      default
+proc getStr*(b: Box, default: string): string =
+  result = default
 
-proc getFloat*(b: Box, default = 0.0): float =
-  result =
-    if b.kind == bxFloat:
-      b.floatVal
-    else:
-      default
+proc getInt*(b: Box): BiggestInt =
+  result = b.intVal
 
-proc getBool*(b: Box, default = false): bool =
-  result =
-    if b.kind == bxBool:
-      b.boolVal
-    else:
-      default
+proc getInt*(b: Box, default: BiggestInt): BiggestInt =
+  result = default
+
+proc getFloat*(b: Box): float =
+  result = b.floatVal
+
+proc getFloat*(b: Box, default: float): float =
+  result = default
+
+proc getBool*(b: Box): bool =
+  result = b.boolVal
+
+proc getBool*(b: Box, default: bool): bool =
+  result = default
 
 proc isEmpty*(b: Box): bool =
   ## Check if Box is empty
