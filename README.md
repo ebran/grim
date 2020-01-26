@@ -1,10 +1,14 @@
 <p align="center">
-<img src="static/grim-icon.svg" alt="grim" width=100>
+<img src="static/logo.svg" alt="grim" width=100>
 </p>
 
-# grim - brings the property graph to Nim!
+# grim brings the property graph to Nim!
 
-grim provides a (labeled) [property graph](https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph) structure for the Nim language, written in the Nim language, similar to the data storage model implemented in the [Neo4j](https://neo4j.com) database. The model consists of **Nodes** and **Edges** with labels, where data is stored in key/value-pairs on either nodes or edges. 
+grim provides a (labeled) [property graph](https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph) structure for the Nim language, written in the Nim language, similar to the data storage model implemented in the [Neo4j](https://neo4j.com) database. The model consists of **Nodes** and **Edges** with labels, where data is stored in key/value-pairs on either nodes or edges.
+
+<p align="center">
+<img src="static/map.svg" alt="grim" width=500>
+</p>
 
 ## Using grim
 
@@ -12,7 +16,7 @@ grim is packaged with the Nimble package manager and can be used off-the-shelf w
 
 ### Prerequisites
 
-A Nim compiler, see the [nim-lang homepage](https://nim-lang.org) for installation instructions.
+The Nim compiler, see the [nim-lang homepage](https://nim-lang.org) for installation instructions.
 
 ### Installing
 
