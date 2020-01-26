@@ -810,11 +810,11 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="box: `$`(b: Box): string" href="grim/box.html#%24%2CBox">box: `$`(b: Box): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `$`(e: Edge): string" href="grim/graph.html#%24%2CEdge">graph: `$`(e: Edge): string</a></li>
+          data-doc-search-tag="graph: `$`(self: Graph): string" href="grim/graph.html#%24%2CGraph">graph: `$`(self: Graph): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `$`(self: var Graph): string" href="grim/graph.html#%24%2CGraph">graph: `$`(self: var Graph): string</a></li>
+          data-doc-search-tag="graph: `$`(e: GrimEdge): string" href="grim/graph.html#%24%2CGrimEdge">graph: `$`(e: GrimEdge): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `$`(n: Node): string" href="grim/graph.html#%24%2CNode">graph: `$`(n: Node): string</a></li>
+          data-doc-search-tag="graph: `$`(n: GrimNode): string" href="grim/graph.html#%24%2CGrimNode">graph: `$`(n: GrimNode): string</a></li>
           <li><a class="reference external"
           data-doc-search-tag="graph: `$`(t: Table[string, Box]): string" href="grim/graph.html#%24%2CTable%5Bstring%2CBox%5D">graph: `$`(t: Table[string, Box]): string</a></li>
           </ul></dd>
@@ -824,28 +824,40 @@ function main() {
           </ul></dd>
 <dt><a name="%60%3D%3D%60" href="#%60%3D%3D%60"><span>`==`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: `==`(self, other: Edge): bool" href="grim/graph.html#%3D%3D%2CEdge%2CEdge">graph: `==`(self, other: Edge): bool</a></li>
+          data-doc-search-tag="graph: `==`(self, other: GrimEdge): bool" href="grim/graph.html#%3D%3D%2CGrimEdge%2CGrimEdge">graph: `==`(self, other: GrimEdge): bool</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `==`(self, other: Node): bool" href="grim/graph.html#%3D%3D%2CNode%2CNode">graph: `==`(self, other: Node): bool</a></li>
+          data-doc-search-tag="graph: `==`(self, other: GrimNode): bool" href="grim/graph.html#%3D%3D%2CGrimNode%2CGrimNode">graph: `==`(self, other: GrimNode): bool</a></li>
+          </ul></dd>
+<dt><a name="%60%5B%5D%3D%60" href="#%60%5B%5D%3D%60"><span>`[]=`:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: `[]=`(edge: GrimEdge; property: string; value: Box)" href="grim/graph.html#%5B%5D%3D%2CGrimEdge%2Cstring%2CBox">graph: `[]=`(edge: GrimEdge; property: string; value: Box)</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="graph: `[]=`(node: GrimNode; property: string; value: Box)" href="grim/graph.html#%5B%5D%3D%2CGrimNode%2Cstring%2CBox">graph: `[]=`(node: GrimNode; property: string; value: Box)</a></li>
+          </ul></dd>
+<dt><a name="%60%5B%5D%60" href="#%60%5B%5D%60"><span>`[]`:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: `[]`(edge: GrimEdge; property: string): Box" href="grim/graph.html#%5B%5D%2CGrimEdge%2Cstring">graph: `[]`(edge: GrimEdge; property: string): Box</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="graph: `[]`(node: GrimNode; property: string): Box" href="grim/graph.html#%5B%5D%2CGrimNode%2Cstring">graph: `[]`(node: GrimNode; property: string): Box</a></li>
           </ul></dd>
 <dt><a name="addEdge" href="#addEdge"><span>addEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: addEdge(self: var Graph; e: Edge): string" href="grim/graph.html#addEdge%2CGraph%2CEdge">graph: addEdge(self: var Graph; e: Edge): string</a></li>
+          data-doc-search-tag="graph: addEdge(self: Graph; e: GrimEdge): string" href="grim/graph.html#addEdge%2CGraph%2CGrimEdge">graph: addEdge(self: Graph; e: GrimEdge): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: addEdge(self: var Graph; A: Node; B: Node; label: string;
-        props: Table[string, Box] = initTable(); oid: string = $genOid()): string" href="grim/graph.html#addEdge%2CGraph%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: addEdge(self: var Graph; A: Node; B: Node; label: string;
-        props: Table[string, Box] = initTable(); oid: string = $genOid()): string</a></li>
+          data-doc-search-tag="graph: addEdge(self: Graph; A: GrimNode; B: GrimNode; label: string;
+        properties: Table[string, Box] = initTable(); oid: string = $genOid()): string" href="grim/graph.html#addEdge%2CGraph%2CGrimNode%2CGrimNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: addEdge(self: Graph; A: GrimNode; B: GrimNode; label: string;
+        properties: Table[string, Box] = initTable(); oid: string = $genOid()): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: addEdge(self: var Graph; A: string; B: string; label: string;
-        props: Table[string, Box] = initTable(); oid: string = $genOid()): string" href="grim/graph.html#addEdge%2CGraph%2Cstring%2Cstring%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: addEdge(self: var Graph; A: string; B: string; label: string;
-        props: Table[string, Box] = initTable(); oid: string = $genOid()): string</a></li>
+          data-doc-search-tag="graph: addEdge(self: Graph; A: string; B: string; label: string;
+        properties: Table[string, Box] = initTable(); oid: string = $genOid()): string" href="grim/graph.html#addEdge%2CGraph%2Cstring%2Cstring%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: addEdge(self: Graph; A: string; B: string; label: string;
+        properties: Table[string, Box] = initTable(); oid: string = $genOid()): string</a></li>
           </ul></dd>
 <dt><a name="addNode" href="#addNode"><span>addNode:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: addNode(self: var Graph; n: Node): string" href="grim/graph.html#addNode%2CGraph%2CNode">graph: addNode(self: var Graph; n: Node): string</a></li>
+          data-doc-search-tag="graph: addNode(self: Graph; n: GrimNode): string" href="grim/graph.html#addNode%2CGraph%2CGrimNode">graph: addNode(self: Graph; n: GrimNode): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: addNode(self: var Graph; label: string; props: Table[string, Box] = initTable();
-        oid: string = $genOid()): string" href="grim/graph.html#addNode%2CGraph%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: addNode(self: var Graph; label: string; props: Table[string, Box] = initTable();
+          data-doc-search-tag="graph: addNode(self: Graph; label: string; properties: Table[string, Box] = initTable();
+        oid: string = $genOid()): string" href="grim/graph.html#addNode%2CGraph%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: addNode(self: Graph; label: string; properties: Table[string, Box] = initTable();
         oid: string = $genOid()): string</a></li>
           </ul></dd>
 <dt><a name="Box" href="#Box"><span>Box:</span></a></dt><dd><ul class="simple">
@@ -854,51 +866,73 @@ function main() {
           </ul></dd>
 <dt><a name="contains" href="#contains"><span>contains:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: contains(self: var Graph; key: Edge): bool" href="grim/graph.html#contains%2CGraph%2CEdge">graph: contains(self: var Graph; key: Edge): bool</a></li>
+          data-doc-search-tag="graph: contains(self: Graph; key: GrimEdge): bool" href="grim/graph.html#contains%2CGraph%2CGrimEdge">graph: contains(self: Graph; key: GrimEdge): bool</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: contains(self: var Graph; key: Node): bool" href="grim/graph.html#contains%2CGraph%2CNode">graph: contains(self: var Graph; key: Node): bool</a></li>
+          data-doc-search-tag="graph: contains(self: Graph; key: GrimNode): bool" href="grim/graph.html#contains%2CGraph%2CGrimNode">graph: contains(self: Graph; key: GrimNode): bool</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: contains(self: var Graph; key: string): bool" href="grim/graph.html#contains%2CGraph%2Cstring">graph: contains(self: var Graph; key: string): bool</a></li>
+          data-doc-search-tag="graph: contains(self: Graph; key: string): bool" href="grim/graph.html#contains%2CGraph%2Cstring">graph: contains(self: Graph; key: string): bool</a></li>
+          </ul></dd>
+<dt><a name="delEdge" href="#delEdge"><span>delEdge:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: delEdge(self: Graph; oid: string): bool" href="grim/graph.html#delEdge%2CGraph%2Cstring">graph: delEdge(self: Graph; oid: string): bool</a></li>
+          </ul></dd>
+<dt><a name="delNode" href="#delNode"><span>delNode:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: delNode(self: Graph; oid: string): bool" href="grim/graph.html#delNode%2CGraph%2Cstring">graph: delNode(self: Graph; oid: string): bool</a></li>
           </ul></dd>
 <dt><a name="describe" href="#describe"><span>describe:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="box: describe(b: Box): string" href="grim/box.html#describe%2CBox">box: describe(b: Box): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="graph: describe(g: Graph; lineWidth = 100): string" href="grim/graph.html#describe%2CGraph%2Cint">graph: describe(g: Graph; lineWidth = 100): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="graph: describe(e: GrimEdge; lineWidth: int = 100; propertyWidth: int = 20): string" href="grim/graph.html#describe%2CGrimEdge%2Cint%2Cint">graph: describe(e: GrimEdge; lineWidth: int = 100; propertyWidth: int = 20): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="graph: describe(n: GrimNode; lineWidth: int = 100; propertyWidth: int = 20): string" href="grim/graph.html#describe%2CGrimNode%2Cint%2Cint">graph: describe(n: GrimNode; lineWidth: int = 100; propertyWidth: int = 20): string</a></li>
           </ul></dd>
-<dt><a name="Edge" href="#Edge"><span>Edge:</span></a></dt><dd><ul class="simple">
+<dt><a name="edgeLabels" href="#edgeLabels"><span>edgeLabels:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: Edge" href="grim/graph.html#Edge">graph: Edge</a></li>
+          data-doc-search-tag="graph: edgeLabels(self: Graph): seq[string]" href="grim/graph.html#edgeLabels%2CGraph">graph: edgeLabels(self: Graph): seq[string]</a></li>
           </ul></dd>
 <dt><a name="edges" href="#edges"><span>edges:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: edges(self: var Graph): Edge" href="grim/graph.html#edges.i%2CGraph">graph: edges(self: var Graph): Edge</a></li>
+          data-doc-search-tag="graph: edges(self: Graph; labels: varargs[string]): (iterator (): GrimEdge)" href="grim/graph.html#edges%2CGraph%2Cvarargs%5Bstring%5D">graph: edges(self: Graph; labels: varargs[string]): (iterator (): GrimEdge)</a></li>
           </ul></dd>
 <dt><a name="getBool" href="#getBool"><span>getBool:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="box: getBool(b: Box; default = false): bool" href="grim/box.html#getBool%2CBox">box: getBool(b: Box; default = false): bool</a></li>
+          data-doc-search-tag="box: getBool(b: Box): bool" href="grim/box.html#getBool%2CBox">box: getBool(b: Box): bool</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="box: getBool(b: Box; default: bool): bool" href="grim/box.html#getBool%2CBox%2Cbool">box: getBool(b: Box; default: bool): bool</a></li>
           </ul></dd>
 <dt><a name="getEdge" href="#getEdge"><span>getEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: getEdge(self: var Graph; edge: string): var Edge" href="grim/graph.html#getEdge%2CGraph%2Cstring">graph: getEdge(self: var Graph; edge: string): var Edge</a></li>
+          data-doc-search-tag="graph: getEdge(self: Graph; edge: string): GrimEdge" href="grim/graph.html#getEdge%2CGraph%2Cstring">graph: getEdge(self: Graph; edge: string): GrimEdge</a></li>
           </ul></dd>
 <dt><a name="getEdges" href="#getEdges"><span>getEdges:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: getEdges(self: var Graph; A: string; B: string): Edge" href="grim/graph.html#getEdges.i%2CGraph%2Cstring%2Cstring">graph: getEdges(self: var Graph; A: string; B: string): Edge</a></li>
+          data-doc-search-tag="graph: getEdges(self: Graph; A: string; B: string): GrimEdge" href="grim/graph.html#getEdges.i%2CGraph%2Cstring%2Cstring">graph: getEdges(self: Graph; A: string; B: string): GrimEdge</a></li>
           </ul></dd>
 <dt><a name="getFloat" href="#getFloat"><span>getFloat:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="box: getFloat(b: Box; default = 0.0): float" href="grim/box.html#getFloat%2CBox%2Cfloat">box: getFloat(b: Box; default = 0.0): float</a></li>
+          data-doc-search-tag="box: getFloat(b: Box): float" href="grim/box.html#getFloat%2CBox">box: getFloat(b: Box): float</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="box: getFloat(b: Box; default: float): float" href="grim/box.html#getFloat%2CBox%2Cfloat">box: getFloat(b: Box; default: float): float</a></li>
           </ul></dd>
 <dt><a name="getInt" href="#getInt"><span>getInt:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="box: getInt(b: Box; default = 0): BiggestInt" href="grim/box.html#getInt%2CBox%2Cint">box: getInt(b: Box; default = 0): BiggestInt</a></li>
+          data-doc-search-tag="box: getInt(b: Box): BiggestInt" href="grim/box.html#getInt%2CBox">box: getInt(b: Box): BiggestInt</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="box: getInt(b: Box; default: BiggestInt): BiggestInt" href="grim/box.html#getInt%2CBox%2CBiggestInt">box: getInt(b: Box; default: BiggestInt): BiggestInt</a></li>
           </ul></dd>
 <dt><a name="getNode" href="#getNode"><span>getNode:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: getNode(self: var Graph; node: string): var Node" href="grim/graph.html#getNode%2CGraph%2Cstring">graph: getNode(self: var Graph; node: string): var Node</a></li>
+          data-doc-search-tag="graph: getNode(self: Graph; node: string): GrimNode" href="grim/graph.html#getNode%2CGraph%2Cstring">graph: getNode(self: Graph; node: string): GrimNode</a></li>
           </ul></dd>
 <dt><a name="getStr" href="#getStr"><span>getStr:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="box: getStr(b: Box; default = &quot;&quot;): string" href="grim/box.html#getStr%2CBox%2Cstring">box: getStr(b: Box; default = &quot;&quot;): string</a></li>
+          data-doc-search-tag="box: getStr(b: Box): string" href="grim/box.html#getStr%2CBox">box: getStr(b: Box): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="box: getStr(b: Box; default: string): string" href="grim/box.html#getStr%2CBox%2Cstring">box: getStr(b: Box; default: string): string</a></li>
           </ul></dd>
 <dt><a name="graph" href="#graph"><span>graph:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -908,9 +942,17 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="graph: Graph" href="grim/graph.html#Graph">graph: Graph</a></li>
           </ul></dd>
+<dt><a name="GrimNode" href="#GrimNode"><span>GrimNode:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: GrimNode" href="grim/graph.html#GrimNode">graph: GrimNode</a></li>
+          </ul></dd>
+<dt><a name="guessBox" href="#guessBox"><span>guessBox:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="box: guessBox(s: string): Box" href="grim/box.html#guessBox%2Cstring">box: guessBox(s: string): Box</a></li>
+          </ul></dd>
 <dt><a name="hasEdge" href="#hasEdge"><span>hasEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: hasEdge(self: var Graph; A: string; B: string): bool" href="grim/graph.html#hasEdge%2CGraph%2Cstring%2Cstring">graph: hasEdge(self: var Graph; A: string; B: string): bool</a></li>
+          data-doc-search-tag="graph: hasEdge(self: Graph; A: string; B: string): bool" href="grim/graph.html#hasEdge%2CGraph%2Cstring%2Cstring">graph: hasEdge(self: Graph; A: string; B: string): bool</a></li>
           </ul></dd>
 <dt><a name="initBox" href="#initBox"><span>initBox:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -928,21 +970,29 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="box: isEmpty(b: Box): bool" href="grim/box.html#isEmpty%2CBox">box: isEmpty(b: Box): bool</a></li>
           </ul></dd>
+<dt><a name="keys" href="#keys"><span>keys:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: keys[T: GrimNode | GrimEdge](obj: T): string" href="grim/graph.html#keys.i%2CT">graph: keys[T: GrimNode | GrimEdge](obj: T): string</a></li>
+          </ul></dd>
+<dt><a name="len" href="#len"><span>len:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: len[T: GrimNode | GrimEdge](obj: T): int" href="grim/graph.html#len%2CT">graph: len[T: GrimNode | GrimEdge](obj: T): int</a></li>
+          </ul></dd>
 <dt><a name="loadYaml" href="#loadYaml"><span>loadYaml:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="io: loadYaml(fileName: string): Graph" href="grim/io.html#loadYaml%2Cstring">io: loadYaml(fileName: string): Graph</a></li>
           </ul></dd>
 <dt><a name="neighbors" href="#neighbors"><span>neighbors:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: neighbors(self: var Graph; n: string): string" href="grim/graph.html#neighbors.i%2CGraph%2Cstring">graph: neighbors(self: var Graph; n: string): string</a></li>
+          data-doc-search-tag="graph: neighbors(self: Graph; n: string): string" href="grim/graph.html#neighbors.i%2CGraph%2Cstring">graph: neighbors(self: Graph; n: string): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: neighbors(self: Node): string" href="grim/graph.html#neighbors.i%2CNode">graph: neighbors(self: Node): string</a></li>
+          data-doc-search-tag="graph: neighbors(n: GrimNode): string" href="grim/graph.html#neighbors.i%2CGrimNode">graph: neighbors(n: GrimNode): string</a></li>
           </ul></dd>
 <dt><a name="newEdge" href="#newEdge"><span>newEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: newEdge(A: Node; B: Node; label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Edge" href="grim/graph.html#newEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: newEdge(A: Node; B: Node; label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Edge</a></li>
+          data-doc-search-tag="graph: newEdge(A: GrimNode; B: GrimNode; label: string;
+        properties: Table[string, Box] = initTable(); oid: string = $genOid()): GrimEdge" href="grim/graph.html#newEdge%2CGrimNode%2CGrimNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: newEdge(A: GrimNode; B: GrimNode; label: string;
+        properties: Table[string, Box] = initTable(); oid: string = $genOid()): GrimEdge</a></li>
           </ul></dd>
 <dt><a name="newGraph" href="#newGraph"><span>newGraph:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -951,30 +1001,28 @@ function main() {
 <dt><a name="newNode" href="#newNode"><span>newNode:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graph: newNode(label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Node" href="grim/graph.html#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: newNode(label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Node</a></li>
+        oid: string = $genOid()): GrimNode" href="grim/graph.html#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: newNode(label: string; properties: Table[string, Box] = initTable();
+        oid: string = $genOid()): GrimNode</a></li>
           </ul></dd>
-<dt><a name="Node" href="#Node"><span>Node:</span></a></dt><dd><ul class="simple">
+<dt><a name="nodeLabels" href="#nodeLabels"><span>nodeLabels:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: Node" href="grim/graph.html#Node">graph: Node</a></li>
+          data-doc-search-tag="graph: nodeLabels(self: Graph): seq[string]" href="grim/graph.html#nodeLabels%2CGraph">graph: nodeLabels(self: Graph): seq[string]</a></li>
           </ul></dd>
 <dt><a name="nodes" href="#nodes"><span>nodes:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: nodes(self: var Graph): Node" href="grim/graph.html#nodes.i%2CGraph">graph: nodes(self: var Graph): Node</a></li>
+          data-doc-search-tag="graph: nodes(self: Graph; labels: varargs[string]): (iterator (): GrimNode)" href="grim/graph.html#nodes%2CGraph%2Cvarargs%5Bstring%5D">graph: nodes(self: Graph; labels: varargs[string]): (iterator (): GrimNode)</a></li>
           </ul></dd>
 <dt><a name="numberOfEdges" href="#numberOfEdges"><span>numberOfEdges:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: numberOfEdges(self: var Graph): int" href="grim/graph.html#numberOfEdges%2CGraph">graph: numberOfEdges(self: var Graph): int</a></li>
+          data-doc-search-tag="graph: numberOfEdges(self: Graph): int" href="grim/graph.html#numberOfEdges%2CGraph">graph: numberOfEdges(self: Graph): int</a></li>
           </ul></dd>
 <dt><a name="numberOfNodes" href="#numberOfNodes"><span>numberOfNodes:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: numberOfNodes(self: var Graph): int" href="grim/graph.html#numberOfNodes%2CGraph">graph: numberOfNodes(self: var Graph): int</a></li>
+          data-doc-search-tag="graph: numberOfNodes(self: Graph): int" href="grim/graph.html#numberOfNodes%2CGraph">graph: numberOfNodes(self: Graph): int</a></li>
           </ul></dd>
-<dt><a name="oid" href="#oid"><span>oid:</span></a></dt><dd><ul class="simple">
+<dt><a name="pairs" href="#pairs"><span>pairs:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: oid(self: Edge): string" href="grim/graph.html#oid%2CEdge">graph: oid(self: Edge): string</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="graph: oid(self: Node): string" href="grim/graph.html#oid%2CNode">graph: oid(self: Node): string</a></li>
+          data-doc-search-tag="graph: pairs[T: GrimNode | GrimEdge](obj: T): (string, Box)" href="grim/graph.html#pairs.i%2CT">graph: pairs[T: GrimNode | GrimEdge](obj: T): (string, Box)</a></li>
           </ul></dd>
 <dt><a name="saveYaml" href="#saveYaml"><span>saveYaml:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -994,14 +1042,18 @@ function main() {
           <li><a class="reference external"
           data-doc-search-tag="box: update(b: var Box; value: string)" href="grim/box.html#update%2CBox%2Cstring">box: update(b: var Box; value: string)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: update[T](self: var T; p: Table[string, Box]): string" href="grim/graph.html#update%2CT%2CTable%5Bstring%2CBox%5D">graph: update[T](self: var T; p: Table[string, Box]): string</a></li>
+          data-doc-search-tag="graph: update[T](self: T; p: Table[string, Box]): string" href="grim/graph.html#update%2CT%2CTable%5Bstring%2CBox%5D">graph: update[T](self: T; p: Table[string, Box]): string</a></li>
+          </ul></dd>
+<dt><a name="values" href="#values"><span>values:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: values[T: GrimNode | GrimEdge](obj: T): Box" href="grim/graph.html#values.i%2CT">graph: values[T: GrimNode | GrimEdge](obj: T): Box</a></li>
           </ul></dd>
 </dl>
     <div class="row">
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-01-12 21:58:36 UTC</small>
+        <small>Made with Nim. Generated: 2020-01-26 21:02:20 UTC</small>
       </div>
     </div>
   </div>
