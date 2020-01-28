@@ -37,7 +37,7 @@ suite "Basic usage":
 
     check:
       oid in g
-      g.getNode(oid).label == "Person"
+      g.node(oid).label == "Person"
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
@@ -48,9 +48,9 @@ suite "Basic usage":
 
     check:
       oid in g
-      g.getNode(oid).label == "Person"
-      g.getNode(oid)["name"].getStr() == "John Doe"
-      g.getNode(oid)["age"].getInt() == 24
+      g.node(oid).label == "Person"
+      g.node(oid)["name"].getStr() == "John Doe"
+      g.node(oid)["age"].getInt() == 24
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
@@ -63,8 +63,8 @@ suite "Basic usage":
 
     check:
       r in g
-      g.getEdge(r).label == "MARRIED_TO"
-      g.getEdge(r)["since"].getInt() == 2012
+      g.edge(r).label == "MARRIED_TO"
+      g.edge(r)["since"].getInt() == 2012
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
@@ -75,18 +75,18 @@ suite "Basic usage":
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
 
     check:
-      g.getNode(p1).label == "Person"
-      g.getNode(p1)["name"].getStr() == "John Doe"
-      g.getNode(p1)["age"].getInt() == 24
+      g.node(p1).label == "Person"
+      g.node(p1)["name"].getStr() == "John Doe"
+      g.node(p1)["age"].getInt() == 24
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
-    p1 = g.getNode(p1).update(%(name: "Jane Doe", age: 22))
+    p1 = g.node(p1).update(%(name: "Jane Doe", age: 22))
 
     check:
-      g.getNode(p1).label == "Person"
-      g.getNode(p1)["name"].getStr() == "Jane Doe"
-      g.getNode(p1)["age"].getInt() == 22
+      g.node(p1).label == "Person"
+      g.node(p1)["name"].getStr() == "Jane Doe"
+      g.node(p1)["age"].getInt() == 22
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
@@ -98,17 +98,17 @@ suite "Basic usage":
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
     check:
-      g.getEdge(r).label == "MARRIED_TO"
-      g.getEdge(r)["since"].getInt() == 2012
+      g.edge(r).label == "MARRIED_TO"
+      g.edge(r)["since"].getInt() == 2012
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1
 
-    r = g.getEdge(r).update(%(since: 2007))
+    r = g.edge(r).update(%(since: 2007))
 
     check:
-      g.getEdge(r).label == "MARRIED_TO"
-      g.getEdge(r)["since"].getInt() == 2007
+      g.edge(r).label == "MARRIED_TO"
+      g.edge(r)["since"].getInt() == 2007
       g.hasEdge(p1, p2)
       g.numberOfNodes == 2
       g.numberOfEdges == 1

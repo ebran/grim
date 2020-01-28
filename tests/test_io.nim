@@ -14,9 +14,9 @@ suite "Input and output":
 
   test "Test YAML reader on example file":
     let
-      p1 = g.getNode("new gal")
-      p2 = g.getNode("new guy")
-      p3 = g.getNode("young gun")
+      p1 = g.node("new gal")
+      p2 = g.node("new guy")
+      p3 = g.node("young gun")
 
     check:
       g.name == "Happy People"

@@ -20,8 +20,8 @@ suite "DSL":
             since: 2012
 
     let
-      p1 = g.getNode("new gal")
-      p2 = g.getNode("new guy")
+      p1 = g.node("new gal")
+      p2 = g.node("new guy")
 
     check:
       p1 in g

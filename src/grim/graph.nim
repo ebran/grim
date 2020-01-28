@@ -363,12 +363,12 @@ iterator edgesBetween*(self: Graph, A: string, B: string): GrimEdge {.closure.} 
   for e in self.nodeTable[A].adj[B].values:
     yield e
 
-proc getNode*(self: Graph, node: string): GrimNode =
-  ## Return `node` in graph
+proc node*(self: Graph, node: string): GrimNode =
+  ## Return node with `oid` in graph
   result = self.nodeTable[node]
 
-proc getEdge*(self: Graph, edge: string): GrimEdge =
-  ## Return `egde` in graph
+proc edge*(self: Graph, edge: string): GrimEdge =
+  ## Return edge with `oid` in graph
   result = self.edgeTable[edge]
 
 proc delEdge*(self: Graph, oid: string): bool =
@@ -492,7 +492,7 @@ proc describe*(g: Graph, lineWidth = 100): string =
     # Count properties for node type
     propertyCounter = initCountTable[string]()
     for oid in nodeTable.keys:
-      propertyCounter.merge(toSeq(g.getNode(oid).keys).toCountTable)
+      propertyCounter.merge(toSeq(g.node(oid).keys).toCountTable)
     propertyCounter.sort()
 
     # Pretty-print node properties
@@ -520,7 +520,7 @@ proc describe*(g: Graph, lineWidth = 100): string =
     # Count properties for edge type
     propertyCounter = initCountTable[string]()
     for oid in edgeTable.keys:
-      propertyCounter.merge(toSeq(g.getEdge(oid).keys).toCountTable)
+      propertyCounter.merge(toSeq(g.edge(oid).keys).toCountTable)
     propertyCounter.sort()
 
     # Pretty-print edge properties
