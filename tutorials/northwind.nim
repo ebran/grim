@@ -95,6 +95,8 @@ const
     )
   ]
 
+stdout.write("Building graph from relational model... ")
+
 # Initialize the graph
 var g = newGraph("northwind")
 
@@ -143,11 +145,14 @@ for rel in relationships:
     else:
       discard g.addEdge(A, B, rel.label, oid = "$1-$2".format(A, B))
 
-# Print the graph
-echo g.describe
+echo "[OK]\n"
 
 # STARTED PART 2: QUERYING THE GRAPH
 # ===============================
+
+echo "Question: How are the Employees Organized? Who Reports to Whom?"
+echo "-".repeat(72)
+
 # Needed to avoid double counting edges A: A -> B and B: A -> B
 var seen: HashSet[string]
 
