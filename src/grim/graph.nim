@@ -358,6 +358,16 @@ iterator neighbors*(self: Graph, n: string): string {.closure.} =
   for n in self.nodeTable[n].neighbors:
     yield n
 
+proc edges*(n: GrimNode): (iterator: GrimEdge) =
+  ## Iterator over node edges
+  # Create closure iterator for edges
+  iterator it: GrimEdge {.closure.} =
+    for n_oid, edgeTable in n.adj.pairs:
+      for e_oid, e in edgeTable.pairs:
+        yield e
+
+  return it
+
 iterator edgesBetween*(self: Graph, A: string, B: string): GrimEdge {.closure.} =
   ## Iterator for all edges between nodes `A` and `B`.
   for e in self.nodeTable[A].adj[B].values:
