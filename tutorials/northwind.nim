@@ -39,10 +39,10 @@ proc initRelationship(
   label: string,
   A: tuple[label: string, key: string],
   B: tuple[label: string, key: string],
-  use_properties: bool = false): Relationship =
+  useProperties: bool = false): Relationship =
   ## Init a new relationship
   result = Relationship(table: table, label: label, A: A, B: B,
-      use_properties: use_properties)
+      useProperties: useProperties)
 
 const
   ## Define SQL queries
