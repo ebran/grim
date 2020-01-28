@@ -17,6 +17,7 @@
 import sequtils
 import strutils
 import sugar
+import sets
 import tables
 
 # import stdlib impure modules
@@ -149,6 +150,22 @@ echo g.describe
 # ===============================
 # TODO 1. Which Employee had the Highest Cross-Selling Count of ‘Chocolade’ and Which Product?
 # TODO 2. How are Employees Organized? Who Reports to Whom?
+# Needed to avoid double counting edges A: A -> B and B: A -> B
+var seen: HashSet[string]
+
+# Loop over employee nodes and then over its edges
+for node in g.nodes("Employee"):
+  for edge in node.edges:
+    # Skip doublets
+    if edge.label == "REPORTS_TO" and edge.oid notin seen:
+      let
+        employee = edge.startsAt
+        manager = edge.endsAt
+
+      echo "$1 $2 is manager to $3 $4.".format(manager["FirstName"],
+          manager["LastName"], employee["FirstName"], employee["LastName"])
+    seen.incl(edge.oid)
+
 # TODO 3. Which Employees Report to Each Other Indirectly?
 # TODO 4. How Many Orders were Made by Each Part of the Hierarchy?
 
