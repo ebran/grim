@@ -174,17 +174,17 @@ proc len*[T: GrimNode | GrimEdge](obj: T): int =
   ## Return number of properties of node or edge
   result = obj.properties.len
 
-iterator pairs*[T: GrimNode | GrimEdge](obj: T): (string, Box) =
+iterator pairs*[T: GrimNode | GrimEdge](obj: T): (string, Box) {.closure.} =
   ## Iterate over property pairs
   for property, value in obj.properties.pairs:
     yield (property, value)
 
-iterator keys*[T: GrimNode | GrimEdge](obj: T): string =
+iterator keys*[T: GrimNode | GrimEdge](obj: T): string {.closure.} =
   ## Iterate over property keys
   for property in obj.properties.keys:
     yield property
 
-iterator values*[T: GrimNode | GrimEdge](obj: T): Box =
+iterator values*[T: GrimNode | GrimEdge](obj: T): Box {.closure.} =
   ## Iterate over property values
   for value in obj.properties.values:
     yield value
@@ -348,12 +348,12 @@ proc update*[T](self: T, p: Table[string, Box]): string =
 
   result = self.oid
 
-iterator neighbors*(n: GrimNode): string =
+iterator neighbors*(n: GrimNode): string {.closure.} =
   ## Return neighbors to node `n`.
   for oid in n.adj.keys:
     yield oid
 
-iterator neighbors*(self: Graph, n: string): string =
+iterator neighbors*(self: Graph, n: string): string {.closure.} =
   ## Return neighbors to node oid `n` in graph `g`.
   for n in self.nodeTable[n].neighbors:
     yield n
