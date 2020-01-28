@@ -139,3 +139,20 @@ proc update*(b: var Box, value: string) =
 proc update*(b: var Box, value: bool) =
   ## Update value in boolean box
   b.boolVal = value
+
+proc `==`*(self, other: Box): bool =
+  ## Check whether two boxes have the same content
+  if self.kind != other.kind:
+    return false
+
+  case self.kind:
+    of bxInt:
+      return self.intVal == other.intVal
+    of bxStr:
+      return self.strVal == other.strVal
+    of bxFloat:
+      return self.floatVal == other.floatVal
+    of bxBool:
+      return self.boolVal == other.boolVal
+    of bxNull:
+      return true
