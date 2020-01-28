@@ -2,11 +2,18 @@
 
 version       = "0.1.1"
 author        = "Erik G. Brandt"
-description   = "Graphs in nim!"
+description   = "Bringer of property graphs to Nim!"
 license       = "MIT"
 srcDir        = "src"
 
-# build HTML documentation in docs/
+# Dependencies
+
+requires "nim >= 1.0.6"
+requires "yaml"
+
+# Tasks
+
+# build HTML documentation
 task docs, "Build the documentation (in HTML)":
   # Build documentation from .rst files in docs/ folder
   for dir in "docs" & listDirs("docs"):
@@ -20,7 +27,7 @@ task docs, "Build the documentation (in HTML)":
   # Get rid of xml header line
   exec "sed -i '1d' docs/index.html"
 
-# Dependencies
-
-requires "nim >= 1.0.4"
-requires "yaml"
+# Tutorials
+task northwind, "Northwind tutorial":
+  withDir("tutorials"):
+    selfExec "c -r northwind.nim"
