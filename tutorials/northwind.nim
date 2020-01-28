@@ -12,7 +12,7 @@
 #
 # DONE PART 1: BUILDING THE GRAPH
 # ===============================
-#
+
 # import stdlib pure modules
 import sequtils
 import strutils
@@ -128,7 +128,7 @@ for rel in relationships:
       A = "$1.$2".format(rel.A.label, data[rel.A.key])
       B = "$1.$2".format(rel.B.label, data[rel.B.key])
 
-    # Skip the edge if either of the foreign keys is missing
+    # Skip the edge if either foreign key is missing
     if data[rel.A.key].isEmpty or data[rel.B.key].isEmpty:
       continue
 
@@ -146,10 +146,8 @@ for rel in relationships:
 # Print the graph
 echo g.describe
 
-# TODO PART 2: QUERYING THE GRAPH
+# STARTED PART 2: QUERYING THE GRAPH
 # ===============================
-# TODO 1. Which Employee had the Highest Cross-Selling Count of ‘Chocolade’ and Which Product?
-# TODO 2. How are Employees Organized? Who Reports to Whom?
 # Needed to avoid double counting edges A: A -> B and B: A -> B
 var seen: HashSet[string]
 
