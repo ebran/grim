@@ -226,22 +226,21 @@ suite "node/edge iterators for getting and setting":
       allP.sorted == @["amount", "insured", "since", "since"]
       someP.sorted == @["insured", "since", "since"]
 
-  test "setting through node iterators":
-    for node in g.nodes("Pet"):
-      discard node.update(%(name: "Garfield"))
+    test "setting through node iterators":
+      for node in g.nodes("Pet"):
+        discard node.update(%(name: "Garfield"))
 
-    check g.getNode("famous cat")["name"].getStr == "Garfield"
+      check g.node("famous cat")["name"].getStr == "Garfield"
 
-  test "setting through edge iterators":
-    for edge in g.edges("MARRIED_TO", "OWNS"):
-      discard edge.update(%(since: 2011))
+    test "setting through edge iterators":
+      for edge in g.edges("MARRIED_TO", "OWNS"):
+        discard edge.update(%(since: 2011))
 
-    for edge in g.getEdges("new gal", "new guy"):
-      if edge.label == "MARRIED_TO":
-        check edge["since"].getInt == 2011
-    check toSeq(g.getEdges("new guy", "famous cat"))[0][
-        "since"].getInt == 2011
-
+      for edge in g.edgesBetween("new gal", "new guy"):
+        if edge.label == "MARRIED_TO":
+          check edge["since"].getInt == 2011
+      check toSeq(g.edgesBetween("new guy", "famous cat"))[0][
+          "since"].getInt == 2011
 
   suite "getting node/edge labels":
     setup:
