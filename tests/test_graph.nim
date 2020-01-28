@@ -242,34 +242,35 @@ suite "node/edge iterators for getting and setting":
     check toSeq(g.getEdges("new guy", "famous cat"))[0][
         "since"].getInt == 2011
 
-suite "getting node/edge labels":
-  setup:
-    graph g "People and Pets":
-      nodes:
-        Person:
-          "new gal":
-            name: "Jane Doe"
-            age: 22
-          "new guy":
-            name: "John Doe"
-            age: 24
-        Pet:
-          "famous cat":
-            name: "Tom"
-      edges:
-        "new gal" -> "new guy":
-          MARRIED_TO:
-            since: 2012
-        "new gal" -> "new guy":
-          INHERITS:
-            amount: 20004.5
-        "new guy" -> "famous cat":
-          OWNS:
-            insured: true
-            since: 2014
 
-  test "getting node labels":
-    check g.nodeLabels.sorted == @["Person", "Pet"]
+  suite "getting node/edge labels":
+    setup:
+      graph g "People and Pets":
+        nodes:
+          Person:
+            "new gal":
+              name: "Jane Doe"
+              age: 22
+            "new guy":
+              name: "John Doe"
+              age: 24
+          Pet:
+            "famous cat":
+              name: "Tom"
+        edges:
+          "new gal" -> "new guy":
+            MARRIED_TO:
+              since: 2012
+          "new gal" -> "new guy":
+            INHERITS:
+              amount: 20004.5
+          "new guy" -> "famous cat":
+            OWNS:
+              insured: true
+              since: 2014
 
-  test "getting edge labels":
-    check g.edgeLabels.sorted == @["INHERITS", "MARRIED_TO", "OWNS"]
+    test "getting node labels":
+      check g.nodeLabels.sorted == @["Person", "Pet"]
+
+    test "getting edge labels":
+      check g.edgeLabels.sorted == @["INHERITS", "MARRIED_TO", "OWNS"]
