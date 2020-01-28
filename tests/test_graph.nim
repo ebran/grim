@@ -125,14 +125,14 @@ suite "Basic usage":
       toSeq(g.neighbors(p1)) == @[p2]
       toSeq(g.neighbors(p2)) == @[p1]
 
-  test "get edges":
+  test "get edges between nodes":
     var
       g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
-    check toSeq(g.getEdges(p1, p2)) == @[g.getEdge(r)]
+    check toSeq(g.edgesBetween(p1, p2)) == @[g.edge(r)]
 
 suite "delete nodes and edges":
   setup:

@@ -38,7 +38,7 @@ suite "Input and output":
 
       g.numberOfNodes == 3
 
-    for r in g.getEdges("new guy", "new gal"):
+    for r in g.edgesBetween("new guy", "new gal"):
       check:
         r in g
         r.startsAt == p1

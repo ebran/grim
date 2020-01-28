@@ -358,7 +358,7 @@ iterator neighbors*(self: Graph, n: string): string {.closure.} =
   for n in self.nodeTable[n].neighbors:
     yield n
 
-iterator getEdges*(self: Graph, A: string, B: string): GrimEdge =
+iterator edgesBetween*(self: Graph, A: string, B: string): GrimEdge {.closure.} =
   ## Iterator for all edges between nodes `A` and `B`.
   for e in self.nodeTable[A].adj[B].values:
     yield e
@@ -406,7 +406,7 @@ proc delNode*(self: Graph, oid: string): bool =
   # Delete all edges that node is involved in.
   # Need seqs because we can not modify iterators in-place
   for n in toSeq(self.neighbors(oid)):
-    for e in toSeq(self.getEdges(oid, n)):
+    for e in toSeq(self.edgesBetween(oid, n)):
       ok = self.delEdge(e.oid)
 
   result = ok
