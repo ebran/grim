@@ -12,6 +12,7 @@ from std/wordwrap import wrapWords
 
 # grim modules
 import box
+import utils
 
 type
   GrimNodeOid = string
@@ -429,8 +430,8 @@ proc delNode*(self: Graph, oid: string): bool =
 
   # Delete all edges that node is involved in.
   # Need seqs because we can not modify iterators in-place
-  for n in toSeq(self.neighbors(oid)):
-    for e in toSeq(self.edgesBetween(oid, n)):
+  for n in sequalizeIt(self.neighbors(oid)):
+    for e in sequalizeIt(self.edgesBetween(oid, n)):
       ok = self.delEdge(e.oid)
 
   result = ok
@@ -516,7 +517,7 @@ proc describe*(g: Graph, lineWidth = 100): string =
     # Count properties for node type
     propertyCounter = initCountTable[string]()
     for oid in nodeTable.keys:
-      propertyCounter.merge(toSeq(g.node(oid).keys).toCountTable)
+      propertyCounter.merge(sequalizeIt(g.node(oid).keys).toCountTable)
     propertyCounter.sort()
 
     # Pretty-print node properties
@@ -544,7 +545,7 @@ proc describe*(g: Graph, lineWidth = 100): string =
     # Count properties for edge type
     propertyCounter = initCountTable[string]()
     for oid in edgeTable.keys:
-      propertyCounter.merge(toSeq(g.edge(oid).keys).toCountTable)
+      propertyCounter.merge(sequalizeIt(g.edge(oid).keys).toCountTable)
     propertyCounter.sort()
 
     # Pretty-print edge properties

@@ -1,4 +1,5 @@
 import grim
+import grim/utils
 import unittest
 import sequtils
 from os import tryRemoveFile, getAppDir, `/`, ParDir

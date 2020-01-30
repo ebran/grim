@@ -1,9 +1,11 @@
 import grim
+import grim/utils
+
 import unittest
 import sequtils
 
 suite "DSL":
-  test "build graph":
+  setup:
     graph g "People and Pets":
       nodes:
         Person:
@@ -37,7 +39,7 @@ suite "DSL":
 
       g.numberOfNodes == 2
 
-    for r in g.edgesBetween("new guy", "new gal"):
+    for r in g.edgesBetween("new gal", "new guy"):
       check:
         r in g
         r.startsAt == p1
