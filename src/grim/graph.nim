@@ -526,7 +526,7 @@ proc hasEdge*(self: Graph, A: string, B: string,
 
 proc describe*(e: GrimEdge, lineWidth: int = 100,
     propertyWidth: int = 20): string =
-  ## Return a nice pretty-printed summary of the edge
+  ## Return a nice pretty-printed summary of edge `e`
   # Edge header
   result.add(fmt("{e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"") & "\n")
   result.add("=".repeat(lineWidth) & "\n")
@@ -547,7 +547,7 @@ proc describe*(e: GrimEdge, lineWidth: int = 100,
 
 proc describe*(n: GrimNode, lineWidth: int = 100,
     propertyWidth: int = 20): string =
-  ## Return a nice pretty-printed summary of the node
+  ## Return a nice pretty-printed summary of node `n`
   # Node header
   result.add(fmt("{n.label} \"{n.oid}\"") & "\n")
   result.add("=".repeat(lineWidth) & "\n")
