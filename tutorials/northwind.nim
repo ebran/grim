@@ -153,21 +153,15 @@ echo "[OK]\n"
 echo "Question: How are the Employees Organized? Who Reports to Whom?"
 echo "-".repeat(72)
 
-# Needed to avoid double counting edges A: A -> B and B: A -> B
-var seen: HashSet[string]
+# Loop over employee nodes and then over its outgoing edges
+for edge in g.edges("REPORTS_TO"):
+  let
+    employee = edge.startsAt
+    manager = edge.endsAt
 
-# Loop over employee nodes and then over its edges
-for node in g.nodes("Employee"):
-  for edge in node.edges:
-    # Skip doublets
-    if edge.label == "REPORTS_TO" and edge.oid notin seen:
-      let
-        employee = edge.startsAt
-        manager = edge.endsAt
-
-      echo "$1 $2 is manager to $3 $4.".format(manager["FirstName"],
-          manager["LastName"], employee["FirstName"], employee["LastName"])
-    seen.incl(edge.oid)
+  echo "$1 $2 ($3) is manager to $4 $5 ($6).".format(manager["FirstName"],
+      manager["LastName"], manager["Id"], employee["FirstName"], employee[
+          "LastName"], employee["Id"])
 
 # TODO 3. Which Employees Report to Each Other Indirectly?
 # TODO 4. How Many Orders were Made by Each Part of the Hierarchy?
