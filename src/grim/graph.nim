@@ -17,6 +17,11 @@ type
   GrimNodeOid = string
   GrimEdgeOid = string
 
+  GrimDirectionKind* = enum
+    gdIn,
+    gdOut,
+    gdOutIn
+
   GrimEdge = ref object
     oid*: GrimEdgeOid
     label*: string
@@ -28,7 +33,8 @@ type
     oid*: GrimNodeOid
     label*: string
     properties: Table[string, Box]
-    adj: Table[GrimNodeOid, Table[GrimEdgeOid, GrimEdge]]
+    incoming: Table[GrimNodeOid, Table[GrimEdgeOid, GrimEdge]]
+    outgoing: Table[GrimNodeOid, Table[GrimEdgeOid, GrimEdge]]
 
   Graph* = ref object
     name*: string
@@ -253,15 +259,20 @@ proc addEdge*(self: Graph, e: GrimEdge): string =
   if e in self:
     return e.oid
 
-  # Add B to the adjacency list of A
+  # Add edge A -> B
+  let
+    A = e.startsAt
+    B = e.endsAt
+
+  # Add B to the outgoing edge list for A
   discard self
-    .nodeTable[e.startsAt.oid].adj
-    .mgetOrPut(e.endsAt.oid, initTable[GrimEdgeOid, GrimEdge]())
+    .nodeTable[A.oid].outgoing
+    .mgetOrPut(B.oid, initTable[GrimEdgeOid, GrimEdge]())
     .mgetOrPut(e.oid, e)
 
-  # Add A to the adjacency list of B
+  # Add A to the incoming edge list for  B
   discard self
-    .nodeTable[e.endsAt.oid].adj
+    .nodeTable[e.endsAt.oid].incoming
     .mgetOrPut(e.startsAt.oid, initTable[GrimEdgeOid, GrimEdge]())
     .mgetOrPut(e.oid, e)
 
@@ -282,21 +293,22 @@ proc addEdge*(self: Graph, A: GrimNode, B: GrimNode, label: string,
   if B notin self:
     discard self.addNode(B)
 
+  # Add edge A -> B
   let e = newEdge(A, B, label, properties = properties, oid = oid)
 
   # Don't add if edge already in graph
   if e in self:
     return e.oid
 
-  # Add B to the adjacency list of A
+  # Add B to the outgoing edge list for A
   discard self
-    .nodeTable[A.oid].adj
+    .nodeTable[A.oid].outgoing
     .mgetOrPut(B.oid, initTable[GrimEdgeOid, GrimEdge]())
     .mgetOrPut(e.oid, e)
 
-  # Add A to the adjacency list of B
+  # Add A to the incoming edge list for B
   discard self
-    .nodeTable[B.oid].adj
+    .nodeTable[B.oid].incoming
     .mgetOrPut(A.oid, initTable[GrimEdgeOid, GrimEdge]())
     .mgetOrPut(e.oid, e)
 
@@ -316,19 +328,21 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
   let e = newEdge(self.nodeTable[A], self.nodeTable[B], label,
       properties = properties, oid = oid)
 
+  # Add edge A -> B
+
   # Don't add if edge already in graph
   if e in self:
     return e.oid
 
-  # Add B to the adjacency list of A
+  # Add B to the outgoing edge list for A
   discard self
-    .nodeTable[A].adj
+    .nodeTable[A].outgoing
     .mgetOrPut(B, initTable[GrimEdgeOid, GrimEdge]())
     .mgetOrPut(e.oid, e)
 
-  # Add A to the adjacency list of B
+  # Add A to the incoming edge list for B
   discard self
-    .nodeTable[B].adj
+    .nodeTable[B].incoming
     .mgetOrPut(A, initTable[GrimEdgeOid, GrimEdge]())
     .mgetOrPut(e.oid, e)
 
@@ -396,13 +410,13 @@ proc delEdge*(self: Graph, oid: string): bool =
   self.edgeIndex[e.label].del(oid)
 
   # Remove edge from involved nodes' adjacency lists
-  A.adj[B.oid].del(oid)
-  B.adj[A.oid].del(oid)
+  A.outgoing[B.oid].del(oid)
+  B.incoming[A.oid].del(oid)
   # Delete empty tables if adjacency lsit is empty
-  if A.adj[B.oid].len == 0:
-    A.adj.del(B.oid)
-  if B.adj[A.oid].len == 0:
-    B.adj.del(A.oid)
+  if A.outgoing[B.oid].len == 0:
+    A.outgoing.del(B.oid)
+  if B.incoming[A.oid].len == 0:
+    B.incoming.del(A.oid)
 
   result = true
 
