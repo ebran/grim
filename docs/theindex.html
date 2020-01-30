@@ -806,7 +806,7 @@ function main() {
 <div class="document" id="documentId">
   <div class="container">
     <h1 class="title">Index</h1>
-    Modules: <a href="grim/box.html">grim/box</a>, <a href="grim/dsl.html">grim/dsl</a>, <a href="grim/graph.html">grim/graph</a>, <a href="grim/io.html">grim/io</a>.<br/><p /><h2>API symbols</h2>
+    Modules: <a href="grim/box.html">grim/box</a>, <a href="grim/dsl.html">grim/dsl</a>, <a href="grim/graph.html">grim/graph</a>, <a href="grim/io.html">grim/io</a>, <a href="grim/utils.html">grim/utils</a>.<br/><p /><h2>API symbols</h2>
 <dl><dt><a name="%60%24%60" href="#%60%24%60"><span>`$`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="box: `$`(b: Box): string" href="grim/box.html#%24%2CBox">box: `$`(b: Box): string</a></li>
@@ -905,11 +905,25 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="graph: edges(self: Graph; labels: varargs[string]): (iterator (): GrimEdge)" href="grim/graph.html#edges%2CGraph%2Cvarargs%5Bstring%5D">graph: edges(self: Graph; labels: varargs[string]): (iterator (): GrimEdge)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: edges(n: GrimNode): (iterator (): GrimEdge)" href="grim/graph.html#edges%2CGrimNode">graph: edges(n: GrimNode): (iterator (): GrimEdge)</a></li>
+          data-doc-search-tag="graph: edges(n: GrimNode; direction: GrimDirectionKind = gdOut): (iterator (): GrimEdge)" href="grim/graph.html#edges%2CGrimNode%2CGrimDirectionKind">graph: edges(n: GrimNode; direction: GrimDirectionKind = gdOut): (iterator (): GrimEdge)</a></li>
           </ul></dd>
 <dt><a name="edgesBetween" href="#edgesBetween"><span>edgesBetween:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: edgesBetween(self: Graph; A: string; B: string): GrimEdge" href="grim/graph.html#edgesBetween.i%2CGraph%2Cstring%2Cstring">graph: edgesBetween(self: Graph; A: string; B: string): GrimEdge</a></li>
+          data-doc-search-tag="graph: edgesBetween(self: Graph; A: string; B: string; direction: GrimDirectionKind = gdOut): (
+    iterator (): GrimEdge)" href="grim/graph.html#edgesBetween%2CGraph%2Cstring%2Cstring%2CGrimDirectionKind">graph: edgesBetween(self: Graph; A: string; B: string; direction: GrimDirectionKind = gdOut): (
+    iterator (): GrimEdge)</a></li>
+          </ul></dd>
+<dt><a name="gdIn" href="#gdIn"><span>gdIn:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="GrimDirectionKind.gdIn" href="grim/graph.html#gdIn">GrimDirectionKind.gdIn</a></li>
+          </ul></dd>
+<dt><a name="gdOut" href="#gdOut"><span>gdOut:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="GrimDirectionKind.gdOut" href="grim/graph.html#gdOut">GrimDirectionKind.gdOut</a></li>
+          </ul></dd>
+<dt><a name="gdOutIn" href="#gdOutIn"><span>gdOutIn:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="GrimDirectionKind.gdOutIn" href="grim/graph.html#gdOutIn">GrimDirectionKind.gdOutIn</a></li>
           </ul></dd>
 <dt><a name="getBool" href="#getBool"><span>getBool:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -943,6 +957,10 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="graph: Graph" href="grim/graph.html#Graph">graph: Graph</a></li>
           </ul></dd>
+<dt><a name="GrimDirectionKind" href="#GrimDirectionKind"><span>GrimDirectionKind:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: GrimDirectionKind" href="grim/graph.html#GrimDirectionKind">graph: GrimDirectionKind</a></li>
+          </ul></dd>
 <dt><a name="GrimNode" href="#GrimNode"><span>GrimNode:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graph: GrimNode" href="grim/graph.html#GrimNode">graph: GrimNode</a></li>
@@ -953,7 +971,7 @@ function main() {
           </ul></dd>
 <dt><a name="hasEdge" href="#hasEdge"><span>hasEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: hasEdge(self: Graph; A: string; B: string): bool" href="grim/graph.html#hasEdge%2CGraph%2Cstring%2Cstring">graph: hasEdge(self: Graph; A: string; B: string): bool</a></li>
+          data-doc-search-tag="graph: hasEdge(self: Graph; A: string; B: string; direction: GrimDirectionKind = gdOut): bool" href="grim/graph.html#hasEdge%2CGraph%2Cstring%2Cstring%2CGrimDirectionKind">graph: hasEdge(self: Graph; A: string; B: string; direction: GrimDirectionKind = gdOut): bool</a></li>
           </ul></dd>
 <dt><a name="initBox" href="#initBox"><span>initBox:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -985,9 +1003,9 @@ function main() {
           </ul></dd>
 <dt><a name="neighbors" href="#neighbors"><span>neighbors:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: neighbors(self: Graph; n: string): string" href="grim/graph.html#neighbors.i%2CGraph%2Cstring">graph: neighbors(self: Graph; n: string): string</a></li>
+          data-doc-search-tag="graph: neighbors(n: GrimNode; direction: GrimDirectionKind = gdOut): (iterator (): string)" href="grim/graph.html#neighbors%2CGrimNode%2CGrimDirectionKind">graph: neighbors(n: GrimNode; direction: GrimDirectionKind = gdOut): (iterator (): string)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: neighbors(n: GrimNode): string" href="grim/graph.html#neighbors.i%2CGrimNode">graph: neighbors(n: GrimNode): string</a></li>
+          data-doc-search-tag="graph: neighbors(self: Graph; n: string; direction: GrimDirectionKind = gdOut): string" href="grim/graph.html#neighbors.i%2CGraph%2Cstring%2CGrimDirectionKind">graph: neighbors(self: Graph; n: string; direction: GrimDirectionKind = gdOut): string</a></li>
           </ul></dd>
 <dt><a name="newEdge" href="#newEdge"><span>newEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1033,6 +1051,10 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="io: saveYaml(g: var Graph; fileName: string; force_overwrite: bool = false)" href="grim/io.html#saveYaml%2CGraph%2Cstring%2Cbool">io: saveYaml(g: var Graph; fileName: string; force_overwrite: bool = false)</a></li>
           </ul></dd>
+<dt><a name="sequalizeIt" href="#sequalizeIt"><span>sequalizeIt:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="utils: sequalizeIt(it: untyped): untyped" href="grim/utils.html#sequalizeIt.t%2Cuntyped">utils: sequalizeIt(it: untyped): untyped</a></li>
+          </ul></dd>
 <dt><a name="toYaml" href="#toYaml"><span>toYaml:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="io: toYaml[T](n: T): YamlNode" href="grim/io.html#toYaml%2CT">io: toYaml[T](n: T): YamlNode</a></li>
@@ -1058,7 +1080,7 @@ function main() {
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-01-28 21:40:50 UTC</small>
+        <small>Made with Nim. Generated: 2020-01-30 16:30:12 UTC</small>
       </div>
     </div>
   </div>
