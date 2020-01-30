@@ -506,9 +506,23 @@ proc delNode*(self: Graph, oid: string): bool =
   self.nodeTable.del(n.oid)
   self.nodeIndex[n.label].del(n.oid)
 
-proc hasEdge*(self: Graph, A: string, B: string): bool =
-  ## Check if there is an edge between nodes A and B.
-  result = A in self.nodeTable and B in self.nodeTable[A].adj
+proc hasEdge*(self: Graph, A: string, B: string,
+    direction: GrimDirectionKind = gdOut): bool =
+  ## Check if there is an edge between nodes `A` and `B` in `direction`.
+  if A notin self or B notin self:
+    return false
+
+  let
+    isOutgoing = (B in self.nodeTable[A].outgoing) and (A in self.nodeTable[B].incoming)
+    isIncoming = (B in self.nodeTable[A].incoming) and (A in self.nodeTable[B].outgoing)
+
+  case direction:
+    of gdOut:
+      return isOutgoing
+    of gdIn:
+      return isIncoming
+    of gdOutIn:
+      return isOutgoing or isIncoming
 
 proc describe*(e: GrimEdge, lineWidth: int = 100,
     propertyWidth: int = 20): string =
