@@ -21,6 +21,7 @@ suite "DSL":
           MARRIED_TO:
             since: 2012
 
+  test "build graph":
     let
       p1 = g.node("new gal")
       p2 = g.node("new guy")
@@ -48,7 +49,12 @@ suite "DSL":
         r["since"].getInt == 2012
 
     check:
-      toSeq(g.neighbors("new gal")) == @["new guy"]
-      toSeq(g.neighbors("new guy")) == @["new gal"]
-
       g.numberOfEdges == 1
+      g.edgesBetween("new guy", "new gal").sequalizeIt.len == 0
+      g.edgesBetween("new guy", "new gal", direction = gdIn).sequalizeIt.len == 1
+      g.edgesBetween("new guy", "new gal",
+          direction = gdOutIn).sequalizeIt.len == 1
+
+      sequalizeIt(g.neighbors("new guy")).len == 0
+      sequalizeIt(g.neighbors("new guy", direction = gdIn)) == @["new gal"]
+      sequalizeIt(g.neighbors("new guy", direction = gdOutIn)) == @["new gal"]

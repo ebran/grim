@@ -123,8 +123,9 @@ suite "Basic usage":
     discard g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
     check:
-      toSeq(g.neighbors(p1)) == @[p2]
-      toSeq(g.neighbors(p2)) == @[p1]
+      sequalizeIt(g.neighbors(p2)).len == 0
+      sequalizeIt(g.neighbors(p1)) == @[p2]
+      sequalizeIt(g.neighbors(p2, direction = gdIn)) == @[p1]
 
   test "get edges between nodes":
     var
@@ -133,7 +134,7 @@ suite "Basic usage":
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
-    check toSeq(g.edgesBetween(p1, p2)) == @[g.edge(r)]
+    check g.edgesBetween(p1, p2).sequalizeIt == @[g.edge(r)]
 
 suite "delete nodes and edges":
   setup:

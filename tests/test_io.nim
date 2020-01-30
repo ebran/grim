@@ -39,7 +39,9 @@ suite "Input and output":
 
       g.numberOfNodes == 3
 
-    for r in g.edgesBetween("new guy", "new gal"):
+    check sequalizeIt(g.edgesBetween("new guy", "new gal")).len == 0
+
+    for r in g.edgesBetween("new guy", "new gal", direction = gdIn):
       check:
         r in g
         r.startsAt == p1
@@ -54,8 +56,8 @@ suite "Input and output":
           discard
 
     check:
-      toSeq(g.neighbors("new gal")) == @["new guy"]
-      toSeq(g.neighbors("new guy")) == @["new gal"]
+      sequalizeIt(g.neighbors("new gal")) == @["new guy"]
+      sequalizeIt(g.neighbors("new guy", direction = gdIn)) == @["new gal"]
       g.numberOfEdges == 2
 
   test "Test saving graph to YAML by round-tripping":
