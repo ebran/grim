@@ -363,30 +363,95 @@ proc update*[T](self: T, p: Table[string, Box]): string =
 
   result = self.oid
 
-iterator neighbors*(n: GrimNode): string {.closure.} =
-  ## Return neighbors to node `n`.
-  for oid in n.adj.keys:
-    yield oid
+proc neighbors*(n: GrimNode, direction: GrimDirectionKind = gdOut): (
+    iterator: string) =
+  ## Return neighbors to `n` counting edges with `direction`.
+  # Create closure iterator for neighbors
+  iterator outgoingIt: string {.closure.} =
+    for oid in n.outgoing.keys:
+      yield oid
 
-iterator neighbors*(self: Graph, n: string): string {.closure.} =
+  iterator incomingIt: string {.closure.} =
+    for oid in n.incoming.keys:
+      yield oid
+
+  iterator bothIt: string {.closure.} =
+    for oid in n.outgoing.keys:
+      yield oid
+    for oid in n.incoming.keys:
+      yield oid
+
+  let choices = {gdOut: outgoingIt, gdIn: incomingIt, gdOutIn: bothIt}.toTable
+  return choices[direction]
+
+iterator neighbors*(self: Graph, n: string,
+    direction: GrimDirectionKind = gdOut): string {.closure.} =
   ## Return neighbors to node oid `n` in graph `g`.
-  for n in self.nodeTable[n].neighbors:
+  for n in self.nodeTable[n].neighbors(direction = direction):
     yield n
 
-proc edges*(n: GrimNode): (iterator: GrimEdge) =
+proc edges*(n: GrimNode, direction: GrimDirectionKind = gdOut): (
+    iterator: GrimEdge) =
   ## Iterator over node edges
   # Create closure iterator for edges
-  iterator it: GrimEdge {.closure.} =
-    for n_oid, edgeTable in n.adj.pairs:
+  iterator outgoingIt: GrimEdge {.closure.} =
+    for n_oid, edgeTable in n.outgoing.pairs:
       for e_oid, e in edgeTable.pairs:
         yield e
 
-  return it
+  iterator incomingIt: GrimEdge {.closure.} =
+    for n_oid, edgeTable in n.incoming.pairs:
+      for e_oid, e in edgeTable.pairs:
+        yield e
 
-iterator edgesBetween*(self: Graph, A: string, B: string): GrimEdge {.closure.} =
-  ## Iterator for all edges between nodes `A` and `B`.
-  for e in self.nodeTable[A].adj[B].values:
-    yield e
+  iterator bothIt: GrimEdge {.closure.} =
+    for n_oid, edgeTable in n.outgoing.pairs:
+      for e_oid, e in edgeTable.pairs:
+        yield e
+    for n_oid, edgeTable in n.incoming.pairs:
+      for e_oid, e in edgeTable.pairs:
+        yield e
+
+  let choices = {gdOut: outgoingIt, gdIn: incomingIt, gdOutIn: bothIt}.toTable
+  return choices[direction]
+
+proc edgesBetween*(self: Graph, A: string, B: string,
+    direction: GrimDirectionKind = gdOut): (iterator: GrimEdge) =
+  ## Iterator for all edges between nodes `A` and `B` in `direction`.
+  # Return empty iterator if A or B not in graph
+  if A notin self or B notin self:
+    return iterator(): GrimEdge {.closure.} = discard
+
+  let
+    # Outgoing edges between A and B
+    outgoing = self
+      .nodeTable[A]
+      .outgoing
+      .getOrDefault(B, initTable[GrimEdgeOid, GrimEdge]())
+
+    # Incoming edges between A and B
+    incoming = self
+      .nodeTable[A]
+      .incoming
+      .getOrDefault(B, initTable[GrimEdgeOid, GrimEdge]())
+
+    # Create closure iterators for edges between A and B
+  iterator outgoingIt: GrimEdge {.closure.} =
+    for e in outgoing.values:
+      yield e
+
+  iterator incomingIt: GrimEdge {.closure.} =
+    for e in incoming.values:
+      yield e
+
+  iterator bothIt: GrimEdge {.closure.} =
+    for e in outgoing.values:
+      yield e
+    for e in incoming.values:
+      yield e
+
+  let choices = {gdOut: outgoingIt, gdIn: incomingIt, gdOutIn: bothIt}.toTable
+  return choices[direction]
 
 proc node*(self: Graph, node: string): GrimNode =
   ## Return node with `oid` in graph
