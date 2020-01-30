@@ -11,3 +11,4 @@ TODO.org
 src/grim/bin/*
 src/bin/*
 src/grim/*-turing.nim
+tutorials/*-turing.nim
