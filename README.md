@@ -4,7 +4,7 @@
 
 # grim brings the property graph to Nim!
 
-grim provides a (labeled) [property graph](https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph) structure for the Nim language, written in the Nim language, similar to the data storage model implemented in the [Neo4j](https://neo4j.com) database. The model consists of **Nodes** and **Edges** with labels, where data is stored in key/value-pairs on either nodes or edges.
+grim provides a native [labeled property graph](https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph) structure for the Nim language. The data storage model is similar to that implemented in the [Neo4j](https://neo4j.com) database and consists of two labeled entities: **Nodes** and **Edges**. Data is stored with key/value-pairs on the entities.
 
 <p align="center">
 <img src="static/map.svg" alt="grim" width=500>
@@ -12,29 +12,31 @@ grim provides a (labeled) [property graph](https://en.wikipedia.org/wiki/Graph_d
 
 ## Using grim
 
-grim is packaged with the Nimble package manager and can be used off-the-shelf with a recent Nim distribution.
+grim is included in the package list provided by the Nimble package manager and can be used off-the-shelf with a recent Nim distribution.
 
 ### Prerequisites
 
-The Nim compiler, see the [nim-lang homepage](https://nim-lang.org) for installation instructions.
+Install the Nim compiler, see the [nim-lang homepage](https://nim-lang.org) for instructions.
 
 ### Installing
 
-Install grim on your local machine via nimble:
+Install grim on your local machine with nimble:
 
 ```bash
 nimble install grim
 ```
 
-To use it in your own project add as requirement to the .nimble file:
+To use it in a project, add grim as a requirement in the .nimble file:
 
 ```nim
 requires "grim"
 ```
 
-## Usage
+## API
 
-grim is designed to be easy to use. Use cases can be found in the tests/ folder, and there is a partial [tutorial](./tutorials/Northwind.nim) on the Northwind data set that demonstrates how to translate a relational SQL model to a property graph in grim. The auto-generated documentation is found [here](https://ebran.github.io/grim). I hope to improve it soon. Below are some other simple use cases. 
+grim is designed with a user-friendly API. Example uses can be found in the tests/ folder, and there is a partial [tutorial](./tutorials/Northwind.nim) on the Northwind data set to demonstrate how to translate a relational SQL model to a property graph with grim. 
+
+Auto-generated documentation of the grim library is found [here](https://ebran.github.io/grim). It is continuously being improved. Below are some other simple use cases. 
 
 ### Basic
 
@@ -47,7 +49,7 @@ var g = newGraph("my graph")
 echo g.name    # "my graph"
 doAssert g.numberOfNodes == 0 and g.numberOfEdges == 0
 ```
-Next, let's add data to the graph. First, nodes:
+Next, add data to the graph. Nodes:
 
 ```nim
 let 
@@ -61,15 +63,15 @@ let
 ```
 Note:
 - The `%`operator on tuples pairs of key/value store properties in heterogeneous data tables.
-- `addNode` and `addEdge` return the `oid` for the node/edge. The `oid` is a unique string that is either specified with the `oid=` argument when creating the node or auto-generated.
+- `addNode` and `addEdge` return the `oid` for the node/edge. The `oid` is a unique string identifier that can be set via the `oid` argument to `addNode` and `addEdge` (it is auto-generated if the `oid` argument is omitted).
 
 Here's how one can get data out of the graph:
 
 ```nim
-doAssert g.getNode(c1).label == "Country"
-doAssert g.getNode(c1)["name"] == "Sweden"
+doAssert g.node(c1).label == "Country"
+doAssert g.node(c1)["name"] == "Sweden"
 ```
-Now, add edges:
+Add edges:
 
 ```nim
 let
@@ -104,6 +106,7 @@ for edge in g.getEdges(c1, o3):
 for node in g.neighbors(c1):
   echo node.label, ": ", node     # prints node properties
 ```
+Note that the graph is directional, so `addEdge(A, B, "LABEL")` adds an edge with label "LABEL" pointing from A to B. All iterators take a `direction` argument to specify if you want to include edges/neighbors that are outgoing (`A->B`), incoming (`A<-B`) or both (`A<->B`). The direction is specified with the enum values `gdOut`, `gdIn`, and `gdOutIn`.
 
 ### Loading and saving graphs
 
@@ -138,12 +141,12 @@ graph g "Some people":
         category: "writing material"
         value: 204
 ```
-This will make the graph available to the rest of the code as a mutable variable `g`. This example shows how to access graph properties.
+This will make the graph available in the remainder of the code as the mutable variable `g`. This example shows how to access graph properties.
 
 ```nim
 let
-  p1 = g.getNode("a nice guy")
-  p2 = g.getNode("a smart girl")
+  p1 = g.node("a nice guy")
+  p2 = g.node("a smart girl")
 
 doAssert p1.label == "Character" and p2.label == "Character"
 doAssert p1["name"].getStr == "Santa Claus"
@@ -151,7 +154,7 @@ doAssert p1["age"].getInt == 108
 doAssert p2["name"].getStr == "Jane Austen"
 doAssert p2["wealth"].getFloat == 10304.3
 
-for e in g.getEdges("a nice guy", "a smart girl"):
+for e in g.edgesBetween("a nice guy", "a smart girl"):
   doAssert e.label == "DELIVERS"
   doAssert e["category"].getStr == "writing material"
   doAssert e["value"].getInt == 204
