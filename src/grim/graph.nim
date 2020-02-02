@@ -390,6 +390,16 @@ iterator neighbors*(self: Graph, n: string,
   for n in self.nodeTable[n].neighbors(direction = direction):
     yield n
 
+proc numberOfNeighbors*(n: GrimNode, direction: GrimDirectionKind = gdOut): int =
+  ## Number of neighbors to node `n`.
+  case direction:
+    of gdOut:
+      result = n.outgoing.len
+    of gdIn:
+      result = n.incoming.len
+    of gdOutIn:
+      result = n.incoming.len + n.outgoing.len
+
 proc edges*(n: GrimNode, direction: GrimDirectionKind = gdOut): (
     iterator: GrimEdge) =
   ## Iterator over node edges
