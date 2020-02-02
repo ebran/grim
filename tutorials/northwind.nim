@@ -169,6 +169,78 @@ echo ""
 echo "Question: How many orders were made by each part of the hierarchy?"
 echo "-".repeat(72)
 
-# TODO PART 3: UPDATING THE GRAPH
-# ===============================
-# TODO 1. Janet is now reporting to Steven
+# Description of solution
+type
+  OrderStat = object
+    id: BiggestInt
+    reports: seq[BiggestInt]
+    direct: BiggestInt
+    indirect: BiggestInt
+    total: BiggestInt
+
+var orders: OrderedTable[BiggestInt, OrderStat]
+
+# Create orderstats
+for node in g.nodes("Employee"):
+  let employee = node["Id"].getInt
+  orders[employee] = OrderStat(id: employee)
+
+# Find reporters
+for edge in g.edges("REPORTS_TO"):
+  let
+    employee = edge.endsAt["Id"].getInt
+    reporter = edge.startsAt["Id"].getInt
+  orders[employee].reports.add(reporter)
+
+# Count direct orders
+for edge in g.edges("SOLD"):
+  let employee = edge.startsAt["Id"].getInt
+  orders[employee].direct.inc
+
+# Sum indirect orders and calculate total orders
+for order in orders.mvalues:
+  order.indirect = order.reports.map(x => orders[x].direct).sum
+  order.total = order.direct + order.indirect
+
+# Print results in descending order
+echo "\nEmployee       Reporters                     Total Orders"
+echo ".".repeat(72)
+for order in toSeq(orders.values).sortedByIt(it.total).reversed:
+  echo fmt"{order.id:<15}{order.reports:<30}{order.total:<}"
+
+# STARTED PART 3: UPDATING THE GRAPH
+# ==================================
+echo ""
+echo "Task: Make Janet report to Steven"
+echo "-".repeat(72)
+
+# Find manager and employeer
+proc getEmployee(n: int): string =
+  for node in g.nodes("Employee"):
+    if node["Id"].getInt == n:
+      return node.oid
+
+let
+  janet = getEmployee(3)  # Janet
+  steven = getEmployee(5) # Steven
+
+# Who is Janet reporting to now?
+for edge in g.edges("REPORTS_TO"):
+  if edge.startsAt.oid == janet:
+    echo "$1 is reporting to $2.".format(edge.startsAt["FirstName"],
+        edge.endsAt["FirstName"])
+    break
+
+# Delete Janet's reporting relationships
+for edge in g.node(janet).edges(direction = gdOutIn):
+  if edge.label == "REPORTS_TO":
+    discard g.delEdge(edge.oid)
+
+# Add a new reporting relation for Janet
+discard g.addEdge(janet, steven, "REPORTS_TO")
+
+for edge in g.edges("REPORTS_TO"):
+  if edge.startsAt.oid == janet:
+    echo "$1 is now reporting to $2.".format(edge.startsAt["FirstName"],
+        edge.endsAt["FirstName"])
+    break
