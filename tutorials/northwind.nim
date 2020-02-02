@@ -15,9 +15,11 @@
 
 # import stdlib pure modules
 import sequtils
+import strformat
 import strutils
 import sugar
-import sets
+import math
+import algorithm
 import tables
 
 # import stdlib impure modules
@@ -147,13 +149,13 @@ for rel in relationships:
 
 echo "[OK]\n"
 
-# STARTED PART 2: QUERYING THE GRAPH
+# DONE PART 2: QUERYING THE GRAPH
 # ===============================
 
-echo "Question: How are the Employees Organized? Who Reports to Whom?"
+echo "Question: How are the employees organized? Who reports to whom?"
 echo "-".repeat(72)
 
-# Loop over employee nodes and then over its outgoing edges
+# Loop over outgoing "REPORTS_TO" edges, pointing from employee to manager.
 for edge in g.edges("REPORTS_TO"):
   let
     employee = edge.startsAt
@@ -163,8 +165,9 @@ for edge in g.edges("REPORTS_TO"):
       manager["LastName"], manager["Id"], employee["FirstName"], employee[
           "LastName"], employee["Id"])
 
-# TODO 3. Which Employees Report to Each Other Indirectly?
-# TODO 4. How Many Orders were Made by Each Part of the Hierarchy?
+echo ""
+echo "Question: How many orders were made by each part of the hierarchy?"
+echo "-".repeat(72)
 
 # TODO PART 3: UPDATING THE GRAPH
 # ===============================
