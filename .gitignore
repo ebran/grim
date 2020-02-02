@@ -1,5 +1,6 @@
 .gitignore
 \#*
+.#*
 *~
 .vscode/*
 .files/*
@@ -10,5 +11,5 @@ TODO.org
 *.exe
 src/grim/bin/*
 src/bin/*
-src/grim/*-turing.nim
-tutorials/*-turing.nim
+src/grim/*-turing*.nim
+tutorials/*-turing*.nim
