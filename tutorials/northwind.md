@@ -1,72 +1,96 @@
 # Northwind tutorial
 
-This tutorial is adapted from https://neo4j.com/developer/guide-importing-data-and-etl and describes how to translate a relational (SQL) database into a labeled property graph (LPG) with `grim`. The tutorial shows how to query and update the LPG.
+This tutorial is adapted from https://neo4j.com/developer/guide-importing-data-and-etl and shows how a relational (SQL) database is translated to a labeled property graph (LPG) with `grim`. The tutorial shows examples of how to query and update the LPG.
 
 The general principles when translating a relation model to a graph model are:
 
-1. A row is a node
+1. A SQL table row is a node.
 
-2. A table name is a node label
+2. A SQL table name is a node label.
 
-3. A join or foreign key is an edge (relationship)
+3. A join or foreign key in a SQL table defines edges (relationships).
 
-This first iteration of the graph model can then be manually fine-tuned.
+This recipe yields a first iteration of an LPG that can be fine-tuned if necessary.
 
-## PART 1: BUILDING THE GRAPH
+## PART 1: BUILDING THE LABELED PROPERTY GRAPH
+
+The [Northwind data set](https://code.google.com/archive/p/northwindextended/downloads) contains the sales data for a fictitious company called Northwind Traders, which imports and exports specialty foods from around the world. The data tables in the Northwind set are related to each other as shown in the figure below.
+
+![northwind](static/northwind.png)
+
+
+
+The first task is to build a LPG from the Northwind data. The [full code](northwind.nim) from this tutorial is included in the repo and can be built and run with Nimble:
+
+```bash
+nimble northwind
+```
+
+### Imports
+
+First, some of the pure standard libraries in Nim are imported and kept handy for the rest of the analysis. 
 
 ```nim
-# import stdlib pure modules
-import sequtils
-import strformat
-import strutils
-import sugar
-import math
-import algorithm
-import tables
-
-# import stdlib impure modules
+import sequtils, strformat, strutils
+import sugar, math, algorithm, tables
+```
+Next Nim's impure `db_sqlite` module is used to read the Northwind database.
+```nim
 import db_sqlite
+```
+Impure means that the module depends on some external library, `libsqlite` in this case. This library must be installed on the computer for the program to run.
 
-# import grim
+Finally, the `grim` library is imported to handle the LPG.
+
+```nim
 import grim
+```
+### Types
 
+A `Relationship` object is needed to define how edges are created from foreign keys in the SQL table.
+
+```nim
 type
-  ## Relationship object created from foreign keys in a SQL table
   Relationship = object
-    table: string       # Name of the SQL table
-    label: string       # The edge label
-    A: tuple[label: string, key: string] # Tuple for the start node (label: Node label, key: SQL foreign key)
-    B: tuple[label: string, key: string] # Tuple for the end node (label: Node label, key: SQL foreign key)
-    useProperties: bool # Convert non-foreign keys to edge properties
+    table, label: string
+    A, B: tuple[label: string, key: string] 
+    useProperties: bool
+```
+The `Relationship` fields are:
 
-proc initRelationship(
-  table: string,
-  label: string,
-  A: tuple[label: string, key: string],
-  B: tuple[label: string, key: string],
-  useProperties: bool = false): Relationship =
-  ## Init a new relationship
-  ## Non-foreign keys are not converted to edge properties by default
-  result = Relationship(table: table, label: label, A: A, B: B,
-      useProperties: useProperties)
+- **table**: The name of the SQL table which contains the foreign key.
 
+- **label**: The label of the created edge.
+
+- **A** and **B**: A tuple with fields for the node label (*label*) and the foreign key (*key*) of the start (**A**) and end (**B**) nodes.
+
+- **useProperties**: A boolean flag to determine whether the non-foreign keys in the table are to be converted to edge properties.
+
+### Constants
+
+Some constants are defined before proceeding:
+
+```nim
 const
-  ## SQL queries
   queries = {
-    "table": "SELECT * FROM \"$1\"", # Get all columns from table
-    "header": "SELECT name FROM PRAGMA_TABLE_INFO('$1')" # Get column names for table
+    "table": "SELECT * FROM \"$1\"", 
+    "header": "SELECT name FROM PRAGMA_TABLE_INFO('$1')"
   }.toTable
 
-  ## SQL table names are used as node labels and the rows in the tables are converted to nodes.
-  nodes = [
-    "Customer",
-    "Supplier",
-    "Product",
-    "Employee",
-    "Category",
-    "Order"
-  ]
+  nodes = ["Customer", "Supplier", "Product", "Employee", 				"Category", "Order"]
+```
+YOU ARE HERE
 
+queries: SQL queries
+
+table: Get all columns from table
+
+header: # Get column names for table
+
+nodes:   ## SQL table names are used as node labels and the rows in the tables are converted to nodes. 
+  Non-foreign keys are not converted to edge properties by default
+
+```nim
   ## Relationships defined from foreign keys in the SQL tables
   relationships = [
     # Employee - SOLD -> Order
