@@ -391,14 +391,14 @@ iterator neighbors*(self: Graph, n: string,
     yield n
 
 proc numberOfNeighbors*(n: GrimNode, direction: GrimDirectionKind = gdOut): int =
-  ## Number of neighbors to node `n`.
-  case direction:
-    of gdOut:
-      result = n.outgoing.len
-    of gdIn:
-      result = n.incoming.len
-    of gdOutIn:
-      result = n.incoming.len + n.outgoing.len
+  ## Return the number of neighbors of node `n` in `direction`.
+  let choices = {
+    gdOut: n.outgoing.len,
+    gdIn: n.incoming.len,
+    gdOutIn: n.outgoing.len + n.incoming.len
+  }.toTable
+
+  return choices[direction]
 
 proc edges*(n: GrimNode, direction: GrimDirectionKind = gdOut): (
     iterator: GrimEdge) =
