@@ -30,4 +30,5 @@ task docs, "Build the documentation (in HTML)":
 # Tutorials
 task northwind, "Northwind tutorial":
   withDir("tutorials"):
-    selfExec "c -r northwind.nim"
+    selfExec "c -r northwind.nim"                        # debug mode
+    #selfExec "c -d:release -d:danger -r northwind.nim"  # release mode
