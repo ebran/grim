@@ -1,17 +1,17 @@
 # This tutorial is adapted from https://neo4j.com/developer/guide-importing-data-and-etl
-# and describes how to translate a relational (SQL) database into a property graph with `grim`.
+# and describes how to translate a relational (SQL) database into a labeled property graph (LPG) 
+# with `grim`. The tutorial shows how to query and update the LPG.
 #
-# The general principles when translating a relation model to a graph model is:
+# The general principles when translating a relation model to a graph model are:
 #
 #   1. A row is a node
-#   2. A table name is a node label name
+#   2. A table name is a node label
 #   3. A join or foreign key is an edge (relationship)
 #
-# This first iteration of the graph model can then be fine-tuned manually 
-# (as we do in Part 3 of this tutorial).
+# This first iteration of the graph model can then be manually fine-tuned.
 #
-# DONE PART 1: BUILDING THE GRAPH
-# ===============================
+# PART 1: BUILDING THE GRAPH
+# ==========================
 
 # import stdlib pure modules
 import sequtils
@@ -29,13 +29,13 @@ import db_sqlite
 import grim
 
 type
-  ## Relationship object that is created from foreign keys in the SQL table
+  ## Relationship object created from foreign keys in a SQL table
   Relationship = object
-    table: string        # Name of the SQL table
-    label: string        # The graph node label
-    A: tuple[label: string, key: string] # Start node (label: Node label, key: SQL foreign key)
-    B: tuple[label: string, key: string] # End node (label: Node label, key: SQL foreign key)
-    use_properties: bool # Transfer the columns in `table` to edge properties
+    table: string       # Name of the SQL table
+    label: string       # The edge label
+    A: tuple[label: string, key: string] # Tuple for the start node (label: Node label, key: SQL foreign key)
+    B: tuple[label: string, key: string] # Tuple for the end node (label: Node label, key: SQL foreign key)
+    useProperties: bool # Convert non-foreign keys to edge properties
 
 proc initRelationship(
   table: string,
@@ -44,17 +44,18 @@ proc initRelationship(
   B: tuple[label: string, key: string],
   useProperties: bool = false): Relationship =
   ## Init a new relationship
+  ## Non-foreign keys are not converted to edge properties by default
   result = Relationship(table: table, label: label, A: A, B: B,
       useProperties: useProperties)
 
 const
-  ## Define SQL queries
+  ## SQL queries
   queries = {
     "table": "SELECT * FROM \"$1\"", # Get all columns from table
     "header": "SELECT name FROM PRAGMA_TABLE_INFO('$1')" # Get column names for table
   }.toTable
 
-  ## Define graph nodes from SQL tables
+  ## SQL table names are used as node labels and the rows in the tables are converted to nodes.
   nodes = [
     "Customer",
     "Supplier",
@@ -64,32 +65,37 @@ const
     "Order"
   ]
 
-  # Define the relationships from foreign keys in SQL tables
+  ## Relationships defined from foreign keys in the SQL tables
   relationships = [
+    # Employee - SOLD -> Order
     initRelationship(
       table = "Order",
       A = (label: "Employee", key: "EmployeeId"),
       B = (label: "Order", key: "Id"),
       label = "SOLD"),
+    # Order - PRODUCT -> Product
     initRelationship(
       table = "OrderDetail",
       A = (label: "Order", key: "OrderId"),
       B = (label: "Product", key: "ProductId"),
       label = "PRODUCT",
-      use_properties = true),  # In this table we want to transfer all columns as edge properties
+      use_properties = true),        # convert the non-foreign keys to edge properties
     initRelationship(
+      # Product - PART_OF -> Category
       table = "Product",
       A = (label: "Product", key: "Id"),
       B = (label: "Category", key: "CategoryId"),
       label = "PART_OF"
     ),
     initRelationship(
+      # Supplier - SUPPLIES -> Product
       table = "Product",
       A = (label: "Supplier", key: "SupplierId"),
       B = (label: "Product", key: "Id"),
       label = "SUPPLIES"
     ),
     initRelationship(
+      # Employee - REPORTS_TO -> Employee
       table = "Employee",
       A = (label: "Employee", key: "Id"),
       B = (label: "Employee", key: "ReportsTo"),
@@ -169,52 +175,56 @@ echo ""
 echo "Question: How many orders were made by each part of the hierarchy?"
 echo "-".repeat(72)
 
-# Description of solution
 type
-  OrderStat = object
-    id: BiggestInt
-    reports: seq[BiggestInt]
-    direct: BiggestInt
-    indirect: BiggestInt
-    total: BiggestInt
+  ## Container for employee's sales statistics
+  OrderStats = object
+    id: BiggestInt           # Employee id
+    reports: seq[BiggestInt] # Seq with employee id's reporting to this employee
+    direct: BiggestInt       # The number of direct orders
+    indirect: BiggestInt     # The number of indirect orders via reporting employees
+    total: BiggestInt        # The sum of direct and indirect orders
 
-var orders: OrderedTable[BiggestInt, OrderStat]
+# Create a table with order statistics that is easily sorted by employee
+var orders: OrderedTable[BiggestInt, OrderStats]
 
-# Create orderstats
+# Initialize OrderStats objects for all employees
 for node in g.nodes("Employee"):
   let employee = node["Id"].getInt
-  orders[employee] = OrderStat(id: employee)
+  orders[employee] = OrderStats(id: employee)
 
-# Find reporters
+# Find how many other employees that are reporting to each employee
 for edge in g.edges("REPORTS_TO"):
   let
     employee = edge.endsAt["Id"].getInt
     reporter = edge.startsAt["Id"].getInt
   orders[employee].reports.add(reporter)
 
-# Count direct orders
+# Count direct orders for each employee
 for edge in g.edges("SOLD"):
   let employee = edge.startsAt["Id"].getInt
   orders[employee].direct.inc
 
-# Sum indirect orders and calculate total orders
+# Sum the orders for each reporter to get the number of indirect orders.
+# Then sum direct and indirect orders to get the total orders.
 for order in orders.mvalues:
   order.indirect = order.reports.map(x => orders[x].direct).sum
   order.total = order.direct + order.indirect
 
-# Print results in descending order
+# Pretty-print descending results sorted by total number of orders.
 echo "\nEmployee       Reporters                     Total Orders"
 echo ".".repeat(72)
-for order in toSeq(orders.values).sortedByIt(it.total).reversed:
+for order in toSeq(orders.values)
+  .sortedByIt(it.total)
+  .reversed:
   echo fmt"{order.id:<15}{order.reports:<30}{order.total:<}"
 
-# STARTED PART 3: UPDATING THE GRAPH
-# ==================================
+# PART 3: UPDATING THE GRAPH
+# ==========================
 echo ""
 echo "Task: Make Janet report to Steven"
 echo "-".repeat(72)
 
-# Find manager and employeer
+# Proc to easily find manager and employeer
 proc getEmployee(n: int): string =
   for node in g.nodes("Employee"):
     if node["Id"].getInt == n:
@@ -224,7 +234,7 @@ let
   janet = getEmployee(3)  # Janet
   steven = getEmployee(5) # Steven
 
-# Who is Janet reporting to now?
+# Who was Janet reporting to originally?
 for edge in g.edges("REPORTS_TO"):
   if edge.startsAt.oid == janet:
     echo "$1 is reporting to $2.".format(edge.startsAt["FirstName"],
@@ -239,6 +249,7 @@ for edge in g.node(janet).edges(direction = gdOutIn):
 # Add a new reporting relation for Janet
 discard g.addEdge(janet, steven, "REPORTS_TO")
 
+# Who is Janet reporting to now?
 for edge in g.edges("REPORTS_TO"):
   if edge.startsAt.oid == janet:
     echo "$1 is now reporting to $2.".format(edge.startsAt["FirstName"],
