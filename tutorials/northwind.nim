@@ -37,17 +37,6 @@ type
     B: tuple[label: string, key: string] # Tuple for the end node (label: Node label, key: SQL foreign key)
     useProperties: bool # Convert non-foreign keys to edge properties
 
-proc initRelationship(
-  table: string,
-  label: string,
-  A: tuple[label: string, key: string],
-  B: tuple[label: string, key: string],
-  useProperties: bool = false): Relationship =
-  ## Init a new relationship
-  ## Non-foreign keys are not converted to edge properties by default
-  result = Relationship(table: table, label: label, A: A, B: B,
-      useProperties: useProperties)
-
 const
   ## SQL queries
   queries = {
@@ -68,38 +57,38 @@ const
   ## Relationships defined from foreign keys in the SQL tables
   relationships = [
     # Employee - SOLD -> Order
-    initRelationship(
-      table = "Order",
-      A = (label: "Employee", key: "EmployeeId"),
-      B = (label: "Order", key: "Id"),
-      label = "SOLD"),
+    Relationship(
+      table: "Order",
+      A: (label: "Employee", key: "EmployeeId"),
+      B: (label: "Order", key: "Id"),
+      label: "SOLD"),
     # Order - PRODUCT -> Product
-    initRelationship(
-      table = "OrderDetail",
-      A = (label: "Order", key: "OrderId"),
-      B = (label: "Product", key: "ProductId"),
-      label = "PRODUCT",
-      use_properties = true),        # convert the non-foreign keys to edge properties
-    initRelationship(
+    Relationship(
+      table: "OrderDetail",
+      A: (label: "Order", key: "OrderId"),
+      B: (label: "Product", key: "ProductId"),
+      label: "PRODUCT",
+      use_properties: true),         # convert the non-foreign keys to edge properties
+    Relationship(
       # Product - PART_OF -> Category
-      table = "Product",
-      A = (label: "Product", key: "Id"),
-      B = (label: "Category", key: "CategoryId"),
-      label = "PART_OF"
+      table: "Product",
+      A: (label: "Product", key: "Id"),
+      B: (label: "Category", key: "CategoryId"),
+      label: "PART_OF"
     ),
-    initRelationship(
+    Relationship(
       # Supplier - SUPPLIES -> Product
-      table = "Product",
-      A = (label: "Supplier", key: "SupplierId"),
-      B = (label: "Product", key: "Id"),
-      label = "SUPPLIES"
+      table: "Product",
+      A: (label: "Supplier", key: "SupplierId"),
+      B: (label: "Product", key: "Id"),
+      label: "SUPPLIES"
     ),
-    initRelationship(
+    Relationship(
       # Employee - REPORTS_TO -> Employee
-      table = "Employee",
-      A = (label: "Employee", key: "Id"),
-      B = (label: "Employee", key: "ReportsTo"),
-      label = "REPORTS_TO"
+      table: "Employee",
+      A: (label: "Employee", key: "Id"),
+      B: (label: "Employee", key: "ReportsTo"),
+      label: "REPORTS_TO"
     )
   ]
 
