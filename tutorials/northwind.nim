@@ -237,8 +237,8 @@ let
 # Who was Janet reporting to originally?
 for edge in g.edges("REPORTS_TO"):
   if edge.startsAt.oid == janet:
-    echo "$1 is reporting to $2.".format(edge.startsAt["FirstName"],
-        edge.endsAt["FirstName"])
+    echo "$1 $2 is reporting to $3 $4.".format(edge.startsAt["FirstName"],
+        edge.startsAt["LastName"], edge.endsAt["FirstName"], edge.endsAt["LastName"])
     break
 
 # Delete Janet's reporting relationships
@@ -252,6 +252,6 @@ discard g.addEdge(janet, steven, "REPORTS_TO")
 # Who is Janet reporting to now?
 for edge in g.edges("REPORTS_TO"):
   if edge.startsAt.oid == janet:
-    echo "$1 is now reporting to $2.".format(edge.startsAt["FirstName"],
-        edge.endsAt["FirstName"])
+    echo "$1 $2 is now reporting to $3 $4.".format(edge.startsAt["FirstName"],
+        edge.startsAt["LastName"], edge.endsAt["FirstName"], edge.endsAt["LastName"])
     break
