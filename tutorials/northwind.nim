@@ -242,7 +242,7 @@ for edge in g.edges("REPORTS_TO"):
     break
 
 # Delete Janet's reporting relationships
-for edge in g.node(janet).edges(direction = gdOutIn):
+for edge in g.node(janet).edges:
   if edge.label == "REPORTS_TO":
     discard g.delEdge(edge.oid)
 
