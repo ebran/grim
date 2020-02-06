@@ -15,7 +15,7 @@ import box
 # 3:rd party imports
 import yaml
 
-proc toYaml*[T](n: T): YamlNode =
+proc toYaml[T](n: T): YamlNode =
   ## Cast object as new YamlNode
   newYamlNode(n)
 
