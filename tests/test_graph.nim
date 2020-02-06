@@ -125,7 +125,7 @@ suite "Basic usage":
     check:
       sequalizeIt(g.neighbors(p2)).len == 0
       sequalizeIt(g.neighbors(p1)) == @[p2]
-      sequalizeIt(g.neighbors(p2, direction = gdIn)) == @[p1]
+      sequalizeIt(g.neighbors(p2, direction = Direction.In)) == @[p1]
 
   test "get edges between nodes":
     var
@@ -175,8 +175,8 @@ suite "Basic usage":
         r2 notin g
         g.numberOfNodes == 2
         g.numberOfEdges == 0
-        g.hasEdge(p1, p2, direction = gdOutIn) == false
-        g.hasEdge(p2, p3, direction = gdOutIn) == false
+        g.hasEdge(p1, p2, direction = Direction.OutIn) == false
+        g.hasEdge(p2, p3, direction = Direction.OutIn) == false
 
       suite "node/edge iterators for getting and setting":
         setup:

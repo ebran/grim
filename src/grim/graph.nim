@@ -18,10 +18,8 @@ type
   GrimNodeOid = string
   GrimEdgeOid = string
 
-  GrimDirectionKind* = enum
-    gdIn,
-    gdOut,
-    gdOutIn
+  Direction* {.pure.} = enum
+    In, Out, OutIn
 
   GrimEdge = ref object
     oid*: GrimEdgeOid
@@ -363,7 +361,7 @@ proc update*[T](self: T, p: Table[string, Box]): string =
 
   result = self.oid
 
-proc neighbors*(n: GrimNode, direction: GrimDirectionKind = gdOut): (
+proc neighbors*(n: GrimNode, direction: Direction = Direction.Out): (
     iterator: string) =
   ## Return neighbors to `n` counting edges with `direction`.
   # Create closure iterator for neighbors
@@ -381,26 +379,27 @@ proc neighbors*(n: GrimNode, direction: GrimDirectionKind = gdOut): (
     for oid in n.incoming.keys:
       yield oid
 
-  let choices = {gdOut: outgoingIt, gdIn: incomingIt, gdOutIn: bothIt}.toTable
+  let choices = {Direction.Out: outgoingIt, Direction.In: incomingIt,
+      Direction.OutIn: bothIt}.toTable
   return choices[direction]
 
 iterator neighbors*(self: Graph, n: string,
-    direction: GrimDirectionKind = gdOut): string {.closure.} =
+    direction: Direction = Direction.Out): string {.closure.} =
   ## Return neighbors to node oid `n` in graph `g`.
   for n in self.nodeTable[n].neighbors(direction = direction):
     yield n
 
-proc numberOfNeighbors*(n: GrimNode, direction: GrimDirectionKind = gdOut): int =
+proc numberOfNeighbors*(n: GrimNode, direction: Direction = Direction.Out): int =
   ## Return the number of neighbors of node `n` in `direction`.
   let choices = {
-    gdOut: n.outgoing.len,
-    gdIn: n.incoming.len,
-    gdOutIn: n.outgoing.len + n.incoming.len
+    Direction.Out: n.outgoing.len,
+    Direction.In: n.incoming.len,
+    Direction.OutIn: n.outgoing.len + n.incoming.len
   }.toTable
 
   return choices[direction]
 
-proc edges*(n: GrimNode, direction: GrimDirectionKind = gdOut): (
+proc edges*(n: GrimNode, direction: Direction = Direction.Out): (
     iterator: GrimEdge) =
   ## Iterator over node edges
   # Create closure iterator for edges
@@ -422,11 +421,12 @@ proc edges*(n: GrimNode, direction: GrimDirectionKind = gdOut): (
       for e_oid, e in edgeTable.pairs:
         yield e
 
-  let choices = {gdOut: outgoingIt, gdIn: incomingIt, gdOutIn: bothIt}.toTable
+  let choices = {Direction.Out: outgoingIt, Direction.In: incomingIt,
+      Direction.OutIn: bothIt}.toTable
   return choices[direction]
 
 proc edgesBetween*(self: Graph, A: string, B: string,
-    direction: GrimDirectionKind = gdOut): (iterator: GrimEdge) =
+    direction: Direction = Direction.Out): (iterator: GrimEdge) =
   ## Iterator for all edges between nodes `A` and `B` in `direction`.
   # Return empty iterator if A or B not in graph
   if A notin self or B notin self:
@@ -460,7 +460,8 @@ proc edgesBetween*(self: Graph, A: string, B: string,
     for e in incoming.values:
       yield e
 
-  let choices = {gdOut: outgoingIt, gdIn: incomingIt, gdOutIn: bothIt}.toTable
+  let choices = {Direction.Out: outgoingIt, Direction.In: incomingIt,
+      Direction.OutIn: bothIt}.toTable
   return choices[direction]
 
 proc node*(self: Graph, node: string): GrimNode =
@@ -517,7 +518,7 @@ proc delNode*(self: Graph, oid: string): bool =
   self.nodeIndex[n.label].del(n.oid)
 
 proc hasEdge*(self: Graph, A: string, B: string,
-    direction: GrimDirectionKind = gdOut): bool =
+    direction: Direction = Direction.Out): bool =
   ## Check if there is an edge between nodes `A` and `B` in `direction`.
   if A notin self or B notin self:
     return false
@@ -527,11 +528,11 @@ proc hasEdge*(self: Graph, A: string, B: string,
     isIncoming = (B in self.nodeTable[A].incoming) and (A in self.nodeTable[B].outgoing)
 
   case direction:
-    of gdOut:
+    of Direction.Out:
       return isOutgoing
-    of gdIn:
+    of Direction.In:
       return isIncoming
-    of gdOutIn:
+    of Direction.OutIn:
       return isOutgoing or isIncoming
 
 proc describe*(e: GrimEdge, lineWidth: int = 100,

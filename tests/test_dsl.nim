@@ -51,10 +51,11 @@ suite "DSL":
     check:
       g.numberOfEdges == 1
       g.edgesBetween("new guy", "new gal").sequalizeIt.len == 0
-      g.edgesBetween("new guy", "new gal", direction = gdIn).sequalizeIt.len == 1
       g.edgesBetween("new guy", "new gal",
-          direction = gdOutIn).sequalizeIt.len == 1
+          direction = Direction.In).sequalizeIt.len == 1
+      g.edgesBetween("new guy", "new gal",
+          direction = Direction.OutIn).sequalizeIt.len == 1
 
       sequalizeIt(g.neighbors("new guy")).len == 0
-      sequalizeIt(g.neighbors("new guy", direction = gdIn)) == @["new gal"]
-      sequalizeIt(g.neighbors("new guy", direction = gdOutIn)) == @["new gal"]
+      sequalizeIt(g.neighbors("new guy", direction = Direction.In)) == @["new gal"]
+      sequalizeIt(g.neighbors("new guy", direction = Direction.OutIn)) == @["new gal"]
