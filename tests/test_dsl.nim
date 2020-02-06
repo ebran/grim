@@ -1,5 +1,5 @@
 import grim
-import grim/utils
+import grim/[dsl, utils]
 
 import unittest
 import sequtils

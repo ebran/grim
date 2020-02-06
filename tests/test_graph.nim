@@ -1,6 +1,6 @@
 # To run these tests, simply execute `nimble test`.
 import grim
-import grim/utils
+import grim/[dsl, utils]
 import tables
 import algorithm
 import sequtils
