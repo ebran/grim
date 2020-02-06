@@ -180,6 +180,19 @@ for edge in g.edges("REPORTS_TO"):
       manager["LastName"], manager["Id"], employee["FirstName"], employee[
           "LastName"], employee["Id"])
 ```
+The result is
+
+| Manager (Id)  |  Reporter (Id) |
+| ---------------- | ----------------------------- |
+| Andrew Fuller (2)  | Nancy Davolio (1) |
+|Steven Buchanan (5) |  Robert King (7)|
+| Andrew Fuller (2) |  Laura Callahan (8)|
+| Steven Buchanan  (5) |  Anne Dodsworth (9)|
+| Andrew Fuller (2) |  Steven Buchanan (5)|
+| Andrew Fuller (2) |  Janet Leverling (3)|
+| Steven Buchanan  (5) | Michael Suyama (6)|
+| Andrew Fuller (2)  | Margaret Peacock (4)| |
+
 We can also ask:
 
 ###### How many orders were made by each part of the company's hierarchy?
@@ -214,7 +227,7 @@ for node in g.nodes("Employee"):
   let employee = node["Id"].getInt
   orders[employee] = OrderStats(id: employee)
 ```
-Find how many other employees that are reporting to each employee
+First, find how many reporting employees there are for each id:
 
 ```nim
 for edge in g.edges("REPORTS_TO"):
@@ -222,52 +235,55 @@ for edge in g.edges("REPORTS_TO"):
     employee = edge.endsAt["Id"].getInt
     reporter = edge.startsAt["Id"].getInt
   orders[employee].reports.add(reporter)
-
-# Count direct orders for each employee
+```
+Next, we count direct orders for each employee
+```nim
 for edge in g.edges("SOLD"):
   let employee = edge.startsAt["Id"].getInt
   orders[employee].direct.inc
 ```
-What about indirect?
-
-Sum the orders for each reporter to get the number of indirect orders.
-
-Then sum direct and indirect orders to get the total orders.
+But there are also indirect orders, i.e., orders that are associated to a manager via other employees. These are obtained by summing the direct orders for each reporter for the employee in question. The total orders for one employee, then, is the sum of direct and indirect orders.
 
 ```nim
 for order in orders.mvalues:
   order.indirect = order.reports.map(x => orders[x].direct).sum
   order.total = order.direct + order.indirect
 ```
-Pretty-print descending results sorted by total number of orders.
+If we print the results for the employees, sorted by total number of orders, we find:
 
-echo "\nEmployee       Reporters                     Total Orders"
-echo ".".repeat(72)
-```nim
-for order in toSeq(orders.values)
-  .sortedByIt(it.total)
-  .reversed:
-  echo fmt"{order.id:<15}{order.reports:<30}{order.total:<}"
-```
+| Employee  |     Reporters  |                   Total Orders|
+| ------------|-------------------|
+| 2        |      @[1, 8, 5, 3, 4]             | 648|
+| 5         |     @[7, 9, 6]                    |224|
+| 4    |          @[]                           |156|
+| 3     |         @[]                           |127|
+| 1      |        @[]                           |123|
+| 8       |       @[]                           |104|
+| 7        |      @[]                          | 72|
+| 6       |       @[]                           |67|
+| 9       |       @[]                           |43|
+
 ## PART 3: UPDATING THE GRAPH
 
-Eventually, we will need to update the data in the LPG. This is easily done, the LPG is meant to be a dynamic data structure. Let's say that we want to:
+Eventually, we will need to update the data in the LPG. This is easily done since the LPG is meant to be a dynamic data structure. Let's say that we want to:
 
 ###### Make Janet report to Steven!
 
+We first define a helper proc to obtain id's for managers and their employees.
+
 ```nim
-# Proc to easily find manager and employeer
 proc getEmployee(n: int): string =
   for node in g.nodes("Employee"):
     if node["Id"].getInt == n:
       return node.oid
-
-let
-  janet = getEmployee(3)  # Janet
-  steven = getEmployee(5) # Steven
 ```
-Who was Janet reporting to originally?
-
+Then, Janet and Steven can be obtained as
+```nim
+let
+  janet = getEmployee(3)
+  steven = getEmployee(5)
+```
+We can first recapitulate by checking who Janet is currently reporting to.
 ```nim
 for edge in g.edges("REPORTS_TO"):
   if edge.startsAt.oid == janet:
@@ -275,7 +291,7 @@ for edge in g.edges("REPORTS_TO"):
         edge.startsAt["LastName"], edge.endsAt["FirstName"], edge.endsAt["LastName"])
     break
 ```
-Delete Janet's reporting relationships
+The answer is "Andrew Fuller". Let's delete the REPORTS_TO relationship between Janet and Andrew:
 
 ```nim
 for edge in g.node(janet).edges:
@@ -283,12 +299,12 @@ for edge in g.node(janet).edges:
     discard g.delEdge(edge.oid)
 ```
 
-Add a new reporting relation for Janet
+And then add the new reporting relation for Janet
 
 ```nim
 discard g.addEdge(janet, steven, "REPORTS_TO")
 ```
-Who is Janet reporting to now?
+Finally, we can double-check that Janet is actually reporting to Steven now:
 
 ```nim
 for edge in g.edges("REPORTS_TO"):
@@ -297,3 +313,9 @@ for edge in g.edges("REPORTS_TO"):
         edge.startsAt["LastName"], edge.endsAt["FirstName"], edge.endsAt["LastName"])
     break
 ```
+
+The answer? "Janet Leverling is now reporting to Steven Buchanan."
+
+Hopefully, this little tutorial has given you an idea of how to translate your relational SQL models into LPGs with the help of grim.
+
+Happy graphing!
