@@ -15,32 +15,32 @@ import box
 import utils
 
 type
-  GrimNodeOid = string
-  GrimEdgeOid = string
+  NodeOid = string
+  EdgeOid = string
 
   Direction* {.pure.} = enum
     In, Out, OutIn
 
-  GrimEdge = ref object
-    oid*: GrimEdgeOid
+  Edge = ref object
+    oid*: EdgeOid
     label*: string
-    startsAt*: GrimNode
-    endsAt*: GrimNode
+    startsAt*: Node
+    endsAt*: Node
     properties: Table[string, Box]
 
-  GrimNode* = ref object
-    oid*: GrimNodeOid
+  Node = ref object
+    oid*: NodeOid
     label*: string
     properties: Table[string, Box]
-    incoming: Table[GrimNodeOid, Table[GrimEdgeOid, GrimEdge]]
-    outgoing: Table[GrimNodeOid, Table[GrimEdgeOid, GrimEdge]]
+    incoming: Table[NodeOid, Table[EdgeOid, Edge]]
+    outgoing: Table[NodeOid, Table[EdgeOid, Edge]]
 
   Graph* = ref object
     name*: string
-    nodeTable: Table[GrimNodeOid, GrimNode]
-    edgeTable: Table[GrimEdgeOid, GrimEdge]
-    nodeIndex: Table[string, Table[GrimNodeOid, GrimNode]]
-    edgeIndex: Table[string, Table[GrimEdgeOid, GrimEdge]]
+    nodeTable: Table[NodeOid, Node]
+    edgeTable: Table[EdgeOid, Edge]
+    nodeIndex: Table[string, Table[NodeOid, Node]]
+    edgeIndex: Table[string, Table[EdgeOid, Edge]]
 
 proc numberOfNodes*(self: Graph): int =
   ## Return number of Nodes in Graph
@@ -60,7 +60,7 @@ proc edgeLabels*(self: Graph): seq[string] =
   for label in self.edgeIndex.keys:
     result.add(label)
 
-proc nodes*(self: Graph, labels: varargs[string]): (iterator: GrimNode) =
+proc nodes*(self: Graph, labels: varargs[string]): (iterator: Node) =
   ## Return iterator for nodes with `labels` in graph
   # Empty `labels` means use all labels
   let markers =
@@ -70,7 +70,7 @@ proc nodes*(self: Graph, labels: varargs[string]): (iterator: GrimNode) =
       @labels
 
   # Create closure iterator for nodes
-  iterator it: GrimNode {.closure.} =
+  iterator it: Node {.closure.} =
     for label in markers:
       if label notin self.nodeLabels:
         continue
@@ -80,7 +80,7 @@ proc nodes*(self: Graph, labels: varargs[string]): (iterator: GrimNode) =
   return it
 
 proc edges*(self: Graph, labels: varargs[string]): (
-    iterator: GrimEdge) =
+    iterator: Edge) =
   ## Return iterator for edges with `labels` in graph
   # Empty `labels` means use all labels
   let markers =
@@ -90,7 +90,7 @@ proc edges*(self: Graph, labels: varargs[string]): (
       @labels
 
   # Create closure iterator for edges
-  iterator it: GrimEdge {.closure.} =
+  iterator it: Edge {.closure.} =
     for label in markers:
       if label notin self.edgeLabels:
         continue
@@ -126,11 +126,11 @@ proc `$`*(t: Table[string, Box]): string =
     result.delete(result.len-2, result.len)
   result.add("}")
 
-proc `$`*(n: GrimNode): string =
+proc `$`*(n: Node): string =
   ## Pretty-print Node
   result = fmt("<Node {n.label} \"{n.oid}\">")
 
-proc `$`*(e: GrimEdge): string =
+proc `$`*(e: Edge): string =
   ## Pretty-print Edge
   result = fmt("<Edge {e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\">")
 
@@ -143,53 +143,53 @@ proc contains*(self: Graph, key: string): bool =
   ## Check if Node or Edge oid is in Graph
   result = key in self.nodeTable or key in self.edgeTable
 
-proc contains*(self: Graph, key: GrimNode): bool =
+proc contains*(self: Graph, key: Node): bool =
   ## Check if Node object is in Graph
   result = key.oid in self.nodeTable
 
-proc contains*(self: Graph, key: GrimEdge): bool =
+proc contains*(self: Graph, key: Edge): bool =
   ## Check if Edge object is in Graph
   result = key.oid in self.edgeTable
 
-proc `==`*(self, other: GrimNode): bool =
+proc `==`*(self, other: Node): bool =
   ## Check if two Nodes are equal
   result = self.oid == other.oid
 
-proc `==`*(self, other: GrimEdge): bool =
+proc `==`*(self, other: Edge): bool =
   ## Check if two Edges are equal
   result = self.oid == other.oid
 
-proc `[]`*(node: GrimNode, property: string): Box =
+proc `[]`*(node: Node, property: string): Box =
   ## Get `property` of `node`
   result = node.properties[property]
 
-proc `[]=`*(node: GrimNode, property: string, value: Box) =
+proc `[]=`*(node: Node, property: string, value: Box) =
   ## Set `property` of `node` to `value`
   node.properties[property] = value
 
-proc `[]`*(edge: GrimEdge, property: string): Box =
+proc `[]`*(edge: Edge, property: string): Box =
   ## Get `property` of `edge`
   result = edge.properties[property]
 
-proc `[]=`*(edge: GrimEdge, property: string, value: Box) =
+proc `[]=`*(edge: Edge, property: string, value: Box) =
   ## Set `property` of `edge` to `value`
   edge.properties[property] = value
 
-proc len*[T: GrimNode | GrimEdge](obj: T): int =
+proc len*[T: Node | Edge](obj: T): int =
   ## Return number of properties of node or edge
   result = obj.properties.len
 
-iterator pairs*[T: GrimNode | GrimEdge](obj: T): (string, Box) {.closure.} =
+iterator pairs*[T: Node | Edge](obj: T): (string, Box) {.closure.} =
   ## Iterate over property pairs
   for property, value in obj.properties.pairs:
     yield (property, value)
 
-iterator keys*[T: GrimNode | GrimEdge](obj: T): string {.closure.} =
+iterator keys*[T: Node | Edge](obj: T): string {.closure.} =
   ## Iterate over property keys
   for property in obj.properties.keys:
     yield property
 
-iterator values*[T: GrimNode | GrimEdge](obj: T): Box {.closure.} =
+iterator values*[T: Node | Edge](obj: T): Box {.closure.} =
   ## Iterate over property values
   for value in obj.properties.values:
     yield value
@@ -201,7 +201,7 @@ proc newGraph*(name: string = "graph"): Graph =
   result.name = name
 
 proc newNode*(label: string, properties: Table[string, Box] = initTable[string,
-    Box](), oid: string = $genOid()): GrimNode =
+    Box](), oid: string = $genOid()): Node =
   ## Create a new node
   new result
 
@@ -209,9 +209,9 @@ proc newNode*(label: string, properties: Table[string, Box] = initTable[string,
   result.properties = properties
   result.oid = oid
 
-proc newEdge*(A: GrimNode, B: GrimNode, label: string,
+proc newEdge*(A: Node, B: Node, label: string,
     properties: Table[string, Box] = initTable[string, Box](),
-        oid: string = $genOid()): GrimEdge =
+        oid: string = $genOid()): Edge =
   ## Create a new edge
   new result
 
@@ -233,12 +233,12 @@ proc addNode*(self: Graph, label: string, properties: Table[string,
   self.nodeTable[n.oid] = n
   discard self
     .nodeIndex
-    .mgetOrPut(label, initTable[GrimNodeOid, GrimNode]())
+    .mgetOrPut(label, initTable[NodeOid, Node]())
     .mgetOrPut(n.oid, n)
 
   result = n.oid
 
-proc addNode*(self: Graph, n: GrimNode): string =
+proc addNode*(self: Graph, n: Node): string =
   ## Add node to graph.
   # Don't add if node already in graph
   if n in self:
@@ -247,12 +247,12 @@ proc addNode*(self: Graph, n: GrimNode): string =
   self.nodeTable[n.oid] = n
   discard self
     .nodeIndex
-    .mgetOrPut(n.label, initTable[GrimNodeOid, GrimNode]())
+    .mgetOrPut(n.label, initTable[NodeOid, Node]())
     .mgetOrPut(n.oid, n)
 
   result = n.oid
 
-proc addEdge*(self: Graph, e: GrimEdge): string =
+proc addEdge*(self: Graph, e: Edge): string =
   ## Add edge to graph.
   # Don't add if edge already in graph
   if e in self:
@@ -266,23 +266,23 @@ proc addEdge*(self: Graph, e: GrimEdge): string =
   # Add B to the outgoing edge list for A
   discard self
     .nodeTable[A.oid].outgoing
-    .mgetOrPut(B.oid, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(B.oid, initTable[EdgeOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add A to the incoming edge list for  B
   discard self
     .nodeTable[e.endsAt.oid].incoming
-    .mgetOrPut(e.startsAt.oid, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.startsAt.oid, initTable[EdgeOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add edge to main index and label index
   self.edgeTable[e.oid] = e
   discard self
     .edgeIndex
-    .mgetOrPut(e.label, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.label, initTable[EdgeOid, Edge]())
     .mgetOrPut(e.oid, e)
 
-proc addEdge*(self: Graph, A: GrimNode, B: GrimNode, label: string,
+proc addEdge*(self: Graph, A: Node, B: Node, label: string,
     properties: Table[string, Box] = initTable[string, Box](),
         oid: string = $genOid()): string =
   ## Add edge to graph
@@ -302,20 +302,20 @@ proc addEdge*(self: Graph, A: GrimNode, B: GrimNode, label: string,
   # Add B to the outgoing edge list for A
   discard self
     .nodeTable[A.oid].outgoing
-    .mgetOrPut(B.oid, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(B.oid, initTable[EdgeOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add A to the incoming edge list for B
   discard self
     .nodeTable[B.oid].incoming
-    .mgetOrPut(A.oid, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(A.oid, initTable[EdgeOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add edge to main index and label index
   self.edgeTable[e.oid] = e
   discard self
     .edgeIndex
-    .mgetOrPut(e.label, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.label, initTable[EdgeOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   result = e.oid
@@ -336,20 +336,20 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
   # Add B to the outgoing edge list for A
   discard self
     .nodeTable[A].outgoing
-    .mgetOrPut(B, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(B, initTable[EdgeOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add A to the incoming edge list for B
   discard self
     .nodeTable[B].incoming
-    .mgetOrPut(A, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(A, initTable[EdgeOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add edge to main index and label index
   self.edgeTable[e.oid] = e
   discard self
     .edgeIndex
-    .mgetOrPut(e.label, initTable[GrimEdgeOid, GrimEdge]())
+    .mgetOrPut(e.label, initTable[EdgeOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   result = e.oid
@@ -361,7 +361,7 @@ proc update*[T](self: T, p: Table[string, Box]): string =
 
   result = self.oid
 
-proc neighbors*(n: GrimNode, direction: Direction = Direction.Out): (
+proc neighbors*(n: Node, direction: Direction = Direction.Out): (
     iterator: string) =
   ## Return neighbors to `n` counting edges with `direction`.
   # Create closure iterator for neighbors
@@ -389,7 +389,7 @@ iterator neighbors*(self: Graph, n: string,
   for n in self.nodeTable[n].neighbors(direction = direction):
     yield n
 
-proc numberOfNeighbors*(n: GrimNode, direction: Direction = Direction.Out): int =
+proc numberOfNeighbors*(n: Node, direction: Direction = Direction.Out): int =
   ## Return the number of neighbors of node `n` in `direction`.
   let choices = {
     Direction.Out: n.outgoing.len,
@@ -399,21 +399,21 @@ proc numberOfNeighbors*(n: GrimNode, direction: Direction = Direction.Out): int 
 
   return choices[direction]
 
-proc edges*(n: GrimNode, direction: Direction = Direction.Out): (
-    iterator: GrimEdge) =
+proc edges*(n: Node, direction: Direction = Direction.Out): (
+    iterator: Edge) =
   ## Iterator over node edges
   # Create closure iterator for edges
-  iterator outgoingIt: GrimEdge {.closure.} =
+  iterator outgoingIt: Edge {.closure.} =
     for n_oid, edgeTable in n.outgoing.pairs:
       for e_oid, e in edgeTable.pairs:
         yield e
 
-  iterator incomingIt: GrimEdge {.closure.} =
+  iterator incomingIt: Edge {.closure.} =
     for n_oid, edgeTable in n.incoming.pairs:
       for e_oid, e in edgeTable.pairs:
         yield e
 
-  iterator bothIt: GrimEdge {.closure.} =
+  iterator bothIt: Edge {.closure.} =
     for n_oid, edgeTable in n.outgoing.pairs:
       for e_oid, e in edgeTable.pairs:
         yield e
@@ -426,35 +426,35 @@ proc edges*(n: GrimNode, direction: Direction = Direction.Out): (
   return choices[direction]
 
 proc edgesBetween*(self: Graph, A: string, B: string,
-    direction: Direction = Direction.Out): (iterator: GrimEdge) =
+    direction: Direction = Direction.Out): (iterator: Edge) =
   ## Iterator for all edges between nodes `A` and `B` in `direction`.
   # Return empty iterator if A or B not in graph
   if A notin self or B notin self:
-    return iterator(): GrimEdge {.closure.} = discard
+    return iterator(): Edge {.closure.} = discard
 
   let
     # Outgoing edges between A and B
     outgoing = self
       .nodeTable[A]
       .outgoing
-      .getOrDefault(B, initTable[GrimEdgeOid, GrimEdge]())
+      .getOrDefault(B, initTable[EdgeOid, Edge]())
 
     # Incoming edges between A and B
     incoming = self
       .nodeTable[A]
       .incoming
-      .getOrDefault(B, initTable[GrimEdgeOid, GrimEdge]())
+      .getOrDefault(B, initTable[EdgeOid, Edge]())
 
     # Create closure iterators for edges between A and B
-  iterator outgoingIt: GrimEdge {.closure.} =
+  iterator outgoingIt: Edge {.closure.} =
     for e in outgoing.values:
       yield e
 
-  iterator incomingIt: GrimEdge {.closure.} =
+  iterator incomingIt: Edge {.closure.} =
     for e in incoming.values:
       yield e
 
-  iterator bothIt: GrimEdge {.closure.} =
+  iterator bothIt: Edge {.closure.} =
     for e in outgoing.values:
       yield e
     for e in incoming.values:
@@ -464,11 +464,11 @@ proc edgesBetween*(self: Graph, A: string, B: string,
       Direction.OutIn: bothIt}.toTable
   return choices[direction]
 
-proc node*(self: Graph, node: string): GrimNode =
+proc node*(self: Graph, node: string): Node =
   ## Return node with `oid` in graph
   result = self.nodeTable[node]
 
-proc edge*(self: Graph, edge: string): GrimEdge =
+proc edge*(self: Graph, edge: string): Edge =
   ## Return edge with `oid` in graph
   result = self.edgeTable[edge]
 
@@ -535,7 +535,7 @@ proc hasEdge*(self: Graph, A: string, B: string,
     of Direction.OutIn:
       return isOutgoing or isIncoming
 
-proc describe*(e: GrimEdge, lineWidth: int = 100,
+proc describe*(e: Edge, lineWidth: int = 100,
     propertyWidth: int = 20): string =
   ## Return a nice pretty-printed summary of edge `e`
   # Edge header
@@ -556,7 +556,7 @@ proc describe*(e: GrimEdge, lineWidth: int = 100,
 
   result.add("\n")
 
-proc describe*(n: GrimNode, lineWidth: int = 100,
+proc describe*(n: Node, lineWidth: int = 100,
     propertyWidth: int = 20): string =
   ## Return a nice pretty-printed summary of node `n`
   # Node header
