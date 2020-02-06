@@ -5,7 +5,7 @@ import strutils
 from yaml import guessType, TypeHint
 
 type
-  BoxKind = enum
+  BoxKind* = enum
     bxNull,
     bxInt,
     bxFloat,
