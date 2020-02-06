@@ -106,7 +106,7 @@ for edge in g.getEdges(c1, o3):
 for node in g.neighbors(c1):
   echo node.label, ": ", node     # prints node properties
 ```
-Note that the graph is directional, so `addEdge(A, B, "LABEL")` adds an edge with label "LABEL" pointing from A to B. All iterators take a `direction` argument to specify if you want to include edges/neighbors that are outgoing (`A->B`), incoming (`A<-B`) or both (`A<->B`). The direction is specified with the enum values `gdOut`, `gdIn`, and `gdOutIn`.
+Note that the graph is directional, so `addEdge(A, B, "LABEL")` adds an edge with label "LABEL" pointing from A to B. All iterators take a `direction` argument to specify if you want to include edges/neighbors that are outgoing (`A->B`), incoming (`A<-B`) or both (`A<->B`). The direction is specified with the enum values `Direction.Out`, `Direction.In`, and `Direction.OutIn`.
 
 ### Loading and saving graphs
 
