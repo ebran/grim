@@ -40,7 +40,7 @@ proc toPropertyString(statements: NimNode): string =
   result.add(")")
 
 macro graph*(varName: untyped, statements: untyped): untyped =
-  ## Macro to build graph with DSL
+  ## Macro to build graph with DSL.
   # Check that we have a command node
   expectKind(varName, nnkCommand)
   result = newStmtList()
