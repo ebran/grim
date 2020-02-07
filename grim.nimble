@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.1"
+version       = "0.2.0"
 author        = "Erik G. Brandt"
 description   = "Bringer of property graphs to Nim!"
 license       = "MIT"
@@ -8,7 +8,7 @@ srcDir        = "src"
 
 # Dependencies
 
-requires "nim >= 1.0.6"
+requires "nim >= 1.0.4"
 requires "yaml"
 
 # Tasks
@@ -30,5 +30,5 @@ task docs, "Build the documentation (in HTML)":
 # Tutorials
 task northwind, "Northwind tutorial":
   withDir("tutorials"):
-    selfExec "c -r northwind.nim"                        # debug mode
-    #selfExec "c -d:release -d:danger -r northwind.nim"  # release mode
+    #selfExec "c -r northwind.nim"                        # debug mode
+    selfExec "c -d:release -d:danger -r northwind.nim"  # release mode
