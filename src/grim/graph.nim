@@ -15,32 +15,31 @@ import box
 import utils
 
 type
-  NodeOid = string
-  EdgeOid = string
+  EntityOid = string
 
   Direction* {.pure.} = enum
     In, Out, OutIn
 
   Edge = ref object
-    oid*: EdgeOid
+    oid*: EntityOid
     label*: string
     startsAt*: Node
     endsAt*: Node
     properties: Table[string, Box]
 
   Node = ref object
-    oid*: NodeOid
+    oid*: EntityOid
     label*: string
     properties: Table[string, Box]
-    incoming: Table[NodeOid, Table[EdgeOid, Edge]]
-    outgoing: Table[NodeOid, Table[EdgeOid, Edge]]
+    incoming: Table[EntityOid, Table[EntityOid, Edge]]
+    outgoing: Table[EntityOid, Table[EntityOid, Edge]]
 
   Graph* = ref object
     name*: string
-    nodeTable: Table[NodeOid, Node]
-    edgeTable: Table[EdgeOid, Edge]
-    nodeIndex: Table[string, Table[NodeOid, Node]]
-    edgeIndex: Table[string, Table[EdgeOid, Edge]]
+    nodeTable: Table[EntityOid, Node]
+    edgeTable: Table[EntityOid, Edge]
+    nodeIndex: Table[string, Table[EntityOid, Node]]
+    edgeIndex: Table[string, Table[EntityOid, Edge]]
 
 proc numberOfNodes*(self: Graph): int =
   ## Return number of Nodes in Graph
@@ -233,7 +232,7 @@ proc addNode*(self: Graph, label: string, properties: Table[string,
   self.nodeTable[n.oid] = n
   discard self
     .nodeIndex
-    .mgetOrPut(label, initTable[NodeOid, Node]())
+    .mgetOrPut(label, initTable[EntityOid, Node]())
     .mgetOrPut(n.oid, n)
 
   result = n.oid
@@ -247,7 +246,7 @@ proc addNode*(self: Graph, n: Node): string =
   self.nodeTable[n.oid] = n
   discard self
     .nodeIndex
-    .mgetOrPut(n.label, initTable[NodeOid, Node]())
+    .mgetOrPut(n.label, initTable[EntityOid, Node]())
     .mgetOrPut(n.oid, n)
 
   result = n.oid
@@ -266,20 +265,20 @@ proc addEdge*(self: Graph, e: Edge): string =
   # Add B to the outgoing edge list for A
   discard self
     .nodeTable[A.oid].outgoing
-    .mgetOrPut(B.oid, initTable[EdgeOid, Edge]())
+    .mgetOrPut(B.oid, initTable[EntityOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add A to the incoming edge list for  B
   discard self
     .nodeTable[e.endsAt.oid].incoming
-    .mgetOrPut(e.startsAt.oid, initTable[EdgeOid, Edge]())
+    .mgetOrPut(e.startsAt.oid, initTable[EntityOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add edge to main index and label index
   self.edgeTable[e.oid] = e
   discard self
     .edgeIndex
-    .mgetOrPut(e.label, initTable[EdgeOid, Edge]())
+    .mgetOrPut(e.label, initTable[EntityOid, Edge]())
     .mgetOrPut(e.oid, e)
 
 proc addEdge*(self: Graph, A: Node, B: Node, label: string,
@@ -302,20 +301,20 @@ proc addEdge*(self: Graph, A: Node, B: Node, label: string,
   # Add B to the outgoing edge list for A
   discard self
     .nodeTable[A.oid].outgoing
-    .mgetOrPut(B.oid, initTable[EdgeOid, Edge]())
+    .mgetOrPut(B.oid, initTable[EntityOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add A to the incoming edge list for B
   discard self
     .nodeTable[B.oid].incoming
-    .mgetOrPut(A.oid, initTable[EdgeOid, Edge]())
+    .mgetOrPut(A.oid, initTable[EntityOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add edge to main index and label index
   self.edgeTable[e.oid] = e
   discard self
     .edgeIndex
-    .mgetOrPut(e.label, initTable[EdgeOid, Edge]())
+    .mgetOrPut(e.label, initTable[EntityOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   result = e.oid
@@ -336,20 +335,20 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
   # Add B to the outgoing edge list for A
   discard self
     .nodeTable[A].outgoing
-    .mgetOrPut(B, initTable[EdgeOid, Edge]())
+    .mgetOrPut(B, initTable[EntityOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add A to the incoming edge list for B
   discard self
     .nodeTable[B].incoming
-    .mgetOrPut(A, initTable[EdgeOid, Edge]())
+    .mgetOrPut(A, initTable[EntityOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   # Add edge to main index and label index
   self.edgeTable[e.oid] = e
   discard self
     .edgeIndex
-    .mgetOrPut(e.label, initTable[EdgeOid, Edge]())
+    .mgetOrPut(e.label, initTable[EntityOid, Edge]())
     .mgetOrPut(e.oid, e)
 
   result = e.oid
@@ -437,13 +436,13 @@ proc edgesBetween*(self: Graph, A: string, B: string,
     outgoing = self
       .nodeTable[A]
       .outgoing
-      .getOrDefault(B, initTable[EdgeOid, Edge]())
+      .getOrDefault(B, initTable[EntityOid, Edge]())
 
     # Incoming edges between A and B
     incoming = self
       .nodeTable[A]
       .incoming
-      .getOrDefault(B, initTable[EdgeOid, Edge]())
+      .getOrDefault(B, initTable[EntityOid, Edge]())
 
     # Create closure iterators for edges between A and B
   iterator outgoingIt: Edge {.closure.} =
