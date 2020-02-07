@@ -2,7 +2,7 @@
 Grim brings the labeled property graph to Nim!
 ==============================================
 
-.. figure:: ../static/logo.svg
+.. figure:: static/logo.svg
    :alt: Grim, the bringer of graphs
 
 .. contents::
