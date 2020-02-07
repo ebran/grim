@@ -10,6 +10,8 @@ Grim brings the [labeled property graph](https://en.wikipedia.org/wiki/Graph_dat
 <img src="static/map.svg" alt="grim" width=500>
 </p>
 
+**News:** [2020-02-07] v0.2.0 released! See the [Changelog](Changelog.md).
+
 ## Using grim
 
 Grim is provided with the Nimble package manager in recent Nim distributions.
