@@ -35,11 +35,12 @@ proc toPropertyString(statements: NimNode): string =
     result.add(", ")
 
   # Clean up trailing comma
-  result.delete(result.len-2, result.len)
+  if statements.len > 0:
+    result.delete(result.len-2, result.len)
   result.add(")")
 
 macro graph*(varName: untyped, statements: untyped): untyped =
-  ## Macro to build graph with DSL
+  ## Macro to build graph with DSL.
   # Check that we have a command node
   expectKind(varName, nnkCommand)
   result = newStmtList()
@@ -115,7 +116,7 @@ macro graph*(varName: untyped, statements: untyped): untyped =
           if rel.len == 0:
             ""
           else:
-            ", props = " & rel[1].toPropertyString
+            ", properties = " & rel[1].toPropertyString
 
         addEdgeString = fmt("discard {g}.addEdge(\"{oidA}\", \"{oidB}\", \"{edgeLabel}\"{properties})")
 

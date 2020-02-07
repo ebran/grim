@@ -1,17 +1,23 @@
 import grim
+import grim/utils
 import unittest
 import sequtils
-from os import getAppDir, `/`, ParDir
+from os import tryRemoveFile, getAppDir, `/`, ParDir
 
 suite "Input and output":
   setup:
     var g = loadYaml(getAppDir() / ParDir / "tests" / "example.yaml")
 
+  teardown:
+    discard tryRemoveFile(getAppDir() / ParDir / "tests" / "example_test1.yaml")
+    discard tryRemoveFile(getAppDir() / ParDir / "tests" / "example_test2.yaml")
+    discard tryRemoveFile(getAppDir() / ParDir / "tests" / "example_test3.yaml")
+
   test "Test YAML reader on example file":
     let
-      p1 = g.getNode("new gal")
-      p2 = g.getNode("new guy")
-      p3 = g.getNode("young gun")
+      p1 = g.node("new gal")
+      p2 = g.node("new guy")
+      p3 = g.node("young gun")
 
     check:
       g.name == "Happy People"
@@ -20,20 +26,22 @@ suite "Input and output":
       "young gun" in g
 
       p1.label == "Person"
-      p1.properties["name"].getStr == "Jane Doe"
-      p1.properties["age"].getInt == 22
-      p1.properties["smoker"].getBool == true
+      p1["name"].getStr == "Jane Doe"
+      p1["age"].getInt == 22
+      p1["smoker"].getBool == true
 
       p2.label == "Person"
-      p2.properties["name"].getStr == "John Doe"
-      p2.properties["age"].getInt == 24
-      p2.properties["weight"].getFloat == 37.2
+      p2["name"].getStr == "John Doe"
+      p2["age"].getInt == 24
+      p2["weight"].getFloat == 37.2
 
       p3.label == "Person"
 
       g.numberOfNodes == 3
 
-    for r in g.getEdges("new guy", "new gal"):
+    check sequalizeIt(g.edgesBetween("new guy", "new gal")).len == 0
+
+    for r in g.edgesBetween("new guy", "new gal", direction = Direction.In):
       check:
         r in g
         r.startsAt == p1
@@ -41,15 +49,15 @@ suite "Input and output":
 
       case r.label:
         of "MARRIED_TO":
-          check r.properties["since"].getInt == 2012
+          check r["since"].getInt == 2012
         of "INHERITS":
-          check r.properties["amount"].getFloat == 1937.2
+          check r["amount"].getFloat == 1937.2
         else:
           discard
 
     check:
-      toSeq(g.neighbors("new gal")) == @["new guy"]
-      toSeq(g.neighbors("new guy")) == @["new gal"]
+      sequalizeIt(g.neighbors("new gal")) == @["new guy"]
+      sequalizeIt(g.neighbors("new guy", direction = Direction.In)) == @["new gal"]
       g.numberOfEdges == 2
 
   test "Test saving graph to YAML by round-tripping":

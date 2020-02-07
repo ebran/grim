@@ -1,11 +1,19 @@
+# stdlib imports
+import strutils
+
+# 3:rd party imports
+from yaml import guessType, TypeHint
+
 type
-  BoxKind = enum
+  ## Determines what value is kept in the box.
+  BoxKind* = enum
     bxNull,
     bxInt,
     bxFloat,
     bxBool,
     bxStr
 
+  ## A container for a value of any kind.
   Box* = object
     case kind: BoxKind
     of bxInt: intVal: BiggestInt
@@ -15,6 +23,7 @@ type
     of bxNull: discard
 
 proc `$`(bx: BoxKind): string =
+  ## Stringify the kind of value in the box.
   case bx:
     of bxInt:
       result = "integer"
@@ -28,6 +37,7 @@ proc `$`(bx: BoxKind): string =
       result = "empty"
 
 proc `$`*(b: Box): string =
+  ## Stringify the value in the box.
   case b.kind:
     of bxInt:
       result = $b.intVal
@@ -41,6 +51,7 @@ proc `$`*(b: Box): string =
       discard
 
 proc describe*(b: Box): string =
+  ## Pretty-print the value and its kind in the box.
   result = " (" & $b.kind & ")"
   case b.kind:
     of bxInt:
@@ -74,33 +85,53 @@ proc initBox*(value: bool): Box =
   ## Init a new boolean Box
   result = Box(kind: bxBool, boolVal: value)
 
-proc getStr*(b: Box, default = ""): string =
-  result =
-    if b.kind == bxStr:
-      b.strVal
+proc guessBox*(s: string): Box =
+  ## Return Box corresponding to (guessed) type contained in string
+  case s.guessType:
+    of yTypeInteger:
+      initBox(s.parseBiggestInt)
+    of yTypeFloat:
+      initBox(s.parseFloat)
+    of yTypeBoolFalse:
+      initBox(false)
+    of yTypeBoolTrue:
+      initBox(true)
+    of yTypeNull:
+      initBox()
     else:
-      default
+      initBox(s)
 
-proc getInt*(b: Box, default = 0): BiggestInt =
-  result =
-    if b.kind == bxInt:
-      b.intVal
-    else:
-      default
+proc getStr*(b: Box): string =
+  ## Get string value in the box.
+  result = b.strVal
 
-proc getFloat*(b: Box, default = 0.0): float =
-  result =
-    if b.kind == bxFloat:
-      b.floatVal
-    else:
-      default
+proc getStr*(b: Box, default: string): string =
+  ## Return a default value for a string box.
+  result = default
 
-proc getBool*(b: Box, default = false): bool =
-  result =
-    if b.kind == bxBool:
-      b.boolVal
-    else:
-      default
+proc getInt*(b: Box): BiggestInt =
+  ## Get integer value in the box.
+  result = b.intVal
+
+proc getInt*(b: Box, default: BiggestInt): BiggestInt =
+  ## Return a default value for an integer box.
+  result = default
+
+proc getFloat*(b: Box): float =
+  ## Get float value in the box.
+  result = b.floatVal
+
+proc getFloat*(b: Box, default: float): float =
+  ## Return a default value for a float box.
+  result = default
+
+proc getBool*(b: Box): bool =
+  ## Get boolean value in the box.
+  result = b.boolVal
+
+proc getBool*(b: Box, default: bool): bool =
+  ## Return a default value for a boolean box.
+  result = default
 
 proc isEmpty*(b: Box): bool =
   ## Check if Box is empty
@@ -121,3 +152,20 @@ proc update*(b: var Box, value: string) =
 proc update*(b: var Box, value: bool) =
   ## Update value in boolean box
   b.boolVal = value
+
+proc `==`*(self, other: Box): bool =
+  ## Check whether two boxes have the same content
+  if self.kind != other.kind:
+    return false
+
+  case self.kind:
+    of bxInt:
+      return self.intVal == other.intVal
+    of bxStr:
+      return self.strVal == other.strVal
+    of bxFloat:
+      return self.floatVal == other.floatVal
+    of bxBool:
+      return self.boolVal == other.boolVal
+    of bxNull:
+      return true

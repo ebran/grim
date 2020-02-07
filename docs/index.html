@@ -16,7 +16,7 @@
 <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400,500,600' rel='stylesheet' type='text/css'/>
 
 <!-- CSS -->
-<title>grim brings the property graph to Nim!</title>
+<title>Grim brings the labeled property graph to Nim!</title>
 <style type="text/css" >
 /*
 Stylesheet for use with Docutils/rst2html.
@@ -804,7 +804,7 @@ function main() {
 <body onload="main()">
 <div class="document" id="documentId">
   <div class="container">
-    <h1 class="title">grim brings the property graph to Nim!</h1>
+    <h1 class="title">Grim brings the labeled property graph to Nim!</h1>
     <div class="row">
   <div class="three columns">
   <div id="global-links">
@@ -825,9 +825,13 @@ function main() {
       onkeyup="search()" />
   </div>
   <ul class="simple simple-toc" id="toc-list">
-<li><a class="reference" id="quickstart_toc" href="#quickstart">Quickstart</a></li>
-<li><a class="reference" id="user-guide_toc" href="#user-guide">User guide</a></li>
-<li><a class="reference" id="reference-api_toc" href="#reference-api">Reference API</a></li>
+<li><a class="reference" id="🚀-quickstart_toc" href="#🚀-quickstart">🚀 Quickstart</a></li>
+<li><a class="reference" id="📝-user-guide_toc" href="#📝-user-guide">📝 User guide</a></li>
+<ul class="simple"><li><a class="reference" id="📝-user-guide-graph_toc" href="#📝-user-guide-graph">graph</a></li>
+<li><a class="reference" id="📝-user-guide-dsl_toc" href="#📝-user-guide-dsl">dsl</a></li>
+<li><a class="reference" id="📝-user-guide-io_toc" href="#📝-user-guide-io">io</a></li>
+<li><a class="reference" id="📝-user-guide-box_toc" href="#📝-user-guide-box">box</a></li>
+</ul><li><a class="reference" id="reference-api_toc" href="#reference-api">Reference API</a></li>
 
 </ul>
 
@@ -835,11 +839,128 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc"><p>grim provides a native (labeled) <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph">property graph</a> structure for the Nim language, similar to the popular data storage model implemented in the <a class="reference external" href="https://neo4j.com/">Neo4j</a> database. This model consists of labelled Nodes and Edges, with associated data stored as key/value-pairs.</p>
+  <p class="module-desc"><img src="../static/logo.svg" alt="Grim, the bringer of graphs"/><p>Grim provides a labeled <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph">property graph</a> (LPG) data structure for the Nim language, inspired by the storage model used in the <a class="reference external" href="https://neo4j.com/">Neo4j</a> database. This model consists of labeled Nodes and Edges with associated data stored as key/value-pairs.</p>
 
-<h1><a class="toc-backref" id="quickstart" href="#quickstart">Quickstart</a></h1><p>TBW</p>
+<h1><a class="toc-backref" id="🚀-quickstart" href="#🚀-quickstart">🚀 Quickstart</a></h1><p>Grim can be installed with the Nimble package manager:</p>
+<pre class="listing">
+nimble install grim</pre><p>and used as a library in a Nim project by inserting</p>
+<pre class="listing">
+requires &quot;grim&quot;</pre><p>in the .nimble file in the root folder. Then to get access to the Grim API use</p>
+<pre class="listing"><span class="Keyword">import</span> <span class="Identifier">grim</span></pre><p>in your code. This will import all submodules except <tt class="docutils literal"><span class="pre">dsl</span></tt> (needs to be imported as <tt class="docutils literal"><span class="pre">import grim/dsl</span></tt>) in grim into the namespace.</p>
 
-<h1><a class="toc-backref" id="user-guide" href="#user-guide">User guide</a></h1><p>TBW</p>
+<h1><a class="toc-backref" id="📝-user-guide" href="#📝-user-guide">📝 User guide</a></h1><p>The grim library is divided into submodules which may be imported directly as appropriate. Here we list the most imporant procs, templates, and macros. The generated documentation and the index can be used to find out exactly what attributes and procs that are available.</p>
+
+<h2><a class="toc-backref" id="📝-user-guide-graph" href="#📝-user-guide-graph">graph</a></h2><p>The submodule contains the LPG data structure and various way of retrieving information and manipulating the graph structure..</p>
+<ul class="simple"><li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">Graph</span></tt> (<em>type</em>)</dt>
+<dd>The LPG data structure.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">node</span></tt> (<em>proc</em>)</dt>
+<dd>Return a node from the graph.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">edge</span></tt> (<em>proc</em>)</dt>
+<dd>Return an edge from the graph.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">nodes</span></tt> (<em>iterator</em>)</dt>
+<dd>Iterate over nodes with the same label (or all) in the graph.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">edges</span></tt> (<em>iterator</em>)</dt>
+<dd>Iterate over edges with the same label (or all) in the graph.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">edgesBetween</span></tt> (<em>iterator</em>)</dt>
+<dd>Iterate over all edges between two nodes.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">neighbors</span></tt> (<em>iterator</em>)</dt>
+<dd>Iterate over neighbors to a node.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">addNode</span></tt> (<em>proc</em>)</dt>
+<dd>Add a node to the graph.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">addEdge</span></tt> (<em>proc</em>)</dt>
+<dd>Add an edge to the graph.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">delNode</span></tt> (<em>proc</em>)</dt>
+<dd>Delete a node from the graph.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">delEdge</span></tt> (<em>proc</em>)</dt>
+<dd>Delete an edge from the graph.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">hasEdge</span></tt> (<em>proc</em>)</dt>
+<dd>Return whether there is an edge between two nodes.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">update</span></tt> (<em>proc</em>)</dt>
+<dd>Update node or edge properties.</dd>
+</dl>
+</li>
+</ul>
+
+<h2><a class="toc-backref" id="📝-user-guide-dsl" href="#📝-user-guide-dsl">dsl</a></h2><p>The submodule contains a domain specific language (DSL) macro to create LPGs.</p>
+<ul class="simple"><li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">graph</span></tt> (<em>macro</em>)</dt>
+<dd>DSL to easily create LPGs with minimal boilerplate. Usage examples can be found in the unit tests and in the README.</dd>
+</dl>
+</li>
+</ul>
+
+<h2><a class="toc-backref" id="📝-user-guide-io" href="#📝-user-guide-io">io</a></h2><p>The submodule contains input and output routines that are used to read graphs from files and write graphs to file.</p>
+<ul class="simple"><li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">loadYaml</span></tt> (<em>proc</em>)</dt>
+<dd>Load a YAML graph from file.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">saveYaml</span></tt> (<em>proc</em>)</dt>
+<dd>Save a YAML graph to file.</dd>
+</dl>
+</li>
+</ul>
+
+<h2><a class="toc-backref" id="📝-user-guide-box" href="#📝-user-guide-box">box</a></h2><p>The submodule contains a box (or container) type that is used to store values of different kinds in the same static structure.</p>
+<ul class="simple"><li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">Box</span></tt> (<em>type</em>)</dt>
+<dd>A container used to store heterogenuous data in a single static structure.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">initBox</span></tt> (<em>proc</em>)</dt>
+<dd>Create a new box.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">guessBox</span></tt> (<em>proc</em>)</dt>
+<dd>Create a new box of proper kind based on input.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">getStr</span></tt> (<em>proc</em>)</dt>
+<dd>Return string value in box.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">getInt</span></tt> (<em>proc</em>)</dt>
+<dd>Return integer value in box.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">getFloat</span></tt> (<em>proc</em>)</dt>
+<dd>Return float value in box.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">getBool</span></tt> (<em>proc</em>)</dt>
+<dd>Return boolean value in box.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">isEmpty</span></tt> (<em>proc</em>)</dt>
+<dd>Check whether box is empty.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">update</span></tt> (<em>proc</em>)</dt>
+<dd>Update the value in the box.</dd>
+</dl>
+</li>
+</ul>
 
 <h1><a class="toc-backref" id="reference-api" href="#reference-api">Reference API</a></h1><p>See the generated documentation for <a class="reference external" href="grim.html">grim</a>.</p>
 </p>
@@ -851,7 +972,7 @@ function main() {
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-01-30 16:30:11 UTC</small>
+        <small>Made with Nim. Generated: 2020-02-07 22:44:36 UTC</small>
       </div>
     </div>
   </div>
