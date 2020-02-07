@@ -1,9 +1,11 @@
 import grim
+import grim/[dsl, utils]
+
 import unittest
 import sequtils
 
 suite "DSL":
-  test "build graph":
+  setup:
     graph g "People and Pets":
       nodes:
         Person:
@@ -19,9 +21,10 @@ suite "DSL":
           MARRIED_TO:
             since: 2012
 
+  test "build graph":
     let
-      p1 = g.getNode("new gal")
-      p2 = g.getNode("new guy")
+      p1 = g.node("new gal")
+      p2 = g.node("new guy")
 
     check:
       p1 in g
@@ -37,7 +40,7 @@ suite "DSL":
 
       g.numberOfNodes == 2
 
-    for r in g.getEdges("new guy", "new gal"):
+    for r in g.edgesBetween("new gal", "new guy"):
       check:
         r in g
         r.startsAt == p1
@@ -46,7 +49,13 @@ suite "DSL":
         r["since"].getInt == 2012
 
     check:
-      toSeq(g.neighbors("new gal")) == @["new guy"]
-      toSeq(g.neighbors("new guy")) == @["new gal"]
-
       g.numberOfEdges == 1
+      g.edgesBetween("new guy", "new gal").sequalizeIt.len == 0
+      g.edgesBetween("new guy", "new gal",
+          direction = Direction.In).sequalizeIt.len == 1
+      g.edgesBetween("new guy", "new gal",
+          direction = Direction.OutIn).sequalizeIt.len == 1
+
+      sequalizeIt(g.neighbors("new guy")).len == 0
+      sequalizeIt(g.neighbors("new guy", direction = Direction.In)) == @["new gal"]
+      sequalizeIt(g.neighbors("new guy", direction = Direction.OutIn)) == @["new gal"]

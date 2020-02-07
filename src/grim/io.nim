@@ -15,12 +15,12 @@ import box
 # 3:rd party imports
 import yaml
 
-proc toYaml*[T](n: T): YamlNode =
-  ## Cast object as new YamlNode
+proc toYaml[T](n: T): YamlNode =
+  ## Cast object as new YamlNode.
   newYamlNode(n)
 
 proc toTable(node: YamlNode): Table[string, Box] =
-  ## Convert YamlNode mapping to table
+  ## Convert YamlNode mapping to table.
   # Only for mappings
   if node.kind != yMapping:
     raise newException(ValueError, fmt"Node must be a mapping, not {node.kind}!")
@@ -33,7 +33,7 @@ proc toTable(node: YamlNode): Table[string, Box] =
     result[k.content] = guessBox(v.content)
 
 proc loadYaml*(fileName: string): Graph =
-  ## Read graph from YAML document
+  ## Read graph from YAML document.
   # Load YAML as Document Object Model (DOM)
   var strm = newFileStream(fileName, fmRead)
   var dom = loadDom(strm)
@@ -82,7 +82,7 @@ proc loadYaml*(fileName: string): Graph =
     )
 
 proc saveYaml*(g: var Graph, fileName: string, force_overwrite: bool = false) =
-  ## Save graph as YAML file
+  ## Save graph as YAML file.
   # Exception if file exists and overwrite not forced
   if fileExists(fileName) and force_overwrite == false:
     raise newException(IOError, fmt"Error: {fileName} exists, use force_overwrite flag to bypass.")

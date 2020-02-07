@@ -1,4 +1,5 @@
 import grim
+import grim/utils
 import unittest
 import sequtils
 from os import tryRemoveFile, getAppDir, `/`, ParDir
@@ -14,9 +15,9 @@ suite "Input and output":
 
   test "Test YAML reader on example file":
     let
-      p1 = g.getNode("new gal")
-      p2 = g.getNode("new guy")
-      p3 = g.getNode("young gun")
+      p1 = g.node("new gal")
+      p2 = g.node("new guy")
+      p3 = g.node("young gun")
 
     check:
       g.name == "Happy People"
@@ -38,7 +39,9 @@ suite "Input and output":
 
       g.numberOfNodes == 3
 
-    for r in g.getEdges("new guy", "new gal"):
+    check sequalizeIt(g.edgesBetween("new guy", "new gal")).len == 0
+
+    for r in g.edgesBetween("new guy", "new gal", direction = Direction.In):
       check:
         r in g
         r.startsAt == p1
@@ -53,8 +56,8 @@ suite "Input and output":
           discard
 
     check:
-      toSeq(g.neighbors("new gal")) == @["new guy"]
-      toSeq(g.neighbors("new guy")) == @["new gal"]
+      sequalizeIt(g.neighbors("new gal")) == @["new guy"]
+      sequalizeIt(g.neighbors("new guy", direction = Direction.In)) == @["new gal"]
       g.numberOfEdges == 2
 
   test "Test saving graph to YAML by round-tripping":
