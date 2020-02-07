@@ -839,10 +839,10 @@ function main() {
   <li><a class="reference" href="#Graph"
     title="Graph = ref object
   name*: string
-  nodeTable: Table[NodeOid, Node]
-  edgeTable: Table[EdgeOid, Edge]
-  nodeIndex: Table[string, Table[NodeOid, Node]]
-  edgeIndex: Table[string, Table[EdgeOid, Edge]]"><wbr />Graph<span class="attachedType"></span></a></li>
+  nodeTable: Table[EntityOid, Node]
+  edgeTable: Table[EntityOid, Edge]
+  nodeIndex: Table[string, Table[EntityOid, Node]]
+  edgeIndex: Table[string, Table[EntityOid, Edge]]"><wbr />Graph<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -979,26 +979,26 @@ function main() {
 
 
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L21"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L20"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L21" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L20" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="Graph"></a>
 <dt><pre><a href="graph.html#Graph"><span class="Identifier">Graph</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
   <span class="Identifier">name</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">nodeTable</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">NodeOid</span><span class="Other">,</span> <span class="Identifier">Node</span><span class="Other">]</span>
-  <span class="Identifier">edgeTable</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">EdgeOid</span><span class="Other">,</span> <span class="Identifier">Edge</span><span class="Other">]</span>
-  <span class="Identifier">nodeIndex</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">NodeOid</span><span class="Other">,</span> <span class="Identifier">Node</span><span class="Other">]</span><span class="Other">]</span>
-  <span class="Identifier">edgeIndex</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">EdgeOid</span><span class="Other">,</span> <span class="Identifier">Edge</span><span class="Other">]</span><span class="Other">]</span>
+  <span class="Identifier">nodeTable</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">EntityOid</span><span class="Other">,</span> <span class="Identifier">Node</span><span class="Other">]</span>
+  <span class="Identifier">edgeTable</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">EntityOid</span><span class="Other">,</span> <span class="Identifier">Edge</span><span class="Other">]</span>
+  <span class="Identifier">nodeIndex</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">EntityOid</span><span class="Other">,</span> <span class="Identifier">Node</span><span class="Other">]</span><span class="Other">]</span>
+  <span class="Identifier">edgeIndex</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">EntityOid</span><span class="Other">,</span> <span class="Identifier">Edge</span><span class="Other">]</span><span class="Other">]</span>
 </pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L38"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L37"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L38" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L37" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1012,9 +1012,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return number of Nodes in Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L45"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L44"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L45" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L44" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="numberOfEdges,Graph"></a>
@@ -1023,9 +1023,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return number of Edges in Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L49"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L48"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L49" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L48" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="nodeLabels,Graph"></a>
@@ -1034,9 +1034,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return all node labels in the graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L53"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L52"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L53" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L52" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edgeLabels,Graph"></a>
@@ -1045,9 +1045,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return all edge labels in the graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L58"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L57"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L58" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L57" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="nodes,Graph,varargs[string]"></a>
@@ -1057,9 +1057,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return iterator for nodes with <tt class="docutils literal"><span class="pre">labels</span></tt> in graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L63"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L62"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L63" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L62" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edges,Graph,varargs[string]"></a>
@@ -1069,9 +1069,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return iterator for edges with <tt class="docutils literal"><span class="pre">labels</span></tt> in graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L82"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L81"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L82" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L81" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="$,Graph"></a>
@@ -1080,9 +1080,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Pretty-print Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L102"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L101"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L102" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L101" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="$,Table[string,Box]"></a>
@@ -1091,9 +1091,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Pretty-print String table with Boxes
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L119"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L118"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L119" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L118" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="$,Node"></a>
@@ -1102,9 +1102,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Pretty-print Node
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L129"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L128"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L129" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L128" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="$,Edge"></a>
@@ -1113,9 +1113,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Pretty-print Edge
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L133"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L132"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L133" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L132" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="%"></a>
@@ -1124,9 +1124,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Convert tuple to Table[string, Box]
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L137"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L136"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L137" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L136" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="contains,Graph,string"></a>
@@ -1135,9 +1135,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if Node or Edge oid is in Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L142"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L141"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L142" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L141" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="contains,Graph,Node"></a>
@@ -1146,9 +1146,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if Node object is in Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L146"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L145"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L146" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L145" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="contains,Graph,Edge"></a>
@@ -1157,9 +1157,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if Edge object is in Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L150"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L149"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L150" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L149" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="==,Node,Node"></a>
@@ -1168,9 +1168,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if two Nodes are equal
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L154"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L153"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L154" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L153" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="==,Edge,Edge"></a>
@@ -1179,9 +1179,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if two Edges are equal
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L158"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L157"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L158" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L157" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[],Node,string"></a>
@@ -1190,9 +1190,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Get <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">node</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L162"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L161"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L162" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L161" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[]=,Node,string,Box"></a>
@@ -1201,9 +1201,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Set <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">node</span></tt> to <tt class="docutils literal"><span class="pre">value</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L166"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L165"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L166" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L165" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[],Edge,string"></a>
@@ -1212,9 +1212,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Get <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">edge</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L170"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L169"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L170" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L169" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[]=,Edge,string,Box"></a>
@@ -1223,9 +1223,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Set <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">edge</span></tt> to <tt class="docutils literal"><span class="pre">value</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L174"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L173"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L174" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L173" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="len,T"></a>
@@ -1234,9 +1234,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return number of properties of node or edge
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L178"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L177"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L178" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L177" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="newGraph,string"></a>
@@ -1245,9 +1245,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Create a new graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L197"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L196"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L197" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L196" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="newNode,string,Table[string,Box],string"></a>
@@ -1257,9 +1257,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Create a new node
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L203"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L202"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L203" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L202" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="newEdge,Node,Node,string,Table[string,Box],string"></a>
@@ -1270,9 +1270,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Create a new edge
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L212"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L211"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L212" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L211" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="addNode,Graph,string,Table[string,Box],string"></a>
@@ -1283,9 +1283,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Add node to graph.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L224"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L223"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L224" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L223" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="addNode,Graph,Node"></a>
@@ -1294,9 +1294,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Add node to graph.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L241"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L240"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L241" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L240" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="addEdge,Graph,Edge"></a>
@@ -1305,9 +1305,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Add edge to graph.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L255"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L254"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L255" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L254" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="addEdge,Graph,Node,Node,string,Table[string,Box],string"></a>
@@ -1318,9 +1318,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Add edge to graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L285"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L284"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L285" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L284" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="addEdge,Graph,string,string,string,Table[string,Box],string"></a>
@@ -1331,9 +1331,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Add edge to graph.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L323"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L322"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L323" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L322" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,T,Table[string,Box]"></a>
@@ -1342,9 +1342,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Update node or edge properties
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L357"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L356"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L357" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L356" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="neighbors,Node,Direction"></a>
@@ -1354,9 +1354,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return neighbors to <tt class="docutils literal"><span class="pre">n</span></tt> counting edges with <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L364"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L363"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L364" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L363" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="numberOfNeighbors,Node,Direction"></a>
@@ -1366,9 +1366,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return the number of neighbors of node <tt class="docutils literal"><span class="pre">n</span></tt> in <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L392"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L391"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L392" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L391" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edges,Node,Direction"></a>
@@ -1378,9 +1378,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Iterator over node edges
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L402"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L401"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L402" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L401" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edgesBetween,Graph,string,string,Direction"></a>
@@ -1391,9 +1391,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Iterator for all edges between nodes <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> in <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L428"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L427"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L428" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L427" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="node,Graph,string"></a>
@@ -1402,9 +1402,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return node with <tt class="docutils literal"><span class="pre">oid</span></tt> in graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L467"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L466"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L467" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L466" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edge,Graph,string"></a>
@@ -1413,9 +1413,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return edge with <tt class="docutils literal"><span class="pre">oid</span></tt> in graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L471"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L470"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L471" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L470" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="delEdge,Graph,string"></a>
@@ -1424,9 +1424,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Delete edge with <tt class="docutils literal"><span class="pre">oid</span></tt> in graph, return true if edge was in graph and false otherwise.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L475"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L474"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L475" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L474" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="delNode,Graph,string"></a>
@@ -1436,9 +1436,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Delete node with <tt class="docutils literal"><span class="pre">oid</span></tt> in graph, return true if node was in graph and false otherwise.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L500"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L499"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L500" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L499" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="hasEdge,Graph,string,string,Direction"></a>
@@ -1448,9 +1448,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if there is an edge between nodes <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> in <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L520"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L519"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L520" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L519" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="describe,Edge,int,int"></a>
@@ -1460,9 +1460,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return a nice pretty-printed summary of edge <tt class="docutils literal"><span class="pre">e</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L538"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L537"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L538" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L537" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="describe,Node,int,int"></a>
@@ -1472,9 +1472,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return a nice pretty-printed summary of node <tt class="docutils literal"><span class="pre">n</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L559"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L558"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L559" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L558" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="describe,Graph,int"></a>
@@ -1484,9 +1484,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return a nice pretty-printed summary of the graph <tt class="docutils literal"><span class="pre">g</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L580"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L579"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L580" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L579" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1500,9 +1500,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Iterate over property pairs
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L182"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L181"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L182" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L181" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="keys.i,T"></a>
@@ -1511,9 +1511,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Iterate over property keys
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L187"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L186"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L187" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L186" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="values.i,T"></a>
@@ -1522,9 +1522,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Iterate over property values
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L192"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L191"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L192" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L191" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="neighbors.i,Graph,string,Direction"></a>
@@ -1534,9 +1534,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return neighbors to node oid <tt class="docutils literal"><span class="pre">n</span></tt> in graph <tt class="docutils literal"><span class="pre">g</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L386"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L385"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L386" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L385" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1549,7 +1549,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-02-06 21:25:24 UTC</small>
+        <small>Made with Nim. Generated: 2020-02-07 22:05:06 UTC</small>
       </div>
     </div>
   </div>
