@@ -893,6 +893,10 @@ function main() {
     title="update(b: var Box; value: bool)"><wbr />update<span class="attachedType">Box</span></a></li>
   <li><a class="reference" href="#%3D%3D%2CBox%2CBox"
     title="`==`(self, other: Box): bool"><wbr />`==`<span class="attachedType">Box</span></a></li>
+  <li><a class="reference" href="#%25"
+    title="`%`(t: tuple): Table[string, Box]"><wbr />`%`<span class="attachedType">Box</span></a></li>
+  <li><a class="reference" href="#toTable%2CJsonNode"
+    title="toTable(j: JsonNode): Table[string, Box]"><wbr />to<wbr />Table<span class="attachedType">Box</span></a></li>
 
   </ul>
 </li>
@@ -914,9 +918,9 @@ function main() {
 
 
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L9"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L11"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L9" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L11" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="Box"></a>
@@ -937,9 +941,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L17"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L19"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L17" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L19" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -953,9 +957,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Stringify the value in the box.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L39"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L41"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L39" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L41" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="describe,Box"></a>
@@ -964,9 +968,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Pretty-print the value and its kind in the box.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L53"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L55"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L53" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L55" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="initBox"></a>
@@ -975,9 +979,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Init an empty Box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L68"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L70"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L68" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L70" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="initBox,BiggestInt"></a>
@@ -986,9 +990,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Init a new integer Box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L72"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L74"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L72" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L74" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="initBox,string"></a>
@@ -997,9 +1001,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Init a new String Box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L76"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L78"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L76" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L78" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="initBox,float"></a>
@@ -1008,9 +1012,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Init a new float Box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L80"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L82"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L80" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L82" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="initBox,bool"></a>
@@ -1019,9 +1023,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Init a new boolean Box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L84"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L86"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L84" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L86" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="guessBox,string"></a>
@@ -1030,9 +1034,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return Box corresponding to (guessed) type contained in string
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L88"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L90"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L88" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L90" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="getStr,Box"></a>
@@ -1041,9 +1045,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Get string value in the box.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L104"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L106"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L104" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L106" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="getStr,Box,string"></a>
@@ -1052,9 +1056,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return a default value for a string box.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L108"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L110"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L108" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L110" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="getInt,Box"></a>
@@ -1063,9 +1067,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Get integer value in the box.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L112"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L114"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L112" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L114" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="getInt,Box,BiggestInt"></a>
@@ -1074,9 +1078,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return a default value for an integer box.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L116"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L118"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L116" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L118" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="getFloat,Box"></a>
@@ -1085,9 +1089,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Get float value in the box.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L120"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L122"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L120" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L122" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="getFloat,Box,float"></a>
@@ -1096,9 +1100,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return a default value for a float box.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L124"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L126"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L124" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L126" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="getBool,Box"></a>
@@ -1107,9 +1111,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Get boolean value in the box.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L128"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L130"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L128" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L130" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="getBool,Box,bool"></a>
@@ -1118,9 +1122,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return a default value for a boolean box.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L132"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L134"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L132" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L134" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="isEmpty,Box"></a>
@@ -1129,9 +1133,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if Box is empty
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L136"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L138"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L136" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L138" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,Box,BiggestInt"></a>
@@ -1140,9 +1144,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Update value in integer box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L140"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L142"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L140" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L142" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,Box,float"></a>
@@ -1151,9 +1155,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Update value in float box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L144"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L146"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L144" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L146" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,Box,string"></a>
@@ -1162,9 +1166,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Update value in string box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L148"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L150"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L148" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L150" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,Box,bool"></a>
@@ -1173,9 +1177,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Update value in boolean box
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L152"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L154"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L152" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L154" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="==,Box,Box"></a>
@@ -1184,9 +1188,31 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check whether two boxes have the same content
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L156"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L158"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L156" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L158" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="%"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#%25"><span class="Identifier">`%`</span></a><span class="Other">(</span><span class="Identifier">t</span><span class="Other">:</span> <span class="Keyword">tuple</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span></pre></dt>
+<dd>
+
+Convert tuple to Table[string, Box]
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L175"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L175" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="toTable,JsonNode"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#toTable%2CJsonNode"><span class="Identifier">toTable</span></a><span class="Other">(</span><span class="Identifier">j</span><span class="Other">:</span> <span class="Identifier">JsonNode</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Convert JsonNode with simple values to table with boxes.
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/box.nim#L180"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/box.nim#L180" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1199,7 +1225,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-02-07 22:50:34 UTC</small>
+        <small>Made with Nim. Generated: 2020-02-12 21:23:00 UTC</small>
       </div>
     </div>
   </div>
