@@ -2,8 +2,8 @@
 Grim brings the labeled property graph to Nim!
 ==============================================
 
-.. figure:: https://raw.githubusercontent.com/ebran/grim/devel/static/logo.svg
-   :alt: Grim, the bringer of graphs
+.. figure:: ./static/logo.svg
+   :alt: grim, the bringer of graphs
 
 .. contents::
 
