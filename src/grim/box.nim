@@ -1,4 +1,6 @@
 # stdlib imports
+import tables
+import json
 import strutils
 
 # 3:rd party imports
@@ -169,3 +171,13 @@ proc `==`*(self, other: Box): bool =
       return self.boolVal == other.boolVal
     of bxNull:
       return true
+
+proc `%`*(t: tuple): Table[string, Box] =
+  ## Convert tuple to Table[string, Box]
+  for label, value in t.fieldPairs:
+    result[label] = initBox(value)
+
+proc toTable*(j: JsonNode): Table[string, Box] =
+  ## Convert JsonNode with simple values to table with boxes.
+  for (property, value) in j.pairs:
+    result[property] = guessBox($value)

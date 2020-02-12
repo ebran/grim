@@ -133,11 +133,6 @@ proc `$`*(e: Edge): string =
   ## Pretty-print Edge
   result = fmt("<Edge {e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\">")
 
-proc `%`*(t: tuple): Table[string, Box] =
-  ## Convert tuple to Table[string, Box]
-  for label, value in t.fieldPairs:
-    result[label] = initBox(value)
-
 proc contains*(self: Graph, key: string): bool =
   ## Check if Node or Edge oid is in Graph
   result = key in self.nodeTable or key in self.edgeTable
