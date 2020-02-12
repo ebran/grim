@@ -573,18 +573,38 @@ proc describe*(n: Node, lineWidth: int = 100,
 
 proc describe*(g: Graph, lineWidth = 100): string =
   ## Return a nice pretty-printed summary of the graph `g`
-  let
+  var
     # Longest node and edge labels
-    longestNodeLabel = g.nodeLabels.map(x => x.len).foldl(max(a, b))
-    longestEdgeLabel = g.edgeLabels.map(x => x.len).foldl(max(a, b))
+    longestNodeLabel: int
+    longestEdgeLabel: int
     # Largest number of digits in node and edges
-    longestNodeNumber = ($g.nodeLabels.map(x => g.nodeIndex[x].len).foldl(max(a, b))).len
-    longestEdgeNumber = ($g.edgeLabels.map(x => g.edgeIndex[x].len).foldl(max(a, b))).len
+    longestNodeNumber: int
+    longestEdgeNumber: int
     # Longest label and numbers
-    longestLabel = max(longestNodeLabel, longestEdgeLabel)
-    longestNumber = max(longestNodeNumber, longestEdgeNumber)
-    # Calculate indent level
-    indentLevel = longestLabel + longestNumber + 4
+    longestLabel: int
+    longestNumber: int
+    # Indent level
+    indentLevel: int
+
+  if g.nodeLabels.len == 0:
+    longestNodeLabel = 0
+    longestNodeNumber = 0
+  else:
+    longestNodeLabel = g.nodeLabels.map(x => x.len).foldl(max(a, b))
+    longestNodeNumber = ($g.nodeLabels.map(x => g.nodeIndex[x].len).foldl(max(a, b))).len
+
+  if g.edgeLabels.len == 0:
+    longestEdgeLabel = 0
+    longestEdgeNumber = 0
+  else:
+    longestEdgeLabel = g.edgeLabels.map(x => x.len).foldl(max(a, b))
+    longestEdgeNumber = ($g.edgeLabels.map(x => g.edgeIndex[x].len).foldl(max(a, b))).len
+
+  # Longest label and numbers
+  longestLabel = max(longestNodeLabel, longestEdgeLabel)
+  longestNumber = max(longestNodeNumber, longestEdgeNumber)
+  # Calculate indent level
+  indentLevel = longestLabel + longestNumber + 4
 
   var
     line: string
