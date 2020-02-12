@@ -1,70 +1,92 @@
-import os
+# stdlib imports
 import json
 import strutils
 import uri
 import httpclient
 import base64
+
+# grim import
 import grim
 
+# re-export grim
+export grim
+
 type
-  Neo4j* = object
-    client: HttpClient
-    address: string
-    auth: (string, string)
+  ## Client for connecting to Neo4j database
+  Neo4jClient* = object
+    httpClient: HttpClient
+    hostname: string
+    scheme: string
+    port: int
+    resource: string
 
-proc getEnvOrRaise(env: string): string =
-  if not os.existsEnv(env):
-    raise newException(ValueError, "Environment variable $1 is not defined.".format(env))
-  result = os.getEnv(env)
-
-proc initNeo4j(hostname: string, auth: (string, string)): Neo4j =
+proc initNeo4jClient*(hostname: string, scheme: string = "http",
+    port: int = 7474, resource: string = "data", auth: (string,
+        string)): Neo4jClient =
+  ## Initialize a new Neo4j client
+  # Init the HTTP client with simple user/password authorization
   var client = newHttpClient()
   client.headers["Authorization"] = "Basic " & base64.encode(auth[0] & ":" & auth[1])
-  result = Neo4j(client: client, address: hostname, auth: auth)
+  result = Neo4jClient(httpClient: client, resource: resource,
+      hostname: hostname, scheme: scheme, port: port)
 
-proc beginCommit(db: Neo4j, statement: string): Response =
+proc endpoint(client: Neo4jClient): string =
+  ## Return common prefix to transaction endpoint for `client`.
+  let address = Uri(
+    scheme: client.scheme,
+    hostname: client.hostname,
+    port: $client.port,
+    path: "db/$1/transaction/commit".format(client.resource)
+    )
+
+  result = $address
+
+proc beginCommit(client: Neo4jClient, statement: string): JsonNode =
+  ## Begin and auto-commit transaction to Neo4j database.
   let
-    # HTTP request
+    # Setup body for Cypher HTTP request
     req = %*{
       "statements": [
         {
-        "statement": "MATCH (n)-[r]-() RETURN n,r",
-        "resultDataContents": ["graph"]
+          "statement": statement,
+          "resultDataContents": ["graph"]
         }
       ]
     }
-    # HTTP response
-    resp = db.client.post(db.address, body = $req)
+    # Get HTTP response
+    resp = client.httpClient.post(client.endpoint, body = $req)
 
-  result = resp
+  # Check status and return body as json when successful
+  case resp.status:
+    of $Http200:
+      result = parseJson(resp.body)["results"][0]["data"]
+    else:
+      raise newException(ValueError, "Unknown response '$1' from server.".format(resp.status))
 
-proc dump(db: Neo4j): Graph =
-  let r = db.beginCommit("MATCH ()-[r]-() RETURN r")
-  echo r.version, ", ", r.status, ", ", r.headers #, ", ", r.body
+proc execute*(client: Neo4jClient, query: string): Graph =
+  ## Execute Cypher `query` on the remote database.
   result = newGraph()
 
-when isMainModule:
-  let
-    user = getEnvOrRaise("NEO4J_USER")
-    password = getEnvOrRaise("NEO4J_PASSWORD")
-    hostname = getEnvOrRaise("NEO4J_HOSTNAME")
+  # Iterate over all nodes and relationships
+  for elem in client.beginCommit(query):
+    # Add nodes
+    for node in elem["graph"]["nodes"]:
+      let
+        label = node["labels"][0].getStr
+        properties = node["properties"].toTable
+        oid = node["id"].getStr
+      discard result.addNode(label, properties, oid)
 
-    resource = Uri(
-      scheme: "http",
-      hostname: hostname,
-      port: "7474",
-      path: "db/data/transaction/commit"
-    )
+    # Add relationships between nodes
+    for rel in elem["graph"]["relationships"]:
+      let
+        startsAt = rel["startNode"].getStr
+        endsAt = rel["endNode"].getStr
+        label = rel["type"].getStr
+        properties = rel["properties"].toTable
+        oid = rel["id"].getStr
+      discard result.addEdge(startsAt, endsAt, label, properties, oid)
 
-  var
-    db = initNeo4j($resource, auth = (user, password))
-    g = db.dump()
-
-  echo g
-
-  # var data = %*{
-  #   "statements": [ {"statement": "MATCH (n) RETURN n"}]
-  # }
-
-  # let resp = client.post($resource, body = $data)
-  # echo resp.body
+proc dump*(client: Neo4jClient, name: string = "graph"): Graph =
+  ## Dump Neo4j database as a labeled property graph (LPG).
+  result = client.execute("MATCH (n)-[r]-() RETURN n,r")
