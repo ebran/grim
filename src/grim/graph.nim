@@ -46,6 +46,17 @@ type
     nodeIndex: Table[string, Table[EntityOid, Node]]
     edgeIndex: Table[string, Table[EntityOid, Edge]]
 
+  ## Each path member represents an edge
+  Member = ref object
+    next: Member
+    edge: Edge
+
+  ## A path has an anchor node followed by a sequence of members
+  Path* = ref object
+    anchor: Node
+    head: Member
+    tail: Member
+
 proc numberOfNodes*(self: Graph): int =
   ## Return number of Nodes in Graph
   result = self.nodeTable.len
@@ -675,3 +686,46 @@ proc describe*(g: Graph, lineWidth = 100): string =
     info.add("-".repeat(lineWidth) & "\n")
 
     result.add(info)
+
+proc newPath*(anchor: Node): Path =
+  ## Create a new path
+  result = new Path
+  result.anchor = anchor
+
+proc isEmpty*(p: Path): bool =
+  return p.head.isNil
+
+proc add*(p: Path; e: Edge): Path =
+  ## Add a member to the path.
+  # Create a new member
+  let m = new Member
+  m.edge = e
+
+  if p.isEmpty:
+    p.head = m
+    p.tail = m
+
+  # Append member to path
+  p.tail.next = m
+  p.tail = m
+
+  # Return updated path
+  result = p
+
+iterator walk*(p: Path): Edge =
+  ## Walk the path
+  var m = p.head
+  while not m.isNil:
+    yield m.edge
+    m = m.next
+
+proc `$`*(m: Member): string =
+  ## Stringify path member.
+  result = $(m.edge)
+
+proc `$`*(p: Path): string =
+  ## Stringify path
+  if p.isEmpty:
+    result = $(p.anchor)
+  else:
+    result = "$1, $2, $3".format($(p.anchor), $(p.head), $(p.tail))
