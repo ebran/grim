@@ -15,25 +15,30 @@ import box
 import utils
 
 type
-  EntityOid = string
+  ## Unique string representing an entity -- node or edge
+  EntityOid* = string
 
+  ## Edge direction
   Direction* {.pure.} = enum
     In, Out, OutIn
 
-  Edge = ref object
+  ## Edge entity
+  Edge* = ref object
     oid*: EntityOid
     label*: string
     startsAt*: Node
     endsAt*: Node
     properties: Table[string, Box]
 
-  Node = ref object
+  ## Node entity
+  Node* = ref object
     oid*: EntityOid
     label*: string
     properties: Table[string, Box]
     incoming: Table[EntityOid, Table[EntityOid, Edge]]
     outgoing: Table[EntityOid, Table[EntityOid, Edge]]
 
+  ## Labeled property graph
   Graph* = ref object
     name*: string
     nodeTable: Table[EntityOid, Node]
