@@ -797,9 +797,14 @@ proc step*(pc: PathCollection, edgeLabel,
   ## Add a step to a collection of paths
   result = pc
 
-  var duplicates: seq[Path]
+  var
+    # Track distinct paths for multiple (identical) edges between nodes
+    trackDuplicates: seq[Path]
+    # Track dead-end paths (stopping at this step)
+    trackKeepers: seq[Path]
+    trackDeadEnds: seq[bool] = newSeq[bool](pc.len)
 
-  for path in result.paths:
+  for index, path in result.paths.pairs:
     let edges =
       if path.len == 0:
         path.anchor.edges
@@ -815,14 +820,25 @@ proc step*(pc: PathCollection, edgeLabel,
         # Replace last member with the present one
         discard dup.pop
         discard dup.add(edge)
-        # Add to duplicates
-        duplicates.add(dup)
-      elif edge.label == edgeLabel and edge.endsAt.label == nodeLabel:
-        discard path.add(edge)
-        seen.incl(lbl)
+        trackDuplicates.add(dup)
 
-  # Add duplicates
-  for dup in duplicates:
+      # ... if this kind of edge is new ...
+      else:
+        # add edge to path if edge and node labels match
+        if edge.label == edgeLabel and edge.endsAt.label == nodeLabel:
+          discard path.add(edge)
+          seen.incl(lbl)
+
+    if seen.len == 0:
+      trackDeadEnds[index] = true
+
+  for index, path in result.paths.pairs:
+    if not trackDeadEnds[index]:
+      trackKeepers.add(path)
+  result.paths = trackKeepers
+
+  # Add the duplicate paths to the path collection
+  for dup in trackDuplicates:
     result.paths.add(dup)
 
   # Get rid of trailing anchor nodes
