@@ -48,8 +48,9 @@ type
 
   ## Each path member represents an edge
   Member = ref object
-    next: Member
     edge: Edge
+    previous*: Member
+    next*: Member
 
   ## A path has an anchor node followed by a sequence of members
   Path* = ref object
@@ -692,16 +693,27 @@ proc newPath*(anchor: Node): Path =
   result = new Path
   result.anchor = anchor
 
-proc isEmpty*(p: Path): bool =
-  return p.head.isNil
+proc copy*(p: Path): Path =
+  ## Copy a path
+  result = new Path
+  result.numberOfMembers = p.numberOfMembers
+  result.anchor = p.anchor
+  result.head = p.head
+  result.tail = p.tail
+
+proc len*(p: Path): int =
+  ## Path length
+  result = p.numberOfMembers
 
 proc add*(p: Path; e: Edge): Path =
   ## Add a member to the path.
   # Create a new member
   let m = new Member
-  m.edge = e
 
-  if p.isEmpty:
+  m.previous = p.tail
+  m.this = e
+
+  if p.len == 0:
     p.head = m
     p.tail = m
 
