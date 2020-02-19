@@ -59,6 +59,10 @@ type
     head*: Member
     tail*: Member
 
+  ## Collection of paths
+  PathCollection = object
+    paths: seq[Path]
+
 proc numberOfNodes*(self: Graph): int =
   ## Return number of Nodes in Graph
   result = self.nodeTable.len
@@ -745,3 +749,54 @@ proc `$`*(p: Path): string =
     result = $(p.anchor)
   else:
     result = "$1, $2, $3".format($(p.anchor), $(p.head), $(p.tail))
+proc paths*(g: Graph, anchor: string): PathCollection =
+  ## Start a collection of paths
+  var pc = PathCollection()
+  for node in g.nodes(anchor):
+    pc.paths.add(node.newPath)
+
+  result = pc
+
+proc step*(pc: PathCollection, edgeLabel,
+    nodeLabel: string): PathCollection =
+  ## Add a step to a collection of paths
+  result = pc
+
+  var duplicates: seq[Path]
+
+  for path in result.paths:
+    let edges =
+      if path.len == 0:
+        path.anchor.edges
+      else:
+        path.tail.this.endsAt.edges
+
+    var seen: HashSet[string]
+    for edge in edges:
+      let lbl = "$1-$2".format(edge.label, edge.endsAt.label)
+      if lbl in seen:
+        # Create a copy of the path
+        var dup = path.copy
+        # Replace last member with the present one
+        discard dup.pop
+        discard dup.add(edge)
+        # Add to duplicates
+        duplicates.add(dup)
+      elif edge.label == edgeLabel and edge.endsAt.label == nodeLabel:
+        discard path.add(edge)
+        seen.incl(lbl)
+
+  # Add duplicates
+  for dup in duplicates:
+    result.paths.add(dup)
+
+  # Get rid of trailing anchor nodes
+  result.paths.keepItIf(it.len > 0)
+
+iterator items*(pc: PathCollection): Path =
+  ## Iterator for paths in PathCollection
+  for path in pc.paths:
+    yield path
+
+proc len*(pc: PathCollection): int =
+  result = pc.paths.len
