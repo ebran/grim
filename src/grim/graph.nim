@@ -789,6 +789,9 @@ proc paths*(g: Graph, anchor: string): PathCollection =
 
   result = pc
 
+proc len*(pc: PathCollection): int =
+  result = pc.paths.len
+
 proc step*(pc: PathCollection, edgeLabel,
     nodeLabel: string): PathCollection =
   ## Add a step to a collection of paths
@@ -829,6 +832,3 @@ iterator items*(pc: PathCollection): Path =
   ## Iterator for paths in PathCollection
   for path in pc.paths:
     yield path
-
-proc len*(pc: PathCollection): int =
-  result = pc.paths.len
