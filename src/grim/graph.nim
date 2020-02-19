@@ -738,9 +738,20 @@ proc `$`*(m: Member): string =
 
 proc `$`*(p: Path): string =
   ## Stringify path
-  result = "Path of length $1: anchor = $2".format(p.len, $(p.anchor))
-  if p.len > 0:
-    result = result & ", head = $1, tail = $2".format($(p.head), $(p.tail))
+  if p.len == 0:
+    return "Empty path"
+
+  result = "$1-step Path: $2 ($3)".format(p.len, p.anchor.label, p.anchor.oid)
+
+  var m = p.head
+  while not m.isNil:
+    result = result & " ="
+    result = result & "$1=> $2".format(m.this.label, m.this.endsAt.label)
+    if p.len == 1:
+      break
+    m = m.next
+
+  result = result & " ($1).".format(p.tail.this.endsAt.oid)
 
 proc pop*(p: Path): Edge =
   ## Pop the edge in the last member of the path.
