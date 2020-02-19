@@ -48,9 +48,9 @@ type
 
   ## Each path member represents an edge
   Member = ref object
-    edge: Edge
     previous*: Member
     next*: Member
+    this*: Edge
 
   ## A path has an anchor node followed by a sequence of members
   Path* = ref object
@@ -728,7 +728,7 @@ iterator walk*(p: Path): Edge =
   ## Walk the path
   var m = p.head
   while not m.isNil:
-    yield m.edge
+    yield m.this
     m = m.next
 
 proc `$`*(m: Member): string =
