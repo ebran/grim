@@ -54,6 +54,7 @@ type
 
   ## A path has an anchor node followed by a sequence of members
   Path* = ref object
+    numberOfMembers: Natural
     anchor*: Node
     head*: Member
     tail*: Member
@@ -720,6 +721,9 @@ proc add*(p: Path; e: Edge): Path =
   # Append member to path
   p.tail.next = m
   p.tail = m
+
+  # Increase path length
+  p.numberOfMembers.inc
 
   # Return updated path
   result = p
