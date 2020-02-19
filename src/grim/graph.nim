@@ -742,6 +742,27 @@ proc `$`*(p: Path): string =
   if p.len > 0:
     result = result & ", head = $1, tail = $2".format($(p.head), $(p.tail))
 
+proc pop*(p: Path): Edge =
+  ## Pop the edge in the last member of the path.
+  case p.len:
+    of 0:
+      raise newException(ValueError, "Can not pop from zero-length path.")
+    of 1:
+      # Get edge
+      result = p.tail.this
+      # Set head and tail to nil
+      p.head = nil
+      p.tail = nil
+    else:
+      # Get edge
+      result = p.tail.this
+      # Move tail pointer
+      p.tail = p.tail.previous
+      p.tail.next = nil
+
+  # Decrease number of members in path
+  p.numberOfMembers.dec
+
 iterator walk*(p: Path): Edge =
   ## Walk the path
   var m = p.head
