@@ -732,6 +732,16 @@ proc add*(p: Path; e: Edge): Path =
   # Return updated path
   result = p
 
+proc `$`*(m: Member): string =
+  ## Stringify path member.
+  result = $(m.this)
+
+proc `$`*(p: Path): string =
+  ## Stringify path
+  result = "Path of length $1: anchor = $2".format(p.len, $(p.anchor))
+  if p.len > 0:
+    result = result & ", head = $1, tail = $2".format($(p.head), $(p.tail))
+
 iterator walk*(p: Path): Edge =
   ## Walk the path
   var m = p.head
@@ -739,16 +749,6 @@ iterator walk*(p: Path): Edge =
     yield m.this
     m = m.next
 
-proc `$`*(m: Member): string =
-  ## Stringify path member.
-  result = $(m.edge)
-
-proc `$`*(p: Path): string =
-  ## Stringify path
-  if p.isEmpty:
-    result = $(p.anchor)
-  else:
-    result = "$1, $2, $3".format($(p.anchor), $(p.head), $(p.tail))
 proc paths*(g: Graph, anchor: string): PathCollection =
   ## Start a collection of paths
   var pc = PathCollection()
