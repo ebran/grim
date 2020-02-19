@@ -54,9 +54,9 @@ type
 
   ## A path has an anchor node followed by a sequence of members
   Path* = ref object
-    anchor: Node
-    head: Member
-    tail: Member
+    anchor*: Node
+    head*: Member
+    tail*: Member
 
 proc numberOfNodes*(self: Graph): int =
   ## Return number of Nodes in Graph
