@@ -795,6 +795,7 @@ proc len*(pc: PathCollection): int =
 proc step*(pc: PathCollection, edgeLabel,
     nodeLabel: string): PathCollection =
   ## Add a step to a collection of paths
+  # Return a modified copy of the path collection
   result = pc
 
   var
@@ -811,13 +812,19 @@ proc step*(pc: PathCollection, edgeLabel,
       else:
         path.tail.this.endsAt.edges
 
+    # Remember the (EDGELABEL->NODELABEL) edges that already have been added
+    # to the path collection
     var seen: HashSet[string]
+
+    # Iterate over all edges of the trailing node
     for edge in edges:
       let lbl = "$1-$2".format(edge.label, edge.endsAt.label)
+
+      # ... If we have seen this kind of edge already...
       if lbl in seen:
-        # Create a copy of the path
+        # Create a copy of the path but replace its last member with this edge
+        # and store as a duplicate path
         var dup = path.copy
-        # Replace last member with the present one
         discard dup.pop
         discard dup.add(edge)
         trackDuplicates.add(dup)
@@ -841,7 +848,7 @@ proc step*(pc: PathCollection, edgeLabel,
   for dup in trackDuplicates:
     result.paths.add(dup)
 
-  # Get rid of trailing anchor nodes
+  # Finally, get rid of zero-length paths that loom around
   result.paths.keepItIf(it.len > 0)
 
 iterator items*(pc: PathCollection): Path =
