@@ -844,49 +844,26 @@ proc paths*(g: Graph, anchor: string): PathCollection =
 proc len*(pc: PathCollection): int =
   result = pc.paths.len
 
-proc step*(pc: PathCollection, edgeLabel,
-    nodeLabel: string): PathCollection =
-  ## Add a step to a collection of paths
-  # Return a modified copy of the path collection
-  result = pc
+proc step*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
+  ## Add a step to a path collection.
+  # Return a new path collection
+  result = PathCollection()
 
-  var
-    # Track distinct paths for multiple (identical) edges between nodes
-    trackDuplicates: seq[Path]
-    # Track dead-end paths (stopping at this step)
-    trackKeepers: seq[Path]
-    trackDeadEnds: seq[bool] = newSeq[bool](pc.len)
-
-  for index, path in result.paths.pairs:
+  # Iterate over paths
+  for path in pc.paths:
+    # Iterate over edges of the path's end node
+    # (anchor node if the path is empty)
     let edges =
       if path.len == 0:
         path.anchor.edges
       else:
         path.tail.this.endsAt.edges
 
-    # Remember the (EDGELABEL->NODELABEL) edges that already have been added
-    # to the path collection
-    var seen: HashSet[string]
-
-    # Iterate over all edges of the trailing node
     for edge in edges:
-      let lbl = "$1-$2".format(edge.label, edge.endsAt.label)
+      # Add edge to (a copy of the) path ONLY IF edge- and node labels match
+      if edge.label == edgelabel and edge.endsAt.label == nodeLabel:
+        result.paths.add(path.copy.add(edge))
 
-      # ... If we have seen this kind of edge already...
-      if lbl in seen:
-        # Create a copy of the path but replace its last member with this edge
-        # and store as a duplicate path
-        var dup = path.copy
-        discard dup.pop
-        discard dup.add(edge)
-        trackDuplicates.add(dup)
-
-      # ... if this kind of edge is new ...
-      else:
-        # add edge to path if edge and node labels match
-        if edge.label == edgeLabel and edge.endsAt.label == nodeLabel:
-          discard path.add(edge)
-          seen.incl(lbl)
 
     if seen.len == 0:
       trackDeadEnds[index] = true
