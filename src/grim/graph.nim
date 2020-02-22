@@ -873,20 +873,22 @@ proc steps*(pc: PathCollection, edgeLabel, nodeLabel: string,
   for _ in countup(1, nsteps):
     result = result.step(edgeLabel, nodeLabel)
 
-    if seen.len == 0:
-      trackDeadEnds[index] = true
+proc follow*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
+  ## Repeat steps until no further matching paths
+  var
+    other = pc             # copy the path collection
+    visited: HashSet[Path] # track visited paths
 
-  for index, path in result.paths.pairs:
-    if not trackDeadEnds[index]:
-      trackKeepers.add(path)
-  result.paths = trackKeepers
+  while other.len > 0:
+    other = other.step(edgeLabel, nodeLabel)
 
-  # Add the duplicate paths to the path collection
-  for dup in trackDuplicates:
-    result.paths.add(dup)
+    for path in other.paths:
+      visited.incl(path.copy)
 
-  # Finally, get rid of zero-length paths that loom around
-  result.paths.keepItIf(it.len > 0)
+  # Add to result path collection
+  result = PathCollection()
+  for path in visited:
+    result.paths.add(path)
 
 iterator items*(pc: PathCollection): Path =
   ## Iterator for paths in PathCollection
