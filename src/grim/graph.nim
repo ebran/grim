@@ -708,8 +708,27 @@ proc copy*(p: Path): Path =
   result = new Path
   result.numberOfMembers = p.numberOfMembers
   result.anchor = p.anchor
-  result.head = p.head
-  result.tail = p.tail
+
+  # Walk the path
+  var
+    m: Member = p.head
+    m2: Member
+    counter: int
+
+  while not m.isNil:
+    # Copy each member
+    m2 = new Member
+    m2.previous = m.previous
+    m2.next = m.next
+    m2.this = m.this
+
+    if counter == 0:
+      result.head = m2
+    if p.len == 1:
+      break
+    m = m.next
+
+  result.tail = m2
 
 iterator items*(p: Path): Edge =
   ## Walk the path
