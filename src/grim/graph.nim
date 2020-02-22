@@ -170,11 +170,11 @@ proc contains*(self: Graph, key: Edge): bool =
 
 proc `==`*(self, other: Node): bool =
   ## Check if two Nodes are equal
-  result = self.oid == other.oid
+  result = (self.oid == other.oid)
 
 proc `==`*(self, other: Edge): bool =
   ## Check if two Edges are equal
-  result = self.oid == other.oid
+  result = (self.oid == other.oid)
 
 proc `[]`*(node: Node, property: string): Box =
   ## Get `property` of `node`
@@ -711,6 +711,15 @@ proc copy*(p: Path): Path =
   result.head = p.head
   result.tail = p.tail
 
+iterator items*(p: Path): Edge =
+  ## Walk the path
+  var m = p.head
+  while not m.isNil:
+    yield m.this
+    if p.len == 1:
+      break
+    m = m.next
+
 proc hash*(p: Path): Hash =
   ## Create hash for path based on edge oids
   var h: Hash = 0
@@ -804,13 +813,6 @@ proc pop*(p: Path): Edge =
 
   # Decrease number of members in path
   p.numberOfMembers.dec
-
-iterator walk*(p: Path): Edge =
-  ## Walk the path
-  var m = p.head
-  while not m.isNil:
-    yield m.this
-    m = m.next
 
 proc paths*(g: Graph, anchor: string): PathCollection =
   ## Start a collection of paths
