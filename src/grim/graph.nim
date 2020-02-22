@@ -698,6 +698,10 @@ proc newPath*(anchor: Node): Path =
   result = new Path
   result.anchor = anchor
 
+proc len*(p: Path): int =
+  ## Path length
+  result = p.numberOfMembers
+
 proc copy*(p: Path): Path =
   ## Copy a path
   result = new Path
@@ -706,9 +710,6 @@ proc copy*(p: Path): Path =
   result.head = p.head
   result.tail = p.tail
 
-proc len*(p: Path): int =
-  ## Path length
-  result = p.numberOfMembers
 
 proc add*(p: Path; e: Edge): Path =
   ## Add a member to the path.
