@@ -136,7 +136,7 @@ proc `$`*(self: Graph): string =
   for label, edgeTable in self.edgeIndex.pairs:
     edgeStats[label] = edgeTable.len
 
-  result = fmt("<Graph \"{m}\" with {i} node(s) {nodeStats} and {j} edge(s) {edgeStats}>")
+  result = fmt("[Graph \"{m}\" with {i} node(s) {nodeStats} and {j} edge(s) {edgeStats}]")
 
 proc `$`*(t: Table[string, Box]): string =
   ## Pretty-print String table with Boxes
@@ -150,11 +150,11 @@ proc `$`*(t: Table[string, Box]): string =
 
 proc `$`*(n: Node): string =
   ## Pretty-print Node
-  result = fmt("<Node {n.label} \"{n.oid}\">")
+  result = fmt("[Node {n.label} \"{n.oid}\"]")
 
 proc `$`*(e: Edge): string =
   ## Pretty-print Edge
-  result = fmt("<Edge {e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\">")
+  result = fmt("[Edge {e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"]")
 
 proc contains*(self: Graph, key: string): bool =
   ## Check if Node or Edge oid is in Graph
