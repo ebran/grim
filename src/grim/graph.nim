@@ -864,6 +864,14 @@ proc step*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
       if edge.label == edgelabel and edge.endsAt.label == nodeLabel:
         result.paths.add(path.copy.add(edge))
 
+proc steps*(pc: PathCollection, edgeLabel, nodeLabel: string,
+    nsteps: Natural = 1): PathCollection =
+  ## Repeat a number of fixed steps
+  # Return a new path collection
+  result = pc
+  # Take n steps
+  for _ in countup(1, nsteps):
+    result = result.step(edgeLabel, nodeLabel)
 
     if seen.len == 0:
       trackDeadEnds[index] = true
