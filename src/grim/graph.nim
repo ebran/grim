@@ -705,7 +705,9 @@ proc len*(p: Path): int =
 
 proc copy*(p: Path): Path =
   ## Copy a path
+  # Create a new path
   result = new Path
+  # Copy properties from p
   result.numberOfMembers = p.numberOfMembers
   result.anchor = p.anchor
 
@@ -813,7 +815,7 @@ proc `$`*(p: Path): string =
   result = result & " ($1).".format(p.tail.this.endsAt.oid)
 
 proc pop*(p: Path): Edge =
-  ## Pop the edge in the last member of the path.
+  ## Pop the last member of the path and return its edge.
   case p.len:
     of 0:
       raise newException(ValueError, "Can not pop from zero-length path.")
@@ -834,7 +836,7 @@ proc pop*(p: Path): Edge =
   p.numberOfMembers.dec
 
 proc paths*(g: Graph, anchor: string): PathCollection =
-  ## Start a collection of paths
+  ## Start path collection
   var pc = PathCollection()
   for node in g.nodes(anchor):
     pc.paths.add(node.newPath)
