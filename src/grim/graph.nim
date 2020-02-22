@@ -7,6 +7,7 @@ import sets
 import oids
 import strformat
 import db_sqlite
+import hashes
 
 from std/wordwrap import wrapWords
 
@@ -710,6 +711,35 @@ proc copy*(p: Path): Path =
   result.head = p.head
   result.tail = p.tail
 
+proc hash*(p: Path): Hash =
+  ## Create hash for path based on edge oids
+  var h: Hash = 0
+
+  for edge in p:
+    h = h !& edge.oid.hash
+
+  result = !$ h
+
+proc `==`*(self: Path, other: Path): bool =
+  ## Check whether two paths are equal
+  # Can not be equal if they have different lengths.
+  if self.len != other.len:
+    return false
+
+  var
+    m1 = self.head
+    m2 = other.head
+
+  while not m1.isNil:
+    if m1.this != m2.this:
+      return false
+    if self.len == 1:
+      break
+
+    m1 = m1.next
+    m2 = m2.next
+
+  result = true
 
 proc add*(p: Path; e: Edge): Path =
   ## Add a member to the path.
