@@ -833,9 +833,25 @@ function main() {
 <li>
   <a class="reference reference-toplevel" href="#7" id="57">Types</a>
   <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#Direction"
+      <li><a class="reference" href="#EntityOid"
+    title="EntityOid = string"><wbr />Entity<wbr />Oid<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#Direction"
     title="Direction {.pure.} = enum
   In, Out, OutIn"><wbr />Direction<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#Edge"
+    title="Edge = ref object
+  oid*: EntityOid
+  label*: string
+  startsAt*: Node
+  endsAt*: Node
+  properties: Table[string, Box]"><wbr />Edge<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#Node"
+    title="Node = ref object
+  oid*: EntityOid
+  label*: string
+  properties: Table[string, Box]
+  incoming: Table[EntityOid, Table[EntityOid, Edge]]
+  outgoing: Table[EntityOid, Table[EntityOid, Edge]]"><wbr />Node<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#Graph"
     title="Graph = ref object
   name*: string
@@ -843,6 +859,12 @@ function main() {
   edgeTable: Table[EntityOid, Edge]
   nodeIndex: Table[string, Table[EntityOid, Node]]
   edgeIndex: Table[string, Table[EntityOid, Edge]]"><wbr />Graph<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#Path"
+    title="Path = ref object
+  numberOfMembers: Natural
+  anchor*: Node
+  head*: Member
+  tail*: Member"><wbr />Path<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -866,9 +888,9 @@ function main() {
   <li><a class="reference" href="#%24%2CTable%5Bstring%2CBox%5D"
     title="`$`(t: Table[string, Box]): string"><wbr />`$`<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#%24%2CNode"
-    title="`$`(n: Node): string"><wbr />`$`<span class="attachedType"></span></a></li>
+    title="`$`(n: Node): string"><wbr />`$`<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#%24%2CEdge"
-    title="`$`(e: Edge): string"><wbr />`$`<span class="attachedType"></span></a></li>
+    title="`$`(e: Edge): string"><wbr />`$`<span class="attachedType">Edge</span></a></li>
   <li><a class="reference" href="#contains%2CGraph%2Cstring"
     title="contains(self: Graph; key: string): bool"><wbr />contains<span class="attachedType">Graph</span></a></li>
   <li><a class="reference" href="#contains%2CGraph%2CNode"
@@ -876,27 +898,27 @@ function main() {
   <li><a class="reference" href="#contains%2CGraph%2CEdge"
     title="contains(self: Graph; key: Edge): bool"><wbr />contains<span class="attachedType">Graph</span></a></li>
   <li><a class="reference" href="#%3D%3D%2CNode%2CNode"
-    title="`==`(self, other: Node): bool"><wbr />`==`<span class="attachedType"></span></a></li>
+    title="`==`(self, other: Node): bool"><wbr />`==`<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#%3D%3D%2CEdge%2CEdge"
-    title="`==`(self, other: Edge): bool"><wbr />`==`<span class="attachedType"></span></a></li>
+    title="`==`(self, other: Edge): bool"><wbr />`==`<span class="attachedType">Edge</span></a></li>
   <li><a class="reference" href="#%5B%5D%2CNode%2Cstring"
-    title="`[]`(node: Node; property: string): Box"><wbr />`[]`<span class="attachedType"></span></a></li>
+    title="`[]`(node: Node; property: string): Box"><wbr />`[]`<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#%5B%5D%3D%2CNode%2Cstring%2CBox"
-    title="`[]=`(node: Node; property: string; value: Box)"><wbr />`[]=`<span class="attachedType"></span></a></li>
+    title="`[]=`(node: Node; property: string; value: Box)"><wbr />`[]=`<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#%5B%5D%2CEdge%2Cstring"
-    title="`[]`(edge: Edge; property: string): Box"><wbr />`[]`<span class="attachedType"></span></a></li>
+    title="`[]`(edge: Edge; property: string): Box"><wbr />`[]`<span class="attachedType">Edge</span></a></li>
   <li><a class="reference" href="#%5B%5D%3D%2CEdge%2Cstring%2CBox"
-    title="`[]=`(edge: Edge; property: string; value: Box)"><wbr />`[]=`<span class="attachedType"></span></a></li>
+    title="`[]=`(edge: Edge; property: string; value: Box)"><wbr />`[]=`<span class="attachedType">Edge</span></a></li>
   <li><a class="reference" href="#len%2CT"
     title="len[T: Node | Edge](obj: T): int"><wbr />len<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#newGraph%2Cstring"
     title="newGraph(name: string = &quot;graph&quot;): Graph"><wbr />new<wbr />Graph<span class="attachedType">Graph</span></a></li>
   <li><a class="reference" href="#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"
     title="newNode(label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Node"><wbr />new<wbr />Node<span class="attachedType"></span></a></li>
+        oid: string = $genOid()): Node"><wbr />new<wbr />Node<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#newEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"
     title="newEdge(A: Node; B: Node; label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Edge"><wbr />new<wbr />Edge<span class="attachedType"></span></a></li>
+        oid: string = $genOid()): Edge"><wbr />new<wbr />Edge<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#addNode%2CGraph%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"
     title="addNode(self: Graph; label: string; properties: Table[string, Box] = initTable();
         oid: string = $genOid()): string"><wbr />add<wbr />Node<span class="attachedType">Graph</span></a></li>
@@ -913,11 +935,11 @@ function main() {
   <li><a class="reference" href="#update%2CT%2CTable%5Bstring%2CBox%5D"
     title="update[T](self: T; p: Table[string, Box]): string"><wbr />update<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#neighbors%2CNode%2CDirection"
-    title="neighbors(n: Node; direction: Direction = Direction.Out): (iterator (): string)"><wbr />neighbors<span class="attachedType"></span></a></li>
+    title="neighbors(n: Node; direction: Direction = Direction.Out): (iterator (): string)"><wbr />neighbors<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#numberOfNeighbors%2CNode%2CDirection"
-    title="numberOfNeighbors(n: Node; direction: Direction = Direction.Out): int"><wbr />number<wbr />Of<wbr />Neighbors<span class="attachedType"></span></a></li>
+    title="numberOfNeighbors(n: Node; direction: Direction = Direction.Out): int"><wbr />number<wbr />Of<wbr />Neighbors<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#edges%2CNode%2CDirection"
-    title="edges(n: Node; direction: Direction = Direction.Out): (iterator (): Edge)"><wbr />edges<span class="attachedType"></span></a></li>
+    title="edges(n: Node; direction: Direction = Direction.Out): (iterator (): Edge)"><wbr />edges<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#edgesBetween%2CGraph%2Cstring%2Cstring%2CDirection"
     title="edgesBetween(self: Graph; A: string; B: string; direction: Direction = Direction.Out): (
     iterator (): Edge)"><wbr />edges<wbr />Between<span class="attachedType">Graph</span></a></li>
@@ -932,11 +954,39 @@ function main() {
   <li><a class="reference" href="#hasEdge%2CGraph%2Cstring%2Cstring%2CDirection"
     title="hasEdge(self: Graph; A: string; B: string; direction: Direction = Direction.Out): bool"><wbr />has<wbr />Edge<span class="attachedType">Graph</span></a></li>
   <li><a class="reference" href="#describe%2CEdge%2Cint%2Cint"
-    title="describe(e: Edge; lineWidth: int = 100; propertyWidth: int = 20): string"><wbr />describe<span class="attachedType"></span></a></li>
+    title="describe(e: Edge; lineWidth: int = 100; propertyWidth: int = 20): string"><wbr />describe<span class="attachedType">Edge</span></a></li>
   <li><a class="reference" href="#describe%2CNode%2Cint%2Cint"
-    title="describe(n: Node; lineWidth: int = 100; propertyWidth: int = 20): string"><wbr />describe<span class="attachedType"></span></a></li>
+    title="describe(n: Node; lineWidth: int = 100; propertyWidth: int = 20): string"><wbr />describe<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#describe%2CGraph%2Cint"
     title="describe(g: Graph; lineWidth = 100): string"><wbr />describe<span class="attachedType">Graph</span></a></li>
+  <li><a class="reference" href="#newPath%2CNode"
+    title="newPath(anchor: Node): Path"><wbr />new<wbr />Path<span class="attachedType">Node</span></a></li>
+  <li><a class="reference" href="#len%2CPath"
+    title="len(p: Path): int"><wbr />len<span class="attachedType">Path</span></a></li>
+  <li><a class="reference" href="#copy%2CPath"
+    title="copy(p: Path): Path"><wbr />copy<span class="attachedType">Path</span></a></li>
+  <li><a class="reference" href="#hash%2CPath"
+    title="hash(p: Path): Hash"><wbr />hash<span class="attachedType">Path</span></a></li>
+  <li><a class="reference" href="#%3D%3D%2CPath%2CPath"
+    title="`==`(self: Path; other: Path): bool"><wbr />`==`<span class="attachedType">Path</span></a></li>
+  <li><a class="reference" href="#add%2CPath%2CEdge"
+    title="add(p: Path; e: Edge): Path"><wbr />add<span class="attachedType">Path</span></a></li>
+  <li><a class="reference" href="#%24%2CMember"
+    title="`$`(m: Member): string"><wbr />`$`<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#%24%2CPath"
+    title="`$`(p: Path): string"><wbr />`$`<span class="attachedType">Path</span></a></li>
+  <li><a class="reference" href="#pop%2CPath"
+    title="pop(p: Path): Edge"><wbr />pop<span class="attachedType">Path</span></a></li>
+  <li><a class="reference" href="#paths%2CGraph%2Cstring"
+    title="paths(g: Graph; anchor: string): PathCollection"><wbr />paths<span class="attachedType">Graph</span></a></li>
+  <li><a class="reference" href="#len%2CPathCollection"
+    title="len(pc: PathCollection): int"><wbr />len<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#step%2CPathCollection%2Cstring%2Cstring"
+    title="step(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection"><wbr />step<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#steps%2CPathCollection%2Cstring%2Cstring%2CNatural"
+    title="steps(pc: PathCollection; edgeLabel, nodeLabel: string; nsteps: Natural = 1): PathCollection"><wbr />steps<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#follow%2CPathCollection%2Cstring%2Cstring"
+    title="follow(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection"><wbr />follow<span class="attachedType"></span></a></li>
 
   </ul>
 </li>
@@ -951,6 +1001,10 @@ function main() {
     title="values[T: Node | Edge](obj: T): Box"><wbr />values<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#neighbors.i%2CGraph%2Cstring%2CDirection"
     title="neighbors(self: Graph; n: string; direction: Direction = Direction.Out): string"><wbr />neighbors<span class="attachedType">Graph</span></a></li>
+  <li><a class="reference" href="#items.i%2CPath"
+    title="items(p: Path): Edge"><wbr />items<span class="attachedType">Path</span></a></li>
+  <li><a class="reference" href="#items.i%2CPathCollection"
+    title="items(pc: PathCollection): Path"><wbr />items<span class="attachedType">Path</span></a></li>
 
   </ul>
 </li>
@@ -970,9 +1024,8 @@ function main() {
 <div class="section" id="7">
 <h1><a class="toc-backref" href="#7">Types</a></h1>
 <dl class="item">
-<a id="Direction"></a>
-<dt><pre><a href="graph.html#Direction"><span class="Identifier">Direction</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">pure</span></span><span class="Other">.}</span></span> <span class="Other">=</span> <span class="Keyword">enum</span>
-  <span class="Identifier">In</span><span class="Other">,</span> <span class="Identifier">Out</span><span class="Other">,</span> <span class="Identifier">OutIn</span></pre></dt>
+<a id="EntityOid"></a>
+<dt><pre><a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a> <span class="Other">=</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 
 
@@ -982,21 +1035,83 @@ class="link-seesrc" target="_blank">Source</a>
 <a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L20" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
-<a id="Graph"></a>
-<dt><pre><a href="graph.html#Graph"><span class="Identifier">Graph</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
-  <span class="Identifier">name</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">nodeTable</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">EntityOid</span><span class="Other">,</span> <span class="Identifier">Node</span><span class="Other">]</span>
-  <span class="Identifier">edgeTable</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">EntityOid</span><span class="Other">,</span> <span class="Identifier">Edge</span><span class="Other">]</span>
-  <span class="Identifier">nodeIndex</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">EntityOid</span><span class="Other">,</span> <span class="Identifier">Node</span><span class="Other">]</span><span class="Other">]</span>
-  <span class="Identifier">edgeIndex</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">EntityOid</span><span class="Other">,</span> <span class="Identifier">Edge</span><span class="Other">]</span><span class="Other">]</span>
+<a id="Direction"></a>
+<dt><pre><a href="graph.html#Direction"><span class="Identifier">Direction</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">pure</span></span><span class="Other">.}</span></span> <span class="Other">=</span> <span class="Keyword">enum</span>
+  <span class="Identifier">In</span><span class="Other">,</span> <span class="Identifier">Out</span><span class="Other">,</span> <span class="Identifier">OutIn</span></pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L23"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L23" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="Edge"></a>
+<dt><pre><a href="graph.html#Edge"><span class="Identifier">Edge</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
+  <span class="Identifier">oid</span><span class="Operator">*</span><span class="Other">:</span> <a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a>
+  <span class="Identifier">label</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">startsAt</span><span class="Operator">*</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a>
+  <span class="Identifier">endsAt</span><span class="Operator">*</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a>
+  <span class="Identifier">properties</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span>
 </pre></dt>
 <dd>
 
 
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L37"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L27"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L37" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L27" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="Node"></a>
+<dt><pre><a href="graph.html#Node"><span class="Identifier">Node</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
+  <span class="Identifier">oid</span><span class="Operator">*</span><span class="Other">:</span> <a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a>
+  <span class="Identifier">label</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">properties</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span>
+  <span class="Identifier">incoming</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">]</span>
+  <span class="Identifier">outgoing</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">]</span>
+</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L35"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L35" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="Graph"></a>
+<dt><pre><a href="graph.html#Graph"><span class="Identifier">Graph</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
+  <span class="Identifier">name</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
+  <span class="Identifier">nodeTable</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">]</span>
+  <span class="Identifier">edgeTable</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span>
+  <span class="Identifier">nodeIndex</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">]</span><span class="Other">]</span>
+  <span class="Identifier">edgeIndex</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="graph.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">]</span>
+</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L43"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L43" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="Path"></a>
+<dt><pre><a href="graph.html#Path"><span class="Identifier">Path</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
+  <span class="Identifier">numberOfMembers</span><span class="Other">:</span> <span class="Identifier">Natural</span>
+  <span class="Identifier">anchor</span><span class="Operator">*</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a>
+  <span class="Identifier">head</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Member</span>
+  <span class="Identifier">tail</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">Member</span>
+</pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L57"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L57" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1010,9 +1125,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return number of Nodes in Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L44"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L67"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L44" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L67" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="numberOfEdges,Graph"></a>
@@ -1021,9 +1136,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return number of Edges in Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L48"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L71"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L48" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L71" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="nodeLabels,Graph"></a>
@@ -1032,9 +1147,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return all node labels in the graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L52"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L75"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L52" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L75" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edgeLabels,Graph"></a>
@@ -1043,33 +1158,33 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return all edge labels in the graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L57"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L80"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L57" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L80" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="nodes,Graph,varargs[string]"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#nodes%2CGraph%2Cvarargs%5Bstring%5D"><span class="Identifier">nodes</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">labels</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Keyword">iterator</span> <span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+<dt><pre><span class="Keyword">proc</span> <a href="#nodes%2CGraph%2Cvarargs%5Bstring%5D"><span class="Identifier">nodes</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">labels</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Keyword">iterator</span> <span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Return iterator for nodes with <tt class="docutils literal"><span class="pre">labels</span></tt> in graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L62"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L85"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L62" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L85" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edges,Graph,varargs[string]"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#edges%2CGraph%2Cvarargs%5Bstring%5D"><span class="Identifier">edges</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">labels</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Keyword">iterator</span> <span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Edge</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+<dt><pre><span class="Keyword">proc</span> <a href="#edges%2CGraph%2Cvarargs%5Bstring%5D"><span class="Identifier">edges</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">labels</span><span class="Other">:</span> <span class="Identifier">varargs</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Keyword">iterator</span> <span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Return iterator for edges with <tt class="docutils literal"><span class="pre">labels</span></tt> in graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L81"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L104"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L81" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L104" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="$,Graph"></a>
@@ -1078,9 +1193,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Pretty-print Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L101"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L124"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L101" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L124" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="$,Table[string,Box]"></a>
@@ -1089,31 +1204,31 @@ class="link-seesrc" target="_blank">Source</a>
 
 Pretty-print String table with Boxes
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L118"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L141"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L118" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L141" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="$,Node"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#%24%2CNode"><span class="Identifier">`$`</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#%24%2CNode"><span class="Identifier">`$`</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Pretty-print Node
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L128"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L151"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L128" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L151" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="$,Edge"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#%24%2CEdge"><span class="Identifier">`$`</span></a><span class="Other">(</span><span class="Identifier">e</span><span class="Other">:</span> <span class="Identifier">Edge</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#%24%2CEdge"><span class="Identifier">`$`</span></a><span class="Other">(</span><span class="Identifier">e</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Pretty-print Edge
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L132"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L155"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L132" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L155" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="contains,Graph,string"></a>
@@ -1122,108 +1237,108 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if Node or Edge oid is in Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L136"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L159"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L136" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L159" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="contains,Graph,Node"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CGraph%2CNode"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CGraph%2CNode"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Check if Node object is in Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L140"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L163"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L140" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L163" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="contains,Graph,Edge"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CGraph%2CEdge"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <span class="Identifier">Edge</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#contains%2CGraph%2CEdge"><span class="Identifier">contains</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">key</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Check if Edge object is in Graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L144"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L167"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L144" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L167" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="==,Node,Node"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#%3D%3D%2CNode%2CNode"><span class="Identifier">`==`</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">,</span> <span class="Identifier">other</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#%3D%3D%2CNode%2CNode"><span class="Identifier">`==`</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">,</span> <span class="Identifier">other</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Check if two Nodes are equal
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L148"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L171"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L148" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L171" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="==,Edge,Edge"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#%3D%3D%2CEdge%2CEdge"><span class="Identifier">`==`</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">,</span> <span class="Identifier">other</span><span class="Other">:</span> <span class="Identifier">Edge</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#%3D%3D%2CEdge%2CEdge"><span class="Identifier">`==`</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">,</span> <span class="Identifier">other</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Check if two Edges are equal
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L152"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L175"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L152" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L175" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[],Node,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%2CNode%2Cstring"><span class="Identifier">`[]`</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">;</span> <span class="Identifier">property</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%2CNode%2Cstring"><span class="Identifier">`[]`</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">property</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Get <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">node</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L156"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L179"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L156" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L179" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[]=,Node,string,Box"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%3D%2CNode%2Cstring%2CBox"><span class="Identifier">`[]=`</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">;</span> <span class="Identifier">property</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">value</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%3D%2CNode%2Cstring%2CBox"><span class="Identifier">`[]=`</span></a><span class="Other">(</span><span class="Identifier">node</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">property</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">value</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Set <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">node</span></tt> to <tt class="docutils literal"><span class="pre">value</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L160"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L183"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L160" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L183" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[],Edge,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%2CEdge%2Cstring"><span class="Identifier">`[]`</span></a><span class="Other">(</span><span class="Identifier">edge</span><span class="Other">:</span> <span class="Identifier">Edge</span><span class="Other">;</span> <span class="Identifier">property</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%2CEdge%2Cstring"><span class="Identifier">`[]`</span></a><span class="Other">(</span><span class="Identifier">edge</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">;</span> <span class="Identifier">property</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Get <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">edge</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L164"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L187"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L164" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L187" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[]=,Edge,string,Box"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%3D%2CEdge%2Cstring%2CBox"><span class="Identifier">`[]=`</span></a><span class="Other">(</span><span class="Identifier">edge</span><span class="Other">:</span> <span class="Identifier">Edge</span><span class="Other">;</span> <span class="Identifier">property</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">value</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#%5B%5D%3D%2CEdge%2Cstring%2CBox"><span class="Identifier">`[]=`</span></a><span class="Other">(</span><span class="Identifier">edge</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">;</span> <span class="Identifier">property</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">value</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Set <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">edge</span></tt> to <tt class="docutils literal"><span class="pre">value</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L168"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L191"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L168" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L191" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="len,T"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#len%2CT"><span class="Identifier">len</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Identifier">Node</span> <span class="Operator">|</span> <span class="Identifier">Edge</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#len%2CT"><span class="Identifier">len</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a> <span class="Operator">|</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span></pre></dt>
 <dd>
 
 Return number of properties of node or edge
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L172"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L195"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L172" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L195" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="newGraph,string"></a>
@@ -1232,34 +1347,34 @@ class="link-seesrc" target="_blank">Source</a>
 
 Create a new graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L191"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L214"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L191" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L214" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="newNode,string,Table[string,Box],string"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"><span class="Identifier">newNode</span></a><span class="Other">(</span><span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">properties</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">initTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">;</span>
-            <span class="Identifier">oid</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Operator">$</span><span class="Identifier">genOid</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Node</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+            <span class="Identifier">oid</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Operator">$</span><span class="Identifier">genOid</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Create a new node
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L197"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L220"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L197" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L220" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="newEdge,Node,Node,string,Table[string,Box],string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#newEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"><span class="Identifier">newEdge</span></a><span class="Other">(</span><span class="Identifier">A</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">;</span> <span class="Identifier">B</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
-            <span class="Identifier">properties</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">initTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">;</span> <span class="Identifier">oid</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Operator">$</span><span class="Identifier">genOid</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Edge</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+<dt><pre><span class="Keyword">proc</span> <a href="#newEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"><span class="Identifier">newEdge</span></a><span class="Other">(</span><span class="Identifier">A</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">B</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+            <span class="Identifier">properties</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">initTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">;</span> <span class="Identifier">oid</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Operator">$</span><span class="Identifier">genOid</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Create a new edge
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L206"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L229"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L206" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L229" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="addNode,Graph,string,Table[string,Box],string"></a>
@@ -1270,44 +1385,44 @@ class="link-seesrc" target="_blank">Source</a>
 
 Add node to graph.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L218"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L241"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L218" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L241" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="addNode,Graph,Node"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#addNode%2CGraph%2CNode"><span class="Identifier">addNode</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#addNode%2CGraph%2CNode"><span class="Identifier">addNode</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">n</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Add node to graph.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L235"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L258"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L235" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L258" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="addEdge,Graph,Edge"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#addEdge%2CGraph%2CEdge"><span class="Identifier">addEdge</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">e</span><span class="Other">:</span> <span class="Identifier">Edge</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#addEdge%2CGraph%2CEdge"><span class="Identifier">addEdge</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">e</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Add edge to graph.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L249"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L272"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L249" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L272" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="addEdge,Graph,Node,Node,string,Table[string,Box],string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#addEdge%2CGraph%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"><span class="Identifier">addEdge</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">A</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">;</span> <span class="Identifier">B</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
+<dt><pre><span class="Keyword">proc</span> <a href="#addEdge%2CGraph%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"><span class="Identifier">addEdge</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">A</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">B</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
             <span class="Identifier">properties</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">initTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">;</span> <span class="Identifier">oid</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Operator">$</span><span class="Identifier">genOid</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Add edge to graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L279"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L302"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L279" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L302" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="addEdge,Graph,string,string,string,Table[string,Box],string"></a>
@@ -1318,9 +1433,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Add edge to graph.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L317"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L340"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L317" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L340" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,T,Table[string,Box]"></a>
@@ -1329,80 +1444,80 @@ class="link-seesrc" target="_blank">Source</a>
 
 Update node or edge properties
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L351"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L374"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L351" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L374" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="neighbors,Node,Direction"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#neighbors%2CNode%2CDirection"><span class="Identifier">neighbors</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">;</span> <span class="Identifier">direction</span><span class="Other">:</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a> <span class="Other">=</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a><span class="Other">.</span><span class="Identifier">Out</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Keyword">iterator</span> <span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+<dt><pre><span class="Keyword">proc</span> <a href="#neighbors%2CNode%2CDirection"><span class="Identifier">neighbors</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">direction</span><span class="Other">:</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a> <span class="Other">=</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a><span class="Other">.</span><span class="Identifier">Out</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Keyword">iterator</span> <span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Return neighbors to <tt class="docutils literal"><span class="pre">n</span></tt> counting edges with <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L358"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L381"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L358" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L381" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="numberOfNeighbors,Node,Direction"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#numberOfNeighbors%2CNode%2CDirection"><span class="Identifier">numberOfNeighbors</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">;</span> <span class="Identifier">direction</span><span class="Other">:</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a> <span class="Other">=</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a><span class="Other">.</span><span class="Identifier">Out</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+<dt><pre><span class="Keyword">proc</span> <a href="#numberOfNeighbors%2CNode%2CDirection"><span class="Identifier">numberOfNeighbors</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">direction</span><span class="Other">:</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a> <span class="Other">=</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a><span class="Other">.</span><span class="Identifier">Out</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Return the number of neighbors of node <tt class="docutils literal"><span class="pre">n</span></tt> in <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L386"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L409"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L386" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L409" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edges,Node,Direction"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#edges%2CNode%2CDirection"><span class="Identifier">edges</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">;</span> <span class="Identifier">direction</span><span class="Other">:</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a> <span class="Other">=</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a><span class="Other">.</span><span class="Identifier">Out</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Keyword">iterator</span> <span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Edge</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+<dt><pre><span class="Keyword">proc</span> <a href="#edges%2CNode%2CDirection"><span class="Identifier">edges</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">direction</span><span class="Other">:</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a> <span class="Other">=</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a><span class="Other">.</span><span class="Identifier">Out</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Keyword">iterator</span> <span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Iterator over node edges
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L396"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L419"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L396" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L419" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edgesBetween,Graph,string,string,Direction"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#edgesBetween%2CGraph%2Cstring%2Cstring%2CDirection"><span class="Identifier">edgesBetween</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">A</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">B</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
-                 <span class="Identifier">direction</span><span class="Other">:</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a> <span class="Other">=</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a><span class="Other">.</span><span class="Identifier">Out</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Keyword">iterator</span> <span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Edge</span><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+                 <span class="Identifier">direction</span><span class="Other">:</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a> <span class="Other">=</span> <a href="graph.html#Direction"><span class="Identifier">Direction</span></a><span class="Other">.</span><span class="Identifier">Out</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Keyword">iterator</span> <span class="Other">(</span><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Iterator for all edges between nodes <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> in <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L422"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L445"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L422" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L445" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="node,Graph,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#node%2CGraph%2Cstring"><span class="Identifier">node</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Node</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#node%2CGraph%2Cstring"><span class="Identifier">node</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">node</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Return node with <tt class="docutils literal"><span class="pre">oid</span></tt> in graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L461"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L484"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L461" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L484" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edge,Graph,string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#edge%2CGraph%2Cstring"><span class="Identifier">edge</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">edge</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Edge</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#edge%2CGraph%2Cstring"><span class="Identifier">edge</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">edge</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Return edge with <tt class="docutils literal"><span class="pre">oid</span></tt> in graph
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L465"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L488"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L465" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L488" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="delEdge,Graph,string"></a>
@@ -1411,9 +1526,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Delete edge with <tt class="docutils literal"><span class="pre">oid</span></tt> in graph, return true if edge was in graph and false otherwise.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L469"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L492"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L469" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L492" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="delNode,Graph,string"></a>
@@ -1423,9 +1538,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Delete node with <tt class="docutils literal"><span class="pre">oid</span></tt> in graph, return true if node was in graph and false otherwise.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L494"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L517"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L494" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L517" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="hasEdge,Graph,string,string,Direction"></a>
@@ -1435,33 +1550,33 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if there is an edge between nodes <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> in <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L514"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L537"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L514" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L537" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="describe,Edge,int,int"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#describe%2CEdge%2Cint%2Cint"><span class="Identifier">describe</span></a><span class="Other">(</span><span class="Identifier">e</span><span class="Other">:</span> <span class="Identifier">Edge</span><span class="Other">;</span> <span class="Identifier">lineWidth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">100</span><span class="Other">;</span> <span class="Identifier">propertyWidth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">20</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+<dt><pre><span class="Keyword">proc</span> <a href="#describe%2CEdge%2Cint%2Cint"><span class="Identifier">describe</span></a><span class="Other">(</span><span class="Identifier">e</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">;</span> <span class="Identifier">lineWidth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">100</span><span class="Other">;</span> <span class="Identifier">propertyWidth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">20</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Return a nice pretty-printed summary of edge <tt class="docutils literal"><span class="pre">e</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L532"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L555"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L532" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L555" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="describe,Node,int,int"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#describe%2CNode%2Cint%2Cint"><span class="Identifier">describe</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <span class="Identifier">Node</span><span class="Other">;</span> <span class="Identifier">lineWidth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">100</span><span class="Other">;</span> <span class="Identifier">propertyWidth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">20</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+<dt><pre><span class="Keyword">proc</span> <a href="#describe%2CNode%2Cint%2Cint"><span class="Identifier">describe</span></a><span class="Other">(</span><span class="Identifier">n</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">lineWidth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">100</span><span class="Other">;</span> <span class="Identifier">propertyWidth</span><span class="Other">:</span> <span class="Identifier">int</span> <span class="Other">=</span> <span class="DecNumber">20</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Return a nice pretty-printed summary of node <tt class="docutils literal"><span class="pre">n</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L553"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L576"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L553" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L576" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="describe,Graph,int"></a>
@@ -1471,9 +1586,167 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return a nice pretty-printed summary of the graph <tt class="docutils literal"><span class="pre">g</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L574"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L597"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L574" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L597" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="newPath,Node"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#newPath%2CNode"><span class="Identifier">newPath</span></a><span class="Other">(</span><span class="Identifier">anchor</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Create a new path
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L697"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L697" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="len,Path"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#len%2CPath"><span class="Identifier">len</span></a><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Path length
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L702"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L702" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="copy,Path"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#copy%2CPath"><span class="Identifier">copy</span></a><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Copy a path
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L706"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L706" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="hash,Path"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#hash%2CPath"><span class="Identifier">hash</span></a><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Hash</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Create hash for path based on edge oids
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L744"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L744" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="==,Path,Path"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#%3D%3D%2CPath%2CPath"><span class="Identifier">`==`</span></a><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a><span class="Other">;</span> <span class="Identifier">other</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Check whether two paths are equal
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L753"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L753" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="add,Path,Edge"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#add%2CPath%2CEdge"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a><span class="Other">;</span> <span class="Identifier">e</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Add a member to the path.
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L774"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L774" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="$,Member"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#%24%2CMember"><span class="Identifier">`$`</span></a><span class="Other">(</span><span class="Identifier">m</span><span class="Other">:</span> <span class="Identifier">Member</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Stringify path member.
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L796"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L796" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="$,Path"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#%24%2CPath"><span class="Identifier">`$`</span></a><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Stringify path
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L800"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L800" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="pop,Path"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#pop%2CPath"><span class="Identifier">pop</span></a><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Pop the last member of the path and return its edge.
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L817"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L817" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="paths,Graph,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#paths%2CGraph%2Cstring"><span class="Identifier">paths</span></a><span class="Other">(</span><span class="Identifier">g</span><span class="Other">:</span> <a href="graph.html#Graph"><span class="Identifier">Graph</span></a><span class="Other">;</span> <span class="Identifier">anchor</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">PathCollection</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">Exception</span><span class="Other">]</span><span class="Other">,</span>
+    <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Start path collection
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L838"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L838" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="len,PathCollection"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#len%2CPathCollection"><span class="Identifier">len</span></a><span class="Other">(</span><span class="Identifier">pc</span><span class="Other">:</span> <span class="Identifier">PathCollection</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L846"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L846" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="step,PathCollection,string,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#step%2CPathCollection%2Cstring%2Cstring"><span class="Identifier">step</span></a><span class="Other">(</span><span class="Identifier">pc</span><span class="Other">:</span> <span class="Identifier">PathCollection</span><span class="Other">;</span> <span class="Identifier">edgeLabel</span><span class="Other">,</span> <span class="Identifier">nodeLabel</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">PathCollection</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Add a step to a path collection.
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L849"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L849" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="steps,PathCollection,string,string,Natural"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#steps%2CPathCollection%2Cstring%2Cstring%2CNatural"><span class="Identifier">steps</span></a><span class="Other">(</span><span class="Identifier">pc</span><span class="Other">:</span> <span class="Identifier">PathCollection</span><span class="Other">;</span> <span class="Identifier">edgeLabel</span><span class="Other">,</span> <span class="Identifier">nodeLabel</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">nsteps</span><span class="Other">:</span> <span class="Identifier">Natural</span> <span class="Other">=</span> <span class="DecNumber">1</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">PathCollection</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Repeat a number of fixed steps
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L869"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L869" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="follow,PathCollection,string,string"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#follow%2CPathCollection%2Cstring%2Cstring"><span class="Identifier">follow</span></a><span class="Other">(</span><span class="Identifier">pc</span><span class="Other">:</span> <span class="Identifier">PathCollection</span><span class="Other">;</span> <span class="Identifier">edgeLabel</span><span class="Other">,</span> <span class="Identifier">nodeLabel</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">PathCollection</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
+    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">,</span> <span class="Identifier">Exception</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">RootEffect</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Repeat steps until no further matching paths
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L878"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L878" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1482,36 +1755,36 @@ class="link-seesrc" target="_blank">Source</a>
 <h1><a class="toc-backref" href="#15">Iterators</a></h1>
 <dl class="item">
 <a id="pairs.i,T"></a>
-<dt><pre><span class="Keyword">iterator</span> <a href="#pairs.i%2CT"><span class="Identifier">pairs</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Identifier">Node</span> <span class="Operator">|</span> <span class="Identifier">Edge</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">closure</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">iterator</span> <a href="#pairs.i%2CT"><span class="Identifier">pairs</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a> <span class="Operator">|</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Other">(</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">)</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">closure</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Iterate over property pairs
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L176"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L199"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L176" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L199" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="keys.i,T"></a>
-<dt><pre><span class="Keyword">iterator</span> <a href="#keys.i%2CT"><span class="Identifier">keys</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Identifier">Node</span> <span class="Operator">|</span> <span class="Identifier">Edge</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">closure</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">iterator</span> <a href="#keys.i%2CT"><span class="Identifier">keys</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a> <span class="Operator">|</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">closure</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Iterate over property keys
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L181"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L204"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L181" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L204" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="values.i,T"></a>
-<dt><pre><span class="Keyword">iterator</span> <a href="#values.i%2CT"><span class="Identifier">values</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Identifier">Node</span> <span class="Operator">|</span> <span class="Identifier">Edge</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">closure</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">iterator</span> <a href="#values.i%2CT"><span class="Identifier">values</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <a href="graph.html#Node"><span class="Identifier">Node</span></a> <span class="Operator">|</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">(</span><span class="Identifier">obj</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <a href="box.html#Box"><span class="Identifier">Box</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">closure</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Iterate over property values
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L186"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L209"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L186" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L209" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="neighbors.i,Graph,string,Direction"></a>
@@ -1521,9 +1794,31 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return neighbors to node oid <tt class="docutils literal"><span class="pre">n</span></tt> in graph <tt class="docutils literal"><span class="pre">g</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L380"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L403"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L380" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L403" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="items.i,Path"></a>
+<dt><pre><span class="Keyword">iterator</span> <a href="#items.i%2CPath"><span class="Identifier">items</span></a><span class="Other">(</span><span class="Identifier">p</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Edge"><span class="Identifier">Edge</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Walk the path
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L735"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L735" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+<a id="items.i,PathCollection"></a>
+<dt><pre><span class="Keyword">iterator</span> <a href="#items.i%2CPathCollection"><span class="Identifier">items</span></a><span class="Other">(</span><span class="Identifier">pc</span><span class="Other">:</span> <span class="Identifier">PathCollection</span><span class="Other">)</span><span class="Other">:</span> <a href="graph.html#Path"><span class="Identifier">Path</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dd>
+
+Iterator for paths in PathCollection
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/graph.nim#L895"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/graph.nim#L895" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1536,7 +1831,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-02-12 21:23:00 UTC</small>
+        <small>Made with Nim. Generated: 2020-02-22 21:59:15 UTC</small>
       </div>
     </div>
   </div>
