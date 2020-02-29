@@ -828,7 +828,7 @@ proc len*(pc: PathCollection): int =
 
 proc step*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
   ## Add a step to a path collection.
-  # Return a new path collection
+  # Return a modified copy of the path collection
   result = PathCollection()
 
   # Iterate over paths in collection
@@ -849,7 +849,7 @@ proc step*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
 proc steps*(pc: PathCollection, edgeLabel, nodeLabel: string,
     nsteps: int = 1): PathCollection =
   ## Repeat a number of fixed steps
-  # Return a new path collection
+  # Return a modified copy of the path collection
   result = pc
   # Take n steps
   for _ in countup(1, nsteps):
@@ -867,7 +867,7 @@ proc follow*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
     for path in other.paths:
       visited.incl(path.copy)
 
-  # Add to result path collection
+  # Return a modified copy of the path collection
   result = PathCollection()
   for path in visited:
     result.add(path)
