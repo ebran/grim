@@ -49,16 +49,16 @@ type
 
   ## A path member stores an edge.
   Member = ref object
-    previous*: Member
-    next*: Member
+    previous: Member
+    next: Member
     value: Edge
 
-  Path* = ref object
   ## A path is an anchor node followed by a sequence of members.
+  Path = ref object
     numberOfMembers: int
     anchor*: Node
-    head*: Member
-    tail*: Member
+    head: Member
+    tail: Member
 
   ## Collection of paths
   PathCollection = object
@@ -694,7 +694,7 @@ proc describe*(g: Graph, lineWidth = 100): string =
 
     result.add(info)
 
-proc newPath*(anchor: Node): Path =
+proc newPath(anchor: Node): Path =
   ## Create a new path with `anchor`.
   result = new Path
   result.anchor = anchor
@@ -716,6 +716,25 @@ iterator items*(p: Path): Edge =
     yield m.value
     m = m.next
 
+proc first*(p: Path): Edge =
+  ## Return the first edge in the path (O(1) operation).
+  result = p.head.value
+
+proc last*(p: Path): Edge =
+  ## Return the last edge in the path (O(1) operation).
+  result = p.tail.value
+
+proc get*(p: Path, n: int): Edge =
+  ## Return the `n`:th member of the path (O(n) operation).
+  if n < 0 or n >= p.len:
+    raise newException(ValueError, "$1 is out of bounds[0,...,$2] for path of length $3.".format(
+        n, p.len-1, p.len))
+
+  var counter = 0
+  for e in p:
+    if counter == n:
+      return e
+    counter.inc
 
 proc add(p: Path, value: Edge): Path =
   ## Add a `value` to the end of the path.
