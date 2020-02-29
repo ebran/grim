@@ -753,26 +753,26 @@ proc hash*(p: Path): Hash =
 
   result = !$ h
 
-proc `==`*(self: Path, other: Path): bool =
-  ## Check whether two paths are equal
-  # Can not be equal if they have different lengths.
-  if self.len != other.len:
+proc `==`*(self, other: Path): bool =
+  ## Check if two paths are equal.
+  # If all goes well, the paths are the same
+  result = true
+
+  # Must have same lengths and anchors.
+  if self.len != other.len or self.anchor != other.anchor:
     return false
 
+  # Traverse both paths simultaneously for performance
   var
     m1 = self.head
     m2 = other.head
 
   while not m1.isNil:
-    if m1.this != m2.this:
+    if m1.value != m2.value:
       return false
-    if self.len == 1:
-      break
-
     m1 = m1.next
     m2 = m2.next
 
-  result = true
 proc `$`*(m: Member): string =
   result = $(m.this)
   ## Stringify a path member.
