@@ -47,15 +47,15 @@ type
     nodeIndex: Table[string, Table[EntityOid, Node]]
     edgeIndex: Table[string, Table[EntityOid, Edge]]
 
-  ## Each path member represents an edge
+  ## A path member stores an edge.
   Member = ref object
     previous*: Member
     next*: Member
     this*: Edge
 
-  ## A path has an anchor node followed by a sequence of members
   Path* = ref object
     numberOfMembers: Natural
+  ## A path is an anchor node followed by a sequence of members.
     anchor*: Node
     head*: Member
     tail*: Member
@@ -695,12 +695,12 @@ proc describe*(g: Graph, lineWidth = 100): string =
     result.add(info)
 
 proc newPath*(anchor: Node): Path =
-  ## Create a new path
+  ## Create a new path with `anchor`.
   result = new Path
   result.anchor = anchor
 
 proc len*(p: Path): int =
-  ## Path length
+  ## Return the length of the path.
   result = p.numberOfMembers
 
 proc copy*(p: Path): Path =
@@ -794,11 +794,11 @@ proc add*(p: Path; e: Edge): Path =
   result = p
 
 proc `$`*(m: Member): string =
-  ## Stringify path member.
   result = $(m.this)
+  ## Stringify a path member.
 
 proc `$`*(p: Path): string =
-  ## Stringify path
+  ## Stringify a path.
   if p.len == 0:
     return "Empty path"
 
@@ -836,7 +836,7 @@ proc pop*(p: Path): Edge =
   p.numberOfMembers.dec
 
 proc paths*(g: Graph, anchor: string): PathCollection =
-  ## Start path collection
+  ## Start a path collection
   var pc = PathCollection()
   for node in g.nodes(anchor):
     pc.paths.add(node.newPath)
@@ -876,7 +876,7 @@ proc steps*(pc: PathCollection, edgeLabel, nodeLabel: string,
     result = result.step(edgeLabel, nodeLabel)
 
 proc follow*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
-  ## Repeat steps until no further matching paths
+  ## Repeat steps until there are no further matching paths
   var
     other = pc             # copy the path collection
     visited: HashSet[Path] # track visited paths
