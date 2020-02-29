@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased [2020-02-29]
+
+- PathCollections to find similar paths with a simple API (`paths`, `step`, `steps`, and `follow` procs)
+- Paths to easily walk the graph
+- Neo4j client, use `dump` proc to load graph database as grim LPG
+
 ## v.0.2.0 [2020-02-07]
 
 - Complete "Northwind" tutorial to show how SQL database is transferred to LPG.
