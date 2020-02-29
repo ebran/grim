@@ -10,6 +10,7 @@ srcDir        = "src"
 
 requires "nim >= 1.0.4"
 requires "yaml"
+requires "zero_functional"
 
 # Tasks
 
