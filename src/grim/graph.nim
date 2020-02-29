@@ -716,7 +716,6 @@ iterator items*(p: Path): Edge =
     yield m.value
     m = m.next
 
-  result.tail = m2
 
 proc add(p: Path, value: Edge): Path =
   ## Add a `value` to the end of the path.
