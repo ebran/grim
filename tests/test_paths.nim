@@ -1,65 +1,125 @@
 # stdlib imports
 import unittest
-import strutils
+import zero_functional
+import algorithm
 
 # grim imports
 import grim
 
-when isMainModule:
-  var g = newGraph("Path tester")
+suite "path collections":
+  setup:
+    var g = newGraph("Path tester")
 
-  # Persons
-  discard g.addNode("Person", %(name: "Alice"), oid = "alice")
-  discard g.addNode("Person", %(name: "Bob"), oid = "bob")
-  discard g.addNode("Person", %(name: "Charlie"), oid = "charlie")
+    # Persons
+    discard g.addNode("Person", %(name: "Alice"), oid = "alice")
+    discard g.addNode("Person", %(name: "Bob"), oid = "bob")
+    discard g.addNode("Person", %(name: "Charlie"), oid = "charlie")
 
-  discard g.addEdge("alice", "bob", "KNOWS", %(since: 2012),
-      oid = "alice-bob")
-  discard g.addEdge("bob", "charlie", "KNOWS", %(since: 2013),
-      oid = "bob-charlie")
-  discard g.addEdge("bob", "charlie", "KNOWS", %(since: 2013, relatives: true),
-    oid = "bob-charlie-duplicate")
+    discard g.addEdge("alice", "bob", "KNOWS", %(since: 2012),
+        oid = "alice-bob")
+    discard g.addEdge("bob", "charlie", "KNOWS", %(since: 2013),
+        oid = "bob-charlie")
+    discard g.addEdge("bob", "charlie", "KNOWS", %(since: 2013,
+        relatives: true),
+      oid = "bob-charlie-duplicate")
 
-  # Adresses
-  discard g.addNode("Address", %(street: "Anywhere Road 1",
-      zip: 11111), oid = "first house")
-  discard g.addNode("Address", %(street: "Somewhere Street 1", zip: 11112),
-      oid = "second house")
+    # Adresses
+    discard g.addNode("Address", %(street: "Anywhere Road 1",
+        zip: 11111), oid = "first house")
+    discard g.addNode("Address", %(street: "Somewhere Street 1", zip: 11112),
+        oid = "second house")
 
-  # Chain of residences
-  discard g.addEdge("alice", "first house", "FIRST", %(
-      date: "2017-03-24", withMovers: false), oid = "to-first house")
-  discard g.addEdge("alice", "first house", "FIRST", %(
-      date: "2017-03-24", withMovers: true), oid = "to-first house duplicate")
-  discard g.addEdge("first house", "second house", "MOVED_TO", %(
-      date: "2019-06-12"), oid = "first house-second house")
+    # Chain of residences
+    discard g.addEdge("alice", "first house", "FIRST", %(
+        date: "2017-03-24", withMovers: false), oid = "to-first house")
+    discard g.addEdge("alice", "first house", "FIRST", %(
+        date: "2017-03-24", withMovers: true), oid = "to-first house duplicate")
+    discard g.addEdge("first house", "second house", "MOVED_TO", %(
+        date: "2019-06-12"), oid = "first house-second house")
+    discard g.addEdge("bob", "second house", "MOVED_IN", %(
+          date: "2020-02-16"), oid = "bob-second house")
 
-  # Find persons, their first residence, and where they moved
-  var pc = g
+  test "empty":
+    var pc = g.paths("Person")
+
+    for path in pc:
+      check path.len == 0
+
+    check:
+      pc.len == 3
+      pc --> map(it.anchor["name"].getStr).sorted == @["Alice", "Bob", "Charlie"]
+
+  test "fixed number of steps mathcing no paths":
+    var pc = g
+      .paths("Person")
+      .steps("KNOWS", "Person", 4)
+
+    check pc.len == 0
+
+  test "one step matching two paths":
+    var pc = g
     .paths("Person")
     .step("FIRST", "Address")
-    .step("MOVED_TO", "Address")
 
-  echo "There are $1 paths in the collection.".format(pc.len)
-  for path in pc:
-    echo path, ", ", path.head.this.oid
-  echo ""
+    check:
+      pc.len == 2
+      pc --> map(it.first.oid).sorted == @["to-first house", "to-first house duplicate"]
 
-    # Find chains of friends
-  pc = g
-    .paths("Person")
-    .steps("KNOWS", "Person", 2)
+  test "two steps matching two paths":
+    var pc = g
+      .paths("Person")
+      .step("FIRST", "Address")
+      .step("MOVED_TO", "Address")
 
-  echo "There are $1 paths in the collection.".format(pc.len)
-  for path in pc:
-    echo path, ", ", path.tail.this.oid
-  echo ""
+    check:
+      pc.len == 2
+      pc --> map(it.len) == @[2, 2]
 
-  pc = g
-    .paths("Person")
-    .follow("KNOWS", "Person")
+  test "two steps matching one path":
+    var pc = g
+      .paths("Person")
+      .step("KNOWS", "Person")
+      .step("MOVED_IN", "Address")
 
-  echo "There are $1 paths in the collection.".format(pc.len)
-  for path in pc:
-    echo path, ", ", path.tail.this.oid
-  echo ""
+    check pc.len == 1
+
+    let p = pc --> take(1) --> reduce(it.elem)
+
+    check:
+      p.anchor.oid == "alice"
+      p.first.oid == "alice-bob"
+      p.get(1).oid == "bob-second house"
+
+    expect ValueError:
+      discard p.get(2)
+
+  test "fixed number of steps matching two paths":
+    var pc = g
+      .paths("Person")
+      .steps("KNOWS", "Person", 2)
+
+    check:
+      pc.len == 2
+      pc --> map(it.len) == @[2, 2]
+      pc --> map(it.last.oid).sorted == @["bob-charlie", "bob-charlie-duplicate"]
+      pc --> map(it.anchor.oid) == @["alice", "alice"]
+
+    test "following pattern with five matches":
+      var pc = g
+        .paths("Person")
+        .follow("KNOWS", "Person")
+
+      check:
+        pc --> map(it.len).sorted == @[1, 1, 1, 2, 2]
+
+        pc -->
+          filter(it.len == 1) -->
+          map(it.anchor["name"].getStr).sorted == @["Alice", "Bob", "Bob"]
+
+        pc -->
+          filter(it.len == 2) -->
+          map(it.first.oid).sorted == @["alice-bob", "alice-bob"]
+
+        pc -->
+          filter(it.len == 2) -->
+          map(it.last.oid).sorted == @["bob-charlie", "bob-charlie-duplicate"]
