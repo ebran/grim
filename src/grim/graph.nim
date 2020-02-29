@@ -699,6 +699,11 @@ proc newPath*(anchor: Node): Path =
   result = new Path
   result.anchor = anchor
 
+proc newMember(value: Edge): Member =
+  ## Create a new path member holding `value`.
+  result = new Member
+  result.value = value
+
 proc len*(p: Path): int =
   ## Return the length of the path.
   result = p.numberOfMembers
