@@ -718,6 +718,24 @@ iterator items*(p: Path): Edge =
 
   result.tail = m2
 
+proc add(p: Path, value: Edge): Path =
+  ## Add a `value` to the end of the path.
+  if p.len > 0:
+    doAssert(p.tail.value.endsAt == value.startsAt, "Can only add step to end of path.")
+
+  var m = newMember(value)
+  m.previous = p.tail
+
+  if p.len == 0:
+    p.head = m
+  else:
+    p.tail.next = m
+
+  p.tail = m
+
+  p.numberOfMembers.inc
+
+  result = p
 
 proc copy(p: Path): Path =
   ## Return a copy of the path.
@@ -755,29 +773,6 @@ proc `==`*(self: Path, other: Path): bool =
     m2 = m2.next
 
   result = true
-
-proc add*(p: Path; e: Edge): Path =
-  ## Add a member to the path.
-  # Create a new member
-  let m = new Member
-
-  m.previous = p.tail
-  m.this = e
-
-  if p.len == 0:
-    p.head = m
-    p.tail = m
-
-  # Append member to path
-  p.tail.next = m
-  p.tail = m
-
-  # Increase path length
-  p.numberOfMembers.inc
-
-  # Return updated path
-  result = p
-
 proc `$`*(m: Member): string =
   result = $(m.this)
   ## Stringify a path member.
