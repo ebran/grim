@@ -54,8 +54,8 @@ type
     value: Edge
 
   Path* = ref object
-    numberOfMembers: Natural
   ## A path is an anchor node followed by a sequence of members.
+    numberOfMembers: int
     anchor*: Node
     head*: Member
     tail*: Member
@@ -843,7 +843,7 @@ proc step*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
         result.paths.add(path.copy.add(edge))
 
 proc steps*(pc: PathCollection, edgeLabel, nodeLabel: string,
-    nsteps: Natural = 1): PathCollection =
+    nsteps: int = 1): PathCollection =
   ## Repeat a number of fixed steps
   # Return a new path collection
   result = pc
