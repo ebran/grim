@@ -858,13 +858,13 @@ proc steps*(pc: PathCollection, edgeLabel, nodeLabel: string,
 proc follow*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
   ## Repeat steps until there are no further matching paths
   var
-    other = pc             # copy the path collection
-    visited: HashSet[Path] # track visited paths
+    proxy = pc             # proxy path collection used for the flow
+    visited: HashSet[Path] # track path visited by the proxy
 
-  while other.len > 0:
-    other = other.step(edgeLabel, nodeLabel)
+  while proxy.len > 0:
+    proxy = proxy.step(edgeLabel, nodeLabel)
 
-    for path in other.paths:
+    for path in proxy.paths:
       visited.incl(path.copy)
 
   # Return a modified copy of the path collection
