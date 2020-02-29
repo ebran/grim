@@ -810,11 +810,16 @@ proc pop*(p: Path): Edge =
 proc add(pc: var PathCollection, p: Path) =
   pc.paths.add(p)
 
+iterator items*(pc: PathCollection): Path =
+  ## Iterator for paths in PathCollection
+  for path in pc.paths:
+    yield path
+
 proc paths*(g: Graph, anchor: string): PathCollection =
   ## Start a path collection
   var pc = PathCollection()
   for node in g.nodes(anchor):
-    pc.paths.add(node.newPath)
+    pc.add(node.newPath)
 
   result = pc
 
@@ -826,8 +831,8 @@ proc step*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
   # Return a new path collection
   result = PathCollection()
 
-  # Iterate over paths
-  for path in pc.paths:
+  # Iterate over paths in collection
+  for path in pc:
     # Iterate over edges of the path's end node
     # (anchor node if the path is empty)
     let edges =
@@ -839,7 +844,7 @@ proc step*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
     for edge in edges:
       # Add edge to (a copy of the) path ONLY IF edge- and node labels match
       if edge.label == edgelabel and edge.endsAt.label == nodeLabel:
-        result.paths.add(path.copy.add(edge))
+        result.add(path.copy.add(edge))
 
 proc steps*(pc: PathCollection, edgeLabel, nodeLabel: string,
     nsteps: int = 1): PathCollection =
@@ -865,9 +870,4 @@ proc follow*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
   # Add to result path collection
   result = PathCollection()
   for path in visited:
-    result.paths.add(path)
-
-iterator items*(pc: PathCollection): Path =
-  ## Iterator for paths in PathCollection
-  for path in pc.paths:
-    yield path
+    result.add(path)
