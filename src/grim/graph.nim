@@ -708,6 +708,9 @@ proc len*(p: Path): int =
   ## Return the length of the path.
   result = p.numberOfMembers
 
+iterator items*(p: Path): Edge =
+  ## Iterate over path member values.
+  var m = p.head
 
   while not m.isNil:
     yield m.value
@@ -715,14 +718,6 @@ proc len*(p: Path): int =
 
   result.tail = m2
 
-iterator items*(p: Path): Edge =
-  ## Walk the path
-  var m = p.head
-  while not m.isNil:
-    yield m.this
-    if p.len == 1:
-      break
-    m = m.next
 
 proc copy(p: Path): Path =
   ## Return a copy of the path.
