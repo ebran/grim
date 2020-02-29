@@ -808,6 +808,9 @@ proc pop*(p: Path): Edge =
 
   p.numberOfMembers.dec
 
+proc add(pc: var PathCollection, p: Path) =
+  pc.paths.add(p)
+
 proc paths*(g: Graph, anchor: string): PathCollection =
   ## Start a path collection
   var pc = PathCollection()
