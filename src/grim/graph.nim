@@ -708,31 +708,9 @@ proc len*(p: Path): int =
   ## Return the length of the path.
   result = p.numberOfMembers
 
-proc copy*(p: Path): Path =
-  ## Copy a path
-  # Create a new path
-  result = new Path
-  # Copy properties from p
-  result.numberOfMembers = p.numberOfMembers
-  result.anchor = p.anchor
-
-  # Walk the path
-  var
-    m: Member = p.head
-    m2: Member
-    counter: int
 
   while not m.isNil:
-    # Copy each member
-    m2 = new Member
-    m2.previous = m.previous
-    m2.next = m.next
-    m2.this = m.this
-
-    if counter == 0:
-      result.head = m2
-    if p.len == 1:
-      break
+    yield m.value
     m = m.next
 
   result.tail = m2
@@ -745,6 +723,13 @@ iterator items*(p: Path): Edge =
     if p.len == 1:
       break
     m = m.next
+
+proc copy(p: Path): Path =
+  ## Return a copy of the path.
+  result = newPath(p.anchor)
+
+  for edge in p:
+    discard result.add(edge)
 
 proc hash*(p: Path): Hash =
   ## Create hash for path based on edge oids
