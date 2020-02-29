@@ -51,7 +51,7 @@ type
   Member = ref object
     previous*: Member
     next*: Member
-    this*: Edge
+    value: Edge
 
   Path* = ref object
     numberOfMembers: Natural
@@ -774,8 +774,8 @@ proc `==`*(self, other: Path): bool =
     m2 = m2.next
 
 proc `$`*(m: Member): string =
-  result = $(m.this)
   ## Stringify a path member.
+  result = "Member: " & $(m.value)
 
 proc `$`*(p: Path): string =
   ## Stringify a path.
@@ -784,15 +784,11 @@ proc `$`*(p: Path): string =
 
   result = "$1-step Path: $2 ($3)".format(p.len, p.anchor.label, p.anchor.oid)
 
-  var m = p.head
-  while not m.isNil:
-    result = result & " ="
-    result = result & "$1=> $2".format(m.this.label, m.this.endsAt.label)
-    if p.len == 1:
-      break
-    m = m.next
+  for edge in p:
+    result &= " ="
+    result &= "$1=> $2".format(edge.label, edge.endsAt.label)
 
-  result = result & " ($1).".format(p.tail.this.endsAt.oid)
+  result &= " ($1).".format(p.tail.value.endsAt.oid)
 
 proc pop*(p: Path): Edge =
   ## Pop the last member of the path and return its edge.
@@ -839,7 +835,7 @@ proc step*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
       if path.len == 0:
         path.anchor.edges
       else:
-        path.tail.this.endsAt.edges
+        path.tail.value.endsAt.edges
 
     for edge in edges:
       # Add edge to (a copy of the) path ONLY IF edge- and node labels match
