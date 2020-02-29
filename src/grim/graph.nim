@@ -791,24 +791,21 @@ proc `$`*(p: Path): string =
   result &= " ($1).".format(p.tail.value.endsAt.oid)
 
 proc pop*(p: Path): Edge =
-  ## Pop the last member of the path and return its edge.
-  case p.len:
-    of 0:
-      raise newException(ValueError, "Can not pop from zero-length path.")
-    of 1:
-      # Get edge
-      result = p.tail.this
-      # Set head and tail to nil
-      p.head = nil
-      p.tail = nil
-    else:
-      # Get edge
-      result = p.tail.this
-      # Move tail pointer
-      p.tail = p.tail.previous
-      p.tail.next = nil
+  ## Remove the last path value and return it
+  if p.len == 0:
+    raise newException(ValueError, "Can not pop from zero-length path.")
 
-  # Decrease number of members in path
+  # Return value of last member
+  result = p.tail.value
+
+  # p == 1 is a special case
+  if p.len == 1:
+    p.head = nil
+    p.tail = nil
+  else:
+    p.tail = p.tail.previous
+    p.tail.next = nil
+
   p.numberOfMembers.dec
 
 proc paths*(g: Graph, anchor: string): PathCollection =
