@@ -9,8 +9,8 @@ from os import fileExists
 from sugar import `=>`
 
 # grim modules
-import graph
-import box
+import grim
+import grim/[entities, graph, box]
 
 # 3:rd party imports
 import yaml
