@@ -1,44 +1,17 @@
 # Standard library imports
 import tables
-import strutils
 import sequtils
-import sugar
-import sets
-import oids
 import strformat
-import db_sqlite
-import hashes
+import strutils
+import sugar
+import oids
 
 from std/wordwrap import wrapWords
 
 # grim modules
-import box
-import utils
+import grim/[entities, box, utils, paths]
 
 type
-  ## Unique string representing an entity -- node or edge
-  EntityOid* = string
-
-  ## Edge direction
-  Direction* {.pure.} = enum
-    In, Out, OutIn
-
-  ## Edge entity
-  Edge* = ref object
-    oid*: EntityOid
-    label*: string
-    startsAt*: Node
-    endsAt*: Node
-    properties: Table[string, Box]
-
-  ## Node entity
-  Node* = ref object
-    oid*: EntityOid
-    label*: string
-    properties: Table[string, Box]
-    incoming: Table[EntityOid, Table[EntityOid, Edge]]
-    outgoing: Table[EntityOid, Table[EntityOid, Edge]]
-
   ## Labeled property graph
   Graph* = ref object
     name*: string
@@ -46,23 +19,6 @@ type
     edgeTable: Table[EntityOid, Edge]
     nodeIndex: Table[string, Table[EntityOid, Node]]
     edgeIndex: Table[string, Table[EntityOid, Edge]]
-
-  ## A path member stores an edge.
-  Member = ref object
-    previous: Member
-    next: Member
-    value: Edge
-
-  ## A path is an anchor node followed by a sequence of members.
-  Path = ref object
-    numberOfMembers: int
-    anchor*: Node
-    head: Member
-    tail: Member
-
-  ## Collection of paths
-  PathCollection = object
-    paths: seq[Path]
 
 proc numberOfNodes*(self: Graph): int =
   ## Return number of Nodes in Graph
@@ -138,24 +94,6 @@ proc `$`*(self: Graph): string =
 
   result = fmt("[Graph \"{m}\" with {i} node(s) {nodeStats} and {j} edge(s) {edgeStats}]")
 
-proc `$`*(t: Table[string, Box]): string =
-  ## Pretty-print String table with Boxes
-  result.add("{")
-  for key, val in t.pairs:
-    result.add(key & ": " & val.describe & ", ")
-  if t.len > 0:
-    # Delete trailing comma
-    result.delete(result.len-2, result.len)
-  result.add("}")
-
-proc `$`*(n: Node): string =
-  ## Pretty-print Node
-  result = fmt("[Node {n.label} \"{n.oid}\"]")
-
-proc `$`*(e: Edge): string =
-  ## Pretty-print Edge
-  result = fmt("[Edge {e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"]")
-
 proc contains*(self: Graph, key: string): bool =
   ## Check if Node or Edge oid is in Graph
   result = key in self.nodeTable or key in self.edgeTable
@@ -168,75 +106,11 @@ proc contains*(self: Graph, key: Edge): bool =
   ## Check if Edge object is in Graph
   result = key.oid in self.edgeTable
 
-proc `==`*(self, other: Node): bool =
-  ## Check if two Nodes are equal
-  result = (self.oid == other.oid)
-
-proc `==`*(self, other: Edge): bool =
-  ## Check if two Edges are equal
-  result = (self.oid == other.oid)
-
-proc `[]`*(node: Node, property: string): Box =
-  ## Get `property` of `node`
-  result = node.properties[property]
-
-proc `[]=`*(node: Node, property: string, value: Box) =
-  ## Set `property` of `node` to `value`
-  node.properties[property] = value
-
-proc `[]`*(edge: Edge, property: string): Box =
-  ## Get `property` of `edge`
-  result = edge.properties[property]
-
-proc `[]=`*(edge: Edge, property: string, value: Box) =
-  ## Set `property` of `edge` to `value`
-  edge.properties[property] = value
-
-proc len*[T: Node | Edge](obj: T): int =
-  ## Return number of properties of node or edge
-  result = obj.properties.len
-
-iterator pairs*[T: Node | Edge](obj: T): (string, Box) {.closure.} =
-  ## Iterate over property pairs
-  for property, value in obj.properties.pairs:
-    yield (property, value)
-
-iterator keys*[T: Node | Edge](obj: T): string {.closure.} =
-  ## Iterate over property keys
-  for property in obj.properties.keys:
-    yield property
-
-iterator values*[T: Node | Edge](obj: T): Box {.closure.} =
-  ## Iterate over property values
-  for value in obj.properties.values:
-    yield value
-
 proc newGraph*(name: string = "graph"): Graph =
   ## Create a new graph
   new result
 
   result.name = name
-
-proc newNode*(label: string, properties: Table[string, Box] = initTable[string,
-    Box](), oid: string = $genOid()): Node =
-  ## Create a new node
-  new result
-
-  result.label = label
-  result.properties = properties
-  result.oid = oid
-
-proc newEdge*(A: Node, B: Node, label: string,
-    properties: Table[string, Box] = initTable[string, Box](),
-        oid: string = $genOid()): Edge =
-  ## Create a new edge
-  new result
-
-  result.startsAt = A
-  result.endsAt = B
-  result.label = label
-  result.properties = properties
-  result.oid = oid
 
 proc addNode*(self: Graph, label: string, properties: Table[string,
     Box] = initTable[string, Box](), oid: string = $genOid()): string =
@@ -275,23 +149,6 @@ proc addEdge*(self: Graph, e: Edge): string =
   if e in self:
     return e.oid
 
-  # Add edge A -> B
-  let
-    A = e.startsAt
-    B = e.endsAt
-
-  # Add B to the outgoing edge list for A
-  discard self
-    .nodeTable[A.oid].outgoing
-    .mgetOrPut(B.oid, initTable[EntityOid, Edge]())
-    .mgetOrPut(e.oid, e)
-
-  # Add A to the incoming edge list for  B
-  discard self
-    .nodeTable[e.endsAt.oid].incoming
-    .mgetOrPut(e.startsAt.oid, initTable[EntityOid, Edge]())
-    .mgetOrPut(e.oid, e)
-
   # Add edge to main index and label index
   self.edgeTable[e.oid] = e
   discard self
@@ -316,18 +173,6 @@ proc addEdge*(self: Graph, A: Node, B: Node, label: string,
   if e in self:
     return e.oid
 
-  # Add B to the outgoing edge list for A
-  discard self
-    .nodeTable[A.oid].outgoing
-    .mgetOrPut(B.oid, initTable[EntityOid, Edge]())
-    .mgetOrPut(e.oid, e)
-
-  # Add A to the incoming edge list for B
-  discard self
-    .nodeTable[B.oid].incoming
-    .mgetOrPut(A.oid, initTable[EntityOid, Edge]())
-    .mgetOrPut(e.oid, e)
-
   # Add edge to main index and label index
   self.edgeTable[e.oid] = e
   discard self
@@ -344,23 +189,9 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
   let e = newEdge(self.nodeTable[A], self.nodeTable[B], label,
       properties = properties, oid = oid)
 
-  # Add edge A -> B
-
   # Don't add if edge already in graph
   if e in self:
     return e.oid
-
-  # Add B to the outgoing edge list for A
-  discard self
-    .nodeTable[A].outgoing
-    .mgetOrPut(B, initTable[EntityOid, Edge]())
-    .mgetOrPut(e.oid, e)
-
-  # Add A to the incoming edge list for B
-  discard self
-    .nodeTable[B].incoming
-    .mgetOrPut(A, initTable[EntityOid, Edge]())
-    .mgetOrPut(e.oid, e)
 
   # Add edge to main index and label index
   self.edgeTable[e.oid] = e
@@ -371,76 +202,11 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
 
   result = e.oid
 
-proc update*[T](self: T, p: Table[string, Box]): string =
-  ## Update node or edge properties
-  for prop, val in p.pairs:
-    self[prop] = val
-
-  result = self.oid
-
-proc neighbors*(n: Node, direction: Direction = Direction.Out): (
-    iterator: string) =
-  ## Return neighbors to `n` counting edges with `direction`.
-  # Create closure iterator for neighbors
-  iterator outgoingIt: string {.closure.} =
-    for oid in n.outgoing.keys:
-      yield oid
-
-  iterator incomingIt: string {.closure.} =
-    for oid in n.incoming.keys:
-      yield oid
-
-  iterator bothIt: string {.closure.} =
-    for oid in n.outgoing.keys:
-      yield oid
-    for oid in n.incoming.keys:
-      yield oid
-
-  let choices = {Direction.Out: outgoingIt, Direction.In: incomingIt,
-      Direction.OutIn: bothIt}.toTable
-  return choices[direction]
-
 iterator neighbors*(self: Graph, n: string,
     direction: Direction = Direction.Out): string {.closure.} =
   ## Return neighbors to node oid `n` in graph `g`.
   for n in self.nodeTable[n].neighbors(direction = direction):
     yield n
-
-proc numberOfNeighbors*(n: Node, direction: Direction = Direction.Out): int =
-  ## Return the number of neighbors of node `n` in `direction`.
-  let choices = {
-    Direction.Out: n.outgoing.len,
-    Direction.In: n.incoming.len,
-    Direction.OutIn: n.outgoing.len + n.incoming.len
-  }.toTable
-
-  return choices[direction]
-
-proc edges*(n: Node, direction: Direction = Direction.Out): (
-    iterator: Edge) =
-  ## Iterator over node edges
-  # Create closure iterator for edges
-  iterator outgoingIt: Edge {.closure.} =
-    for n_oid, edgeTable in n.outgoing.pairs:
-      for e_oid, e in edgeTable.pairs:
-        yield e
-
-  iterator incomingIt: Edge {.closure.} =
-    for n_oid, edgeTable in n.incoming.pairs:
-      for e_oid, e in edgeTable.pairs:
-        yield e
-
-  iterator bothIt: Edge {.closure.} =
-    for n_oid, edgeTable in n.outgoing.pairs:
-      for e_oid, e in edgeTable.pairs:
-        yield e
-    for n_oid, edgeTable in n.incoming.pairs:
-      for e_oid, e in edgeTable.pairs:
-        yield e
-
-  let choices = {Direction.Out: outgoingIt, Direction.In: incomingIt,
-      Direction.OutIn: bothIt}.toTable
-  return choices[direction]
 
 proc edgesBetween*(self: Graph, A: string, B: string,
     direction: Direction = Direction.Out): (iterator: Edge) =
@@ -448,38 +214,8 @@ proc edgesBetween*(self: Graph, A: string, B: string,
   # Return empty iterator if A or B not in graph
   if A notin self or B notin self:
     return iterator(): Edge {.closure.} = discard
-
-  let
-    # Outgoing edges between A and B
-    outgoing = self
-      .nodeTable[A]
-      .outgoing
-      .getOrDefault(B, initTable[EntityOid, Edge]())
-
-    # Incoming edges between A and B
-    incoming = self
-      .nodeTable[A]
-      .incoming
-      .getOrDefault(B, initTable[EntityOid, Edge]())
-
-    # Create closure iterators for edges between A and B
-  iterator outgoingIt: Edge {.closure.} =
-    for e in outgoing.values:
-      yield e
-
-  iterator incomingIt: Edge {.closure.} =
-    for e in incoming.values:
-      yield e
-
-  iterator bothIt: Edge {.closure.} =
-    for e in outgoing.values:
-      yield e
-    for e in incoming.values:
-      yield e
-
-  let choices = {Direction.Out: outgoingIt, Direction.In: incomingIt,
-      Direction.OutIn: bothIt}.toTable
-  return choices[direction]
+  else:
+    return between(self.nodeTable[A], self.nodeTable[B], direction = direction)
 
 proc node*(self: Graph, node: string): Node =
   ## Return node with `oid` in graph
@@ -503,14 +239,8 @@ proc delEdge*(self: Graph, oid: string): bool =
   self.edgeTable.del(oid)
   self.edgeIndex[e.label].del(oid)
 
-  # Remove edge from involved nodes' adjacency lists
-  A.outgoing[B.oid].del(oid)
-  B.incoming[A.oid].del(oid)
-  # Delete empty tables if adjacency lsit is empty
-  if A.outgoing[B.oid].len == 0:
-    A.outgoing.del(B.oid)
-  if B.incoming[A.oid].len == 0:
-    B.incoming.del(A.oid)
+  # Remove edge from involved nodes' adjacency tables
+  e.delete
 
   result = true
 
@@ -536,63 +266,11 @@ proc delNode*(self: Graph, oid: string): bool =
 
 proc hasEdge*(self: Graph, A: string, B: string,
     direction: Direction = Direction.Out): bool =
-  ## Check if there is an edge between nodes `A` and `B` in `direction`.
+  ## Check if there is an edge between nodes `A` and `B` in `direction` in the graph.
   if A notin self or B notin self:
     return false
 
-  let
-    isOutgoing = (B in self.nodeTable[A].outgoing) and (A in self.nodeTable[B].incoming)
-    isIncoming = (B in self.nodeTable[A].incoming) and (A in self.nodeTable[B].outgoing)
-
-  case direction:
-    of Direction.Out:
-      return isOutgoing
-    of Direction.In:
-      return isIncoming
-    of Direction.OutIn:
-      return isOutgoing or isIncoming
-
-proc describe*(e: Edge, lineWidth: int = 100,
-    propertyWidth: int = 20): string =
-  ## Return a nice pretty-printed summary of edge `e`
-  # Edge header
-  result.add(fmt("{e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"") & "\n")
-  result.add("=".repeat(lineWidth) & "\n")
-
-  # Pretty-print properties
-  for prop, val in e.pairs:
-    result.add(prop.alignLeft(propertyWidth, '.')[
-        0..propertyWidth-1] & " ")
-
-    let desc = wrapWords($val, 72, false).indent(propertyWidth+1)[
-        propertyWidth+1..^1]
-    result.add(desc & "\n")
-
-  if e.len == 0:
-    result.add("No properties")
-
-  result.add("\n")
-
-proc describe*(n: Node, lineWidth: int = 100,
-    propertyWidth: int = 20): string =
-  ## Return a nice pretty-printed summary of node `n`
-  # Node header
-  result.add(fmt("{n.label} \"{n.oid}\"") & "\n")
-  result.add("=".repeat(lineWidth) & "\n")
-
-  # Pretty-print properties
-  for prop, val in n.pairs:
-    result.add(prop.alignLeft(propertyWidth, '.')[
-        0..propertyWidth-1] & " ")
-
-    let desc = wrapWords($val, 72, false).indent(propertyWidth+1)[
-        propertyWidth+1..^1]
-    result.add(desc & "\n")
-
-  if n.len == 0:
-    result.add("No properties")
-
-  result.add("\n")
+  return self.nodeTable[A].connected(self.nodeTable[B], direction = direction)
 
 proc describe*(g: Graph, lineWidth = 100): string =
   ## Return a nice pretty-printed summary of the graph `g`
@@ -694,199 +372,10 @@ proc describe*(g: Graph, lineWidth = 100): string =
 
     result.add(info)
 
-proc newPath(anchor: Node): Path =
-  ## Create a new path with `anchor`.
-  result = new Path
-  result.anchor = anchor
-
-proc newMember(value: Edge): Member =
-  ## Create a new path member holding `value`.
-  result = new Member
-  result.value = value
-
-proc len*(p: Path): int =
-  ## Return the length of the path.
-  result = p.numberOfMembers
-
-iterator items*(p: Path): Edge =
-  ## Iterate over path member values.
-  var m = p.head
-
-  while not m.isNil:
-    yield m.value
-    m = m.next
-
-proc first*(p: Path): Edge =
-  ## Return the first edge in the path (O(1) operation).
-  result = p.head.value
-
-proc last*(p: Path): Edge =
-  ## Return the last edge in the path (O(1) operation).
-  result = p.tail.value
-
-proc get*(p: Path, n: int): Edge =
-  ## Return the `n`:th member of the path (O(n) operation).
-  if n < 0 or n >= p.len:
-    raise newException(ValueError, "$1 is out of bounds[0,...,$2] for path of length $3.".format(
-        n, p.len-1, p.len))
-
-  var counter = 0
-  for e in p:
-    if counter == n:
-      return e
-    counter.inc
-
-proc add(p: Path, value: Edge): Path =
-  ## Add a `value` to the end of the path.
-  if p.len > 0:
-    doAssert(p.tail.value.endsAt == value.startsAt, "Can only add step to end of path.")
-
-  var m = newMember(value)
-  m.previous = p.tail
-
-  if p.len == 0:
-    p.head = m
-  else:
-    p.tail.next = m
-
-  p.tail = m
-
-  p.numberOfMembers.inc
-
-  result = p
-
-proc copy(p: Path): Path =
-  ## Return a copy of the path.
-  result = newPath(p.anchor)
-
-  for edge in p:
-    discard result.add(edge)
-
-proc hash*(p: Path): Hash =
-  ## Create hash for path based on edge oids
-  var h: Hash = 0
-
-  for edge in p:
-    h = h !& edge.oid.hash
-
-  result = !$ h
-
-proc `==`*(self, other: Path): bool =
-  ## Check if two paths are equal.
-  # If all goes well, the paths are the same
-  result = true
-
-  # Must have same lengths and anchors.
-  if self.len != other.len or self.anchor != other.anchor:
-    return false
-
-  # Traverse both paths simultaneously for performance
-  var
-    m1 = self.head
-    m2 = other.head
-
-  while not m1.isNil:
-    if m1.value != m2.value:
-      return false
-    m1 = m1.next
-    m2 = m2.next
-
-proc `$`*(m: Member): string =
-  ## Stringify a path member.
-  result = "Member: " & $(m.value)
-
-proc `$`*(p: Path): string =
-  ## Stringify a path.
-  if p.len == 0:
-    return "Empty path"
-
-  result = "$1-step Path: $2 ($3)".format(p.len, p.anchor.label, p.anchor.oid)
-
-  for edge in p:
-    result &= " ="
-    result &= "$1=> $2".format(edge.label, edge.endsAt.label)
-
-  result &= " ($1).".format(p.tail.value.endsAt.oid)
-
-proc pop*(p: Path): Edge =
-  ## Remove the last path value and return it
-  if p.len == 0:
-    raise newException(ValueError, "Can not pop from zero-length path.")
-
-  # Return value of last member
-  result = p.tail.value
-
-  # p == 1 is a special case
-  if p.len == 1:
-    p.head = nil
-    p.tail = nil
-  else:
-    p.tail = p.tail.previous
-    p.tail.next = nil
-
-  p.numberOfMembers.dec
-
-proc add(pc: var PathCollection, p: Path) =
-  pc.paths.add(p)
-
-iterator items*(pc: PathCollection): Path =
-  ## Iterator for paths in PathCollection
-  for path in pc.paths:
-    yield path
-
 proc paths*(g: Graph, anchor: string): PathCollection =
   ## Start a path collection
-  var pc = PathCollection()
+  var pc = initPathCollection()
   for node in g.nodes(anchor):
     pc.add(node.newPath)
 
   result = pc
-
-proc len*(pc: PathCollection): int =
-  result = pc.paths.len
-
-proc step*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
-  ## Add a step to a path collection.
-  # Return a modified copy of the path collection
-  result = PathCollection()
-
-  # Iterate over paths in collection
-  for path in pc:
-    # Iterate over edges of the path's end node
-    # (anchor node if the path is empty)
-    let edges =
-      if path.len == 0:
-        path.anchor.edges
-      else:
-        path.tail.value.endsAt.edges
-
-    for edge in edges:
-      # Add edge to (a copy of the) path ONLY IF edge- and node labels match
-      if edge.label == edgelabel and edge.endsAt.label == nodeLabel:
-        result.add(path.copy.add(edge))
-
-proc steps*(pc: PathCollection, edgeLabel, nodeLabel: string,
-    nsteps: int = 1): PathCollection =
-  ## Repeat a number of fixed steps
-  # Return a modified copy of the path collection
-  result = pc
-  # Take n steps
-  for _ in countup(1, nsteps):
-    result = result.step(edgeLabel, nodeLabel)
-
-proc follow*(pc: PathCollection, edgeLabel, nodeLabel: string): PathCollection =
-  ## Repeat steps until there are no further matching paths
-  var
-    proxy = pc             # proxy path collection used for the flow
-    visited: HashSet[Path] # track path visited by the proxy
-
-  while proxy.len > 0:
-    proxy = proxy.step(edgeLabel, nodeLabel)
-
-    for path in proxy.paths:
-      visited.incl(path.copy)
-
-  # Return a modified copy of the path collection
-  result = PathCollection()
-  for path in visited:
-    result.add(path)
