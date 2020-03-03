@@ -806,22 +806,22 @@ function main() {
 <div class="document" id="documentId">
   <div class="container">
     <h1 class="title">Index</h1>
-    Modules: <a href="grim/box.html">grim/box</a>, <a href="grim/dsl.html">grim/dsl</a>, <a href="grim/graph.html">grim/graph</a>, <a href="grim/io.html">grim/io</a>, <a href="grim/utils.html">grim/utils</a>.<br/><p /><h2>API symbols</h2>
+    Modules: <a href="grim/box.html">grim/box</a>, <a href="grim/dsl.html">grim/dsl</a>, <a href="grim/entities.html">grim/entities</a>, <a href="grim/graph.html">grim/graph</a>, <a href="grim/io.html">grim/io</a>, <a href="grim/paths.html">grim/paths</a>, <a href="grim/utils.html">grim/utils</a>.<br/><p /><h2>API symbols</h2>
 <dl><dt><a name="%60%24%60" href="#%60%24%60"><span>`$`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="box: `$`(b: Box): string" href="grim/box.html#%24%2CBox">box: `$`(b: Box): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `$`(e: Edge): string" href="grim/graph.html#%24%2CEdge">graph: `$`(e: Edge): string</a></li>
+          data-doc-search-tag="box: `$`(t: Table[string, Box]): string" href="grim/box.html#%24%2CTable%5Bstring%2CBox%5D">box: `$`(t: Table[string, Box]): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="entities: `$`(e: Edge): string" href="grim/entities.html#%24%2CEdge">entities: `$`(e: Edge): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="entities: `$`(n: Node): string" href="grim/entities.html#%24%2CNode">entities: `$`(n: Node): string</a></li>
           <li><a class="reference external"
           data-doc-search-tag="graph: `$`(self: Graph): string" href="grim/graph.html#%24%2CGraph">graph: `$`(self: Graph): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `$`(m: Member): string" href="grim/graph.html#%24%2CMember">graph: `$`(m: Member): string</a></li>
+          data-doc-search-tag="paths: `$`(m: Member): string" href="grim/paths.html#%24%2CMember">paths: `$`(m: Member): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `$`(n: Node): string" href="grim/graph.html#%24%2CNode">graph: `$`(n: Node): string</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="graph: `$`(p: Path): string" href="grim/graph.html#%24%2CPath">graph: `$`(p: Path): string</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="graph: `$`(t: Table[string, Box]): string" href="grim/graph.html#%24%2CTable%5Bstring%2CBox%5D">graph: `$`(t: Table[string, Box]): string</a></li>
+          data-doc-search-tag="paths: `$`(p: Path): string" href="grim/paths.html#%24%2CPath">paths: `$`(p: Path): string</a></li>
           </ul></dd>
 <dt><a name="%60%25%60" href="#%60%25%60"><span>`%`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -831,23 +831,27 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="box: `==`(self, other: Box): bool" href="grim/box.html#%3D%3D%2CBox%2CBox">box: `==`(self, other: Box): bool</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `==`(self, other: Edge): bool" href="grim/graph.html#%3D%3D%2CEdge%2CEdge">graph: `==`(self, other: Edge): bool</a></li>
+          data-doc-search-tag="entities: `==`(self, other: Edge): bool" href="grim/entities.html#%3D%3D%2CEdge%2CEdge">entities: `==`(self, other: Edge): bool</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `==`(self, other: Node): bool" href="grim/graph.html#%3D%3D%2CNode%2CNode">graph: `==`(self, other: Node): bool</a></li>
+          data-doc-search-tag="entities: `==`(self, other: Node): bool" href="grim/entities.html#%3D%3D%2CNode%2CNode">entities: `==`(self, other: Node): bool</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `==`(self, other: Path): bool" href="grim/graph.html#%3D%3D%2CPath%2CPath">graph: `==`(self, other: Path): bool</a></li>
+          data-doc-search-tag="paths: `==`(self, other: Path): bool" href="grim/paths.html#%3D%3D%2CPath%2CPath">paths: `==`(self, other: Path): bool</a></li>
           </ul></dd>
 <dt><a name="%60%5B%5D%3D%60" href="#%60%5B%5D%3D%60"><span>`[]=`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: `[]=`(edge: Edge; property: string; value: Box)" href="grim/graph.html#%5B%5D%3D%2CEdge%2Cstring%2CBox">graph: `[]=`(edge: Edge; property: string; value: Box)</a></li>
+          data-doc-search-tag="entities: `[]=`(edge: Edge; property: string; value: Box)" href="grim/entities.html#%5B%5D%3D%2CEdge%2Cstring%2CBox">entities: `[]=`(edge: Edge; property: string; value: Box)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `[]=`(node: Node; property: string; value: Box)" href="grim/graph.html#%5B%5D%3D%2CNode%2Cstring%2CBox">graph: `[]=`(node: Node; property: string; value: Box)</a></li>
+          data-doc-search-tag="entities: `[]=`(node: Node; property: string; value: Box)" href="grim/entities.html#%5B%5D%3D%2CNode%2Cstring%2CBox">entities: `[]=`(node: Node; property: string; value: Box)</a></li>
           </ul></dd>
 <dt><a name="%60%5B%5D%60" href="#%60%5B%5D%60"><span>`[]`:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: `[]`(edge: Edge; property: string): Box" href="grim/graph.html#%5B%5D%2CEdge%2Cstring">graph: `[]`(edge: Edge; property: string): Box</a></li>
+          data-doc-search-tag="entities: `[]`(edge: Edge; property: string): Box" href="grim/entities.html#%5B%5D%2CEdge%2Cstring">entities: `[]`(edge: Edge; property: string): Box</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: `[]`(node: Node; property: string): Box" href="grim/graph.html#%5B%5D%2CNode%2Cstring">graph: `[]`(node: Node; property: string): Box</a></li>
+          data-doc-search-tag="entities: `[]`(node: Node; property: string): Box" href="grim/entities.html#%5B%5D%2CNode%2Cstring">entities: `[]`(node: Node; property: string): Box</a></li>
+          </ul></dd>
+<dt><a name="add" href="#add"><span>add:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="paths: add(pc: var PathCollection; p: Path)" href="grim/paths.html#add%2CPathCollection%2CPath">paths: add(pc: var PathCollection; p: Path)</a></li>
           </ul></dd>
 <dt><a name="addEdge" href="#addEdge"><span>addEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -868,6 +872,10 @@ function main() {
           data-doc-search-tag="graph: addNode(self: Graph; label: string; properties: Table[string, Box] = initTable();
         oid: string = $genOid()): string" href="grim/graph.html#addNode%2CGraph%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: addNode(self: Graph; label: string; properties: Table[string, Box] = initTable();
         oid: string = $genOid()): string</a></li>
+          </ul></dd>
+<dt><a name="between" href="#between"><span>between:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="entities: between(A, B: Node; direction: Direction = Direction.Out): (iterator (): Edge)" href="grim/entities.html#between%2CNode%2CNode%2CDirection">entities: between(A, B: Node; direction: Direction = Direction.Out): (iterator (): Edge)</a></li>
           </ul></dd>
 <dt><a name="Box" href="#Box"><span>Box:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -897,6 +905,10 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="BoxKind.bxStr" href="grim/box.html#bxStr">BoxKind.bxStr</a></li>
           </ul></dd>
+<dt><a name="connected" href="#connected"><span>connected:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="entities: connected(A, B: Node; direction: Direction = Direction.Out): bool" href="grim/entities.html#connected%2CNode%2CNode%2CDirection">entities: connected(A, B: Node; direction: Direction = Direction.Out): bool</a></li>
+          </ul></dd>
 <dt><a name="contains" href="#contains"><span>contains:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graph: contains(self: Graph; key: Edge): bool" href="grim/graph.html#contains%2CGraph%2CEdge">graph: contains(self: Graph; key: Edge): bool</a></li>
@@ -909,6 +921,10 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="graph: delEdge(self: Graph; oid: string): bool" href="grim/graph.html#delEdge%2CGraph%2Cstring">graph: delEdge(self: Graph; oid: string): bool</a></li>
           </ul></dd>
+<dt><a name="delete" href="#delete"><span>delete:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="entities: delete(e: Edge)" href="grim/entities.html#delete%2CEdge">entities: delete(e: Edge)</a></li>
+          </ul></dd>
 <dt><a name="delNode" href="#delNode"><span>delNode:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graph: delNode(self: Graph; oid: string): bool" href="grim/graph.html#delNode%2CGraph%2Cstring">graph: delNode(self: Graph; oid: string): bool</a></li>
@@ -917,19 +933,19 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="box: describe(b: Box): string" href="grim/box.html#describe%2CBox">box: describe(b: Box): string</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: describe(e: Edge; lineWidth: int = 100; propertyWidth: int = 20): string" href="grim/graph.html#describe%2CEdge%2Cint%2Cint">graph: describe(e: Edge; lineWidth: int = 100; propertyWidth: int = 20): string</a></li>
+          data-doc-search-tag="entities: describe(e: Edge; lineWidth: int = 100; propertyWidth: int = 20): string" href="grim/entities.html#describe%2CEdge%2Cint%2Cint">entities: describe(e: Edge; lineWidth: int = 100; propertyWidth: int = 20): string</a></li>
+          <li><a class="reference external"
+          data-doc-search-tag="entities: describe(n: Node; lineWidth: int = 100; propertyWidth: int = 20): string" href="grim/entities.html#describe%2CNode%2Cint%2Cint">entities: describe(n: Node; lineWidth: int = 100; propertyWidth: int = 20): string</a></li>
           <li><a class="reference external"
           data-doc-search-tag="graph: describe(g: Graph; lineWidth = 100): string" href="grim/graph.html#describe%2CGraph%2Cint">graph: describe(g: Graph; lineWidth = 100): string</a></li>
-          <li><a class="reference external"
-          data-doc-search-tag="graph: describe(n: Node; lineWidth: int = 100; propertyWidth: int = 20): string" href="grim/graph.html#describe%2CNode%2Cint%2Cint">graph: describe(n: Node; lineWidth: int = 100; propertyWidth: int = 20): string</a></li>
           </ul></dd>
 <dt><a name="Direction" href="#Direction"><span>Direction:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: Direction" href="grim/graph.html#Direction">graph: Direction</a></li>
+          data-doc-search-tag="entities: Direction" href="grim/entities.html#Direction">entities: Direction</a></li>
           </ul></dd>
 <dt><a name="Edge" href="#Edge"><span>Edge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: Edge" href="grim/graph.html#Edge">graph: Edge</a></li>
+          data-doc-search-tag="entities: Edge" href="grim/entities.html#Edge">entities: Edge</a></li>
           </ul></dd>
 <dt><a name="edge" href="#edge"><span>edge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -941,9 +957,9 @@ function main() {
           </ul></dd>
 <dt><a name="edges" href="#edges"><span>edges:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: edges(self: Graph; labels: varargs[string]): (iterator (): Edge)" href="grim/graph.html#edges%2CGraph%2Cvarargs%5Bstring%5D">graph: edges(self: Graph; labels: varargs[string]): (iterator (): Edge)</a></li>
+          data-doc-search-tag="entities: edges(n: Node; direction: Direction = Direction.Out): (iterator (): Edge)" href="grim/entities.html#edges%2CNode%2CDirection">entities: edges(n: Node; direction: Direction = Direction.Out): (iterator (): Edge)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: edges(n: Node; direction: Direction = Direction.Out): (iterator (): Edge)" href="grim/graph.html#edges%2CNode%2CDirection">graph: edges(n: Node; direction: Direction = Direction.Out): (iterator (): Edge)</a></li>
+          data-doc-search-tag="graph: edges(self: Graph; labels: varargs[string]): (iterator (): Edge)" href="grim/graph.html#edges%2CGraph%2Cvarargs%5Bstring%5D">graph: edges(self: Graph; labels: varargs[string]): (iterator (): Edge)</a></li>
           </ul></dd>
 <dt><a name="edgesBetween" href="#edgesBetween"><span>edgesBetween:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -953,19 +969,19 @@ function main() {
           </ul></dd>
 <dt><a name="EntityOid" href="#EntityOid"><span>EntityOid:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: EntityOid" href="grim/graph.html#EntityOid">graph: EntityOid</a></li>
+          data-doc-search-tag="entities: EntityOid" href="grim/entities.html#EntityOid">entities: EntityOid</a></li>
           </ul></dd>
 <dt><a name="first" href="#first"><span>first:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: first(p: Path): Edge" href="grim/graph.html#first%2CPath">graph: first(p: Path): Edge</a></li>
+          data-doc-search-tag="paths: first(p: Path): Edge" href="grim/paths.html#first%2CPath">paths: first(p: Path): Edge</a></li>
           </ul></dd>
 <dt><a name="follow" href="#follow"><span>follow:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: follow(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection" href="grim/graph.html#follow%2CPathCollection%2Cstring%2Cstring">graph: follow(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection</a></li>
+          data-doc-search-tag="paths: follow(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection" href="grim/paths.html#follow%2CPathCollection%2Cstring%2Cstring">paths: follow(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection</a></li>
           </ul></dd>
 <dt><a name="get" href="#get"><span>get:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: get(p: Path; n: int): Edge" href="grim/graph.html#get%2CPath%2Cint">graph: get(p: Path; n: int): Edge</a></li>
+          data-doc-search-tag="paths: get(p: Path; n: int): Edge" href="grim/paths.html#get%2CPath%2Cint">paths: get(p: Path; n: int): Edge</a></li>
           </ul></dd>
 <dt><a name="getBool" href="#getBool"><span>getBool:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1013,7 +1029,7 @@ function main() {
           </ul></dd>
 <dt><a name="hash" href="#hash"><span>hash:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: hash(p: Path): Hash" href="grim/graph.html#hash%2CPath">graph: hash(p: Path): Hash</a></li>
+          data-doc-search-tag="paths: hash(p: Path): Hash" href="grim/paths.html#hash%2CPath">paths: hash(p: Path): Hash</a></li>
           </ul></dd>
 <dt><a name="initBox" href="#initBox"><span>initBox:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1027,31 +1043,35 @@ function main() {
           <li><a class="reference external"
           data-doc-search-tag="box: initBox(value: string): Box" href="grim/box.html#initBox%2Cstring">box: initBox(value: string): Box</a></li>
           </ul></dd>
+<dt><a name="initPathCollection" href="#initPathCollection"><span>initPathCollection:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="paths: initPathCollection(): PathCollection" href="grim/paths.html#initPathCollection">paths: initPathCollection(): PathCollection</a></li>
+          </ul></dd>
 <dt><a name="isEmpty" href="#isEmpty"><span>isEmpty:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="box: isEmpty(b: Box): bool" href="grim/box.html#isEmpty%2CBox">box: isEmpty(b: Box): bool</a></li>
           </ul></dd>
 <dt><a name="items" href="#items"><span>items:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: items(p: Path): Edge" href="grim/graph.html#items.i%2CPath">graph: items(p: Path): Edge</a></li>
+          data-doc-search-tag="paths: items(p: Path): Edge" href="grim/paths.html#items.i%2CPath">paths: items(p: Path): Edge</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: items(pc: PathCollection): Path" href="grim/graph.html#items.i%2CPathCollection">graph: items(pc: PathCollection): Path</a></li>
+          data-doc-search-tag="paths: items(pc: PathCollection): Path" href="grim/paths.html#items.i%2CPathCollection">paths: items(pc: PathCollection): Path</a></li>
           </ul></dd>
 <dt><a name="keys" href="#keys"><span>keys:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: keys[T: Node | Edge](obj: T): string" href="grim/graph.html#keys.i%2CT">graph: keys[T: Node | Edge](obj: T): string</a></li>
+          data-doc-search-tag="entities: keys[T: Node | Edge](obj: T): string" href="grim/entities.html#keys.i%2CT">entities: keys[T: Node | Edge](obj: T): string</a></li>
           </ul></dd>
 <dt><a name="last" href="#last"><span>last:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: last(p: Path): Edge" href="grim/graph.html#last%2CPath">graph: last(p: Path): Edge</a></li>
+          data-doc-search-tag="paths: last(p: Path): Edge" href="grim/paths.html#last%2CPath">paths: last(p: Path): Edge</a></li>
           </ul></dd>
 <dt><a name="len" href="#len"><span>len:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: len(p: Path): int" href="grim/graph.html#len%2CPath">graph: len(p: Path): int</a></li>
+          data-doc-search-tag="entities: len[T: Node | Edge](entity: T): int" href="grim/entities.html#len%2CT">entities: len[T: Node | Edge](entity: T): int</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: len(pc: PathCollection): int" href="grim/graph.html#len%2CPathCollection">graph: len(pc: PathCollection): int</a></li>
+          data-doc-search-tag="paths: len(p: Path): int" href="grim/paths.html#len%2CPath">paths: len(p: Path): int</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: len[T: Node | Edge](obj: T): int" href="grim/graph.html#len%2CT">graph: len[T: Node | Edge](obj: T): int</a></li>
+          data-doc-search-tag="paths: len(pc: PathCollection): int" href="grim/paths.html#len%2CPathCollection">paths: len(pc: PathCollection): int</a></li>
           </ul></dd>
 <dt><a name="loadYaml" href="#loadYaml"><span>loadYaml:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1059,14 +1079,14 @@ function main() {
           </ul></dd>
 <dt><a name="neighbors" href="#neighbors"><span>neighbors:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: neighbors(n: Node; direction: Direction = Direction.Out): (iterator (): string)" href="grim/graph.html#neighbors%2CNode%2CDirection">graph: neighbors(n: Node; direction: Direction = Direction.Out): (iterator (): string)</a></li>
+          data-doc-search-tag="entities: neighbors(n: Node; direction: Direction = Direction.Out): (iterator (): string)" href="grim/entities.html#neighbors%2CNode%2CDirection">entities: neighbors(n: Node; direction: Direction = Direction.Out): (iterator (): string)</a></li>
           <li><a class="reference external"
           data-doc-search-tag="graph: neighbors(self: Graph; n: string; direction: Direction = Direction.Out): string" href="grim/graph.html#neighbors.i%2CGraph%2Cstring%2CDirection">graph: neighbors(self: Graph; n: string; direction: Direction = Direction.Out): string</a></li>
           </ul></dd>
 <dt><a name="newEdge" href="#newEdge"><span>newEdge:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: newEdge(A: Node; B: Node; label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Edge" href="grim/graph.html#newEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: newEdge(A: Node; B: Node; label: string; properties: Table[string, Box] = initTable();
+          data-doc-search-tag="entities: newEdge(A: Node; B: Node; label: string; properties: Table[string, Box] = initTable();
+        oid: string = $genOid()): Edge" href="grim/entities.html#newEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">entities: newEdge(A: Node; B: Node; label: string; properties: Table[string, Box] = initTable();
         oid: string = $genOid()): Edge</a></li>
           </ul></dd>
 <dt><a name="newGraph" href="#newGraph"><span>newGraph:</span></a></dt><dd><ul class="simple">
@@ -1075,13 +1095,17 @@ function main() {
           </ul></dd>
 <dt><a name="newNode" href="#newNode"><span>newNode:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: newNode(label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Node" href="grim/graph.html#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">graph: newNode(label: string; properties: Table[string, Box] = initTable();
+          data-doc-search-tag="entities: newNode(label: string; properties: Table[string, Box] = initTable();
+        oid: string = $genOid()): Node" href="grim/entities.html#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring">entities: newNode(label: string; properties: Table[string, Box] = initTable();
         oid: string = $genOid()): Node</a></li>
+          </ul></dd>
+<dt><a name="newPath" href="#newPath"><span>newPath:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="paths: newPath(anchor: Node): Path" href="grim/paths.html#newPath%2CNode">paths: newPath(anchor: Node): Path</a></li>
           </ul></dd>
 <dt><a name="Node" href="#Node"><span>Node:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: Node" href="grim/graph.html#Node">graph: Node</a></li>
+          data-doc-search-tag="entities: Node" href="grim/entities.html#Node">entities: Node</a></li>
           </ul></dd>
 <dt><a name="node" href="#node"><span>node:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1101,7 +1125,7 @@ function main() {
           </ul></dd>
 <dt><a name="numberOfNeighbors" href="#numberOfNeighbors"><span>numberOfNeighbors:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: numberOfNeighbors(n: Node; direction: Direction = Direction.Out): int" href="grim/graph.html#numberOfNeighbors%2CNode%2CDirection">graph: numberOfNeighbors(n: Node; direction: Direction = Direction.Out): int</a></li>
+          data-doc-search-tag="entities: numberOfNeighbors(n: Node; direction: Direction = Direction.Out): int" href="grim/entities.html#numberOfNeighbors%2CNode%2CDirection">entities: numberOfNeighbors(n: Node; direction: Direction = Direction.Out): int</a></li>
           </ul></dd>
 <dt><a name="numberOfNodes" href="#numberOfNodes"><span>numberOfNodes:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1109,7 +1133,11 @@ function main() {
           </ul></dd>
 <dt><a name="pairs" href="#pairs"><span>pairs:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: pairs[T: Node | Edge](obj: T): (string, Box)" href="grim/graph.html#pairs.i%2CT">graph: pairs[T: Node | Edge](obj: T): (string, Box)</a></li>
+          data-doc-search-tag="entities: pairs[T: Node | Edge](obj: T): (string, Box)" href="grim/entities.html#pairs.i%2CT">entities: pairs[T: Node | Edge](obj: T): (string, Box)</a></li>
+          </ul></dd>
+<dt><a name="PathCollection" href="#PathCollection"><span>PathCollection:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="paths: PathCollection" href="grim/paths.html#PathCollection">paths: PathCollection</a></li>
           </ul></dd>
 <dt><a name="paths" href="#paths"><span>paths:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1117,7 +1145,7 @@ function main() {
           </ul></dd>
 <dt><a name="pop" href="#pop"><span>pop:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: pop(p: Path): Edge" href="grim/graph.html#pop%2CPath">graph: pop(p: Path): Edge</a></li>
+          data-doc-search-tag="paths: pop(p: Path): Edge" href="grim/paths.html#pop%2CPath">paths: pop(p: Path): Edge</a></li>
           </ul></dd>
 <dt><a name="saveYaml" href="#saveYaml"><span>saveYaml:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1129,11 +1157,11 @@ function main() {
           </ul></dd>
 <dt><a name="step" href="#step"><span>step:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: step(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection" href="grim/graph.html#step%2CPathCollection%2Cstring%2Cstring">graph: step(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection</a></li>
+          data-doc-search-tag="paths: step(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection" href="grim/paths.html#step%2CPathCollection%2Cstring%2Cstring">paths: step(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection</a></li>
           </ul></dd>
 <dt><a name="steps" href="#steps"><span>steps:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: steps(pc: PathCollection; edgeLabel, nodeLabel: string; nsteps: int = 1): PathCollection" href="grim/graph.html#steps%2CPathCollection%2Cstring%2Cstring%2Cint">graph: steps(pc: PathCollection; edgeLabel, nodeLabel: string; nsteps: int = 1): PathCollection</a></li>
+          data-doc-search-tag="paths: steps(pc: PathCollection; edgeLabel, nodeLabel: string; nsteps: int = 1): PathCollection" href="grim/paths.html#steps%2CPathCollection%2Cstring%2Cstring%2Cint">paths: steps(pc: PathCollection; edgeLabel, nodeLabel: string; nsteps: int = 1): PathCollection</a></li>
           </ul></dd>
 <dt><a name="toTable" href="#toTable"><span>toTable:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1149,18 +1177,18 @@ function main() {
           <li><a class="reference external"
           data-doc-search-tag="box: update(b: var Box; value: string)" href="grim/box.html#update%2CBox%2Cstring">box: update(b: var Box; value: string)</a></li>
           <li><a class="reference external"
-          data-doc-search-tag="graph: update[T](self: T; p: Table[string, Box]): string" href="grim/graph.html#update%2CT%2CTable%5Bstring%2CBox%5D">graph: update[T](self: T; p: Table[string, Box]): string</a></li>
+          data-doc-search-tag="entities: update[T](self: T; p: Table[string, Box]): string" href="grim/entities.html#update%2CT%2CTable%5Bstring%2CBox%5D">entities: update[T](self: T; p: Table[string, Box]): string</a></li>
           </ul></dd>
 <dt><a name="values" href="#values"><span>values:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
-          data-doc-search-tag="graph: values[T: Node | Edge](obj: T): Box" href="grim/graph.html#values.i%2CT">graph: values[T: Node | Edge](obj: T): Box</a></li>
+          data-doc-search-tag="entities: values[T: Node | Edge](obj: T): Box" href="grim/entities.html#values.i%2CT">entities: values[T: Node | Edge](obj: T): Box</a></li>
           </ul></dd>
 </dl>
     <div class="row">
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-02-29 13:37:22 UTC</small>
+        <small>Made with Nim. Generated: 2020-03-03 07:21:41 UTC</small>
       </div>
     </div>
   </div>
