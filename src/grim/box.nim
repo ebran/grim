@@ -181,3 +181,13 @@ proc toTable*(j: JsonNode): Table[string, Box] =
   ## Convert JsonNode with simple values to table with boxes.
   for (property, value) in j.pairs:
     result[property] = guessBox($value)
+
+proc `$`*(t: Table[string, Box]): string =
+  ## Pretty-print String table with Boxes
+  result.add("{")
+  for key, val in t.pairs:
+    result.add(key & ": " & val.describe & ", ")
+  if t.len > 0:
+    # Delete trailing comma
+    result.delete(result.len-2, result.len)
+  result.add("}")
