@@ -372,8 +372,8 @@ proc describe*(g: Graph, lineWidth = 100): string =
 
     result.add(info)
 
-proc paths*(g: Graph, anchor: string): PathCollection =
-  ## Start a path collection
+proc navigate*(g: Graph, anchor: string): PathCollection =
+  ## Navigate paths by pattern matching in graph
   var pc = initPathCollection()
   for node in g.nodes(anchor):
     pc.add(node.newPath)
