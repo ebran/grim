@@ -40,7 +40,7 @@ suite "path collections":
           date: "2020-02-16"), oid = "bob-second house")
 
   test "empty":
-    var pc = g.paths("Person")
+    var pc = g.navigate("Person")
 
     for path in pc:
       check path.len == 0
@@ -51,14 +51,14 @@ suite "path collections":
 
   test "fixed number of steps mathcing no paths":
     var pc = g
-      .paths("Person")
+      .navigate("Person")
       .steps("KNOWS", "Person", 4)
 
     check pc.len == 0
 
   test "one step matching two paths":
     var pc = g
-    .paths("Person")
+    .navigate("Person")
     .step("FIRST", "Address")
 
     check:
@@ -67,7 +67,7 @@ suite "path collections":
 
   test "two steps matching two paths":
     var pc = g
-      .paths("Person")
+      .navigate("Person")
       .step("FIRST", "Address")
       .step("MOVED_TO", "Address")
 
@@ -77,7 +77,7 @@ suite "path collections":
 
   test "two steps matching one path":
     var pc = g
-      .paths("Person")
+      .navigate("Person")
       .step("KNOWS", "Person")
       .step("MOVED_IN", "Address")
 
@@ -95,7 +95,7 @@ suite "path collections":
 
   test "fixed number of steps matching two paths":
     var pc = g
-      .paths("Person")
+      .navigate("Person")
       .steps("KNOWS", "Person", 2)
 
     check:
@@ -106,7 +106,7 @@ suite "path collections":
 
     test "following pattern with five matches":
       var pc = g
-        .paths("Person")
+        .navigate("Person")
         .follow("KNOWS", "Person")
 
       check:
