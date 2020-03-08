@@ -180,6 +180,28 @@ for e in g.edgesBetween("a nice guy", "a smart girl"):
   doAssert e["value"].getInt == 204
 ```
 
+### Communicating with a Neo4j database
+The `neo4j` submodule is used to communicate with a Neo4j database. Data is transferred via Neo4j's http REST API since the bolt protocol is not supported at present. 
+```nim
+import grim/[neo4j, utils]
+```
+The `utils` module provides the `getEnvOrRaise` proc, which reads an evironment variable or raises a runtime error when the variable is not defined.
+```nim
+let
+    username = getEnvOrRaise("NEO4J_USERNAME")
+    password = getEnvOrRaise("NEO4J_PASSWORD")
+    hostname = getEnvOrRaise("NEO4J_HOSTNAME")
+```
+The contents of NEO4J_USERNAME and NEO4J_PASSWORD are self-explanatory, and the NEO4J_HOSTNAME contains the address to the database on the form `mydatabase.com` (or simply `localhost` if you are running a local instance).
+
+Start the client and dump the database as a grim LPG: 
+```nim
+  var
+    client = initNeo4jClient(hostname, auth = (username, password))
+    g = client.dump("SHAARP")
+  
+  echo g.describe
+```
 ## Running the tests
 
 The unit tests can be run with nimble, they test basic usage of the package such as creating and modifying graphs, the DSL, and loading/saving graphs as YAML.
