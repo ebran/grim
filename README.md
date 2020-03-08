@@ -202,6 +202,117 @@ Start the client and dump the database as a grim LPG:
   
   echo g.describe
 ```
+### Paths
+A path in the graph is defined by a sequence of continuous edges (members), which link together a number of nodes. The path can be `walked` (or traversed) by iterating from the beginning of the path. The paths starts at an *anchor* node.
+```nim
+var p = newPath(myNode)
+```
+`p` is now an empty path starting at `myNode`. We can now start building the path by repeatedly adding members to the path.
+```nim
+p = p.add(myFirstEdge).add(mySecondEdge).add(myThirdEdge)
+```
+The add proc returns the path and can therefore be chained. Note that paths and members are ref objects so to create a copy of a path we need to use the explicit `copy` function
+```nim
+var p2 = p.copy
+```
+Walk the path by iterating
+```nim
+for edge in p:
+  echo edge
+# myFirstEdge, mySecondEdge, myThirdEdge
+```
+Get the first, last, and n:th member by convenience functions:
+```nim
+echo p.first    # myFirstEdge
+echo p.last     # myThirdEdge
+echo p.nth(1)   # mySecondEdge (zero-indexed)
+```
+The first two of these are O(1) operations, but the last is O(n) and thus slower for long paths.
+
+### Navigating paths
+The real power of paths emerge when navigating path via patterns. This is an efficient method for simple traversal of similar paths in the graph. The paths can be scanned and modified in a single sweep. 
+
+Let's start our example by building a graph:
+
+```nim
+import grim/dsl
+
+graph g "People":
+  nodes:
+    Person:
+      "alice":
+        name: "Alice"
+      "bob":
+        name: "Bob"
+      "charlie":
+        name: "Charlie"
+  edges:
+    "alice" -> "bob":
+      KNOWS
+    "bob" -> "charlie"
+      KNOWS
+    "bob" -> "charlie"
+      KNOWS  
+```
+The graph is `Alice -KNOWS-> Bob =KNOWS=> Charlie` ,where `->` and `=>` denotes single and double edges, respectively. Let's say we want to navigate this graph by the pattern Person-KNOWS-Person. There are three such paths of length 1 (containing one member): one is Alice-Bob (which is a single edge) and the other two are Bob-Charlie (which is a double edge).
+
+We start navigating with the graph's `navigate` proc:
+```nim
+var pc = g.navigate("Person")    # PathCollection
+```
+The navigation starts at an anchor node ("Person"). The result is a `PathCollection`, which is exactly what it sounds like: A collection of paths matching the given pattern. In other words, the `navigate` constructs a PathCollection with empty paths anchored at nodes matching the label Person. We can iterate over the matched paths in the PathCollection:
+
+```nim
+for path in pc:
+  echo path, path.anchor["name"]
+# ("Empty Path", "Alice"), ("Empty Path", "Bob"), ("Empty Path", "Charlie")
+# The matching order is not guaranteed.
+```
+Let's know expand the navigation to the pattern matched by taking the step:
+```nim
+pc = pc.step("KNOWS", "Person")
+```
+With the help of the anchors, we have now matched all paths fulfilling the pattern Person-KNOWS-Person. Each step taken when navigating returns a modified copy of the PathCollection, encouraging sequential steps to be chained:
+
+```nim
+var pc = g
+  .navigate("Person")
+  .step("KNOWS", "Person")
+  .step("KNOWS", "Person")
+```
+In fact, this pattern is expected to be so common that there is a convenience function for repeating a number of identical steps:
+```nim
+var pc = g
+  .navigate("Person")
+  .steps("KNOWS", "Person", 2)
+```
+This navigation will search the graph for motifs of the kind Person-KNOWS->Person-KNOWS->Person, i.e., friends of friends. Note that the match is exhaustive, i.e.,
+```nim
+var pc = g
+  .navigate("Person")
+  .step("KNOWS", "Person", 3)
+```
+will return no matches (i.e., a path collection of empty paths anchored at "Person" labels).
+
+There is one more important path navigation function, namely `follow`. This will match all patterns of variable length until there are no more matching paths. In our example,
+```nim
+var pc = g
+  .navigate("Person")
+  .follow("KNOWS", "Person")
+```
+will match Person-KNOWS-Person, Person-KNOWS-Person-KNOWS-Person, etc. In our graph, we expect matches:
+- One 1-step path Alice-KNOWS-Bob.
+- Two 1-step paths Bob-KNOWS-Charlie (because of two edges).
+- Two 2-step paths Alice-KNOWS-Bob-KNOWS-Charlie (because of two edges between Bob and Charlie).
+
+After matching patterns, we can simply iterate over the paths in the collection:
+```nim
+for path in pc:
+  echo path, path.anchor
+# Three 1-step paths, two 2-step paths
+# Anchors: Alice (1-step path), Bob (1-step path), Bob (1-step path), Alice (2-step path), Alice (2-step path).
+```
+
 ## Running the tests
 
 The unit tests can be run with nimble, they test basic usage of the package such as creating and modifying graphs, the DSL, and loading/saving graphs as YAML.
