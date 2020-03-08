@@ -88,10 +88,10 @@ suite "path collections":
     check:
       p.anchor.oid == "alice"
       p.first.oid == "alice-bob"
-      p.get(1).oid == "bob-second house"
+      p.nth(1).oid == "bob-second house"
 
     expect ValueError:
-      discard p.get(2)
+      discard p.nth(2)
 
   test "fixed number of steps matching two paths":
     var pc = g

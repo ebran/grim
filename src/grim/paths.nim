@@ -59,7 +59,7 @@ proc last*(p: Path): Edge =
   ## Return the last edge in the path (O(1) operation).
   result = p.tail.value
 
-proc get*(p: Path, n: int): Edge =
+proc nth*(p: Path, n: int): Edge =
   ## Return the `n`:th member of the path (O(n) operation).
   if n < 0 or n >= p.len:
     raise newException(ValueError, "$1 is out of bounds[0,...,$2] for path of length $3.".format(
