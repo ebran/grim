@@ -828,7 +828,11 @@ function main() {
 <li><a class="reference" id="🚀-quickstart_toc" href="#🚀-quickstart">🚀 Quickstart</a></li>
 <li><a class="reference" id="📝-user-guide_toc" href="#📝-user-guide">📝 User guide</a></li>
 <ul class="simple"><li><a class="reference" id="📝-user-guide-graph_toc" href="#📝-user-guide-graph">graph</a></li>
-<li><a class="reference" id="📝-user-guide-dsl_toc" href="#📝-user-guide-dsl">dsl</a></li>
+<li><a class="reference" id="📝-user-guide-paths_toc" href="#📝-user-guide-paths">paths</a></li>
+<ul class="simple"><li><a class="reference" id="paths-path_toc" href="#paths-path">Path</a></li>
+<li><a class="reference" id="paths-pathcollection_toc" href="#paths-pathcollection">PathCollection</a></li>
+</ul><li><a class="reference" id="📝-user-guide-dsl_toc" href="#📝-user-guide-dsl">dsl</a></li>
+<li><a class="reference" id="📝-user-guide-neo4j_toc" href="#📝-user-guide-neo4j">neo4j</a></li>
 <li><a class="reference" id="📝-user-guide-io_toc" href="#📝-user-guide-io">io</a></li>
 <li><a class="reference" id="📝-user-guide-box_toc" href="#📝-user-guide-box">box</a></li>
 </ul><li><a class="reference" id="reference-api_toc" href="#reference-api">Reference API</a></li>
@@ -839,7 +843,7 @@ function main() {
   <div class="nine columns" id="content">
   <div id="tocRoot"></div>
   
-  <p class="module-desc"><img src="./static/logo.svg" alt="grim, the bringer of graphs"/><p>Grim provides a labeled <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph">property graph</a> (LPG) data structure for the Nim language, inspired by the storage model used in the <a class="reference external" href="https://neo4j.com/">Neo4j</a> database. This model consists of labeled Nodes and Edges with associated data stored as key/value-pairs.</p>
+  <p class="module-desc"><img src="logo.svg" alt="grim, the bringer of graphs"/><p>Grim provides a labeled <a class="reference external" href="https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph">property graph</a> (LPG) data structure for the Nim language, inspired by the storage model of the <a class="reference external" href="https://neo4j.com/">Neo4j</a> database. This model consists of labeled <strong>entities</strong> (Nodes and Edges) with associated data stored as key/value-pairs.</p>
 
 <h1><a class="toc-backref" id="🚀-quickstart" href="#🚀-quickstart">🚀 Quickstart</a></h1><p>Grim can be installed with the Nimble package manager:</p>
 <pre class="listing">
@@ -899,8 +903,49 @@ requires &quot;grim&quot;</pre><p>in the .nimble file in the root folder. Then t
 <dd>Return whether there is an edge between two nodes.</dd>
 </dl>
 </li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">pattern</span></tt> (<em>proc</em>)</dt>
+<dd>Start a PathCollection for pattern matching.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">describe</span></tt> (<em>proc</em>)</dt>
+<dd>Return a summary of the graph.</dd>
+</dl>
+</li>
 <li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">update</span></tt> (<em>proc</em>)</dt>
 <dd>Update node or edge properties.</dd>
+</dl>
+</li>
+</ul>
+
+<h2><a class="toc-backref" id="📝-user-guide-paths" href="#📝-user-guide-paths">paths</a></h2>
+<h3><a class="toc-backref" id="paths-path" href="#paths-path">Path</a></h3><ul class="simple"><li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">first</span></tt> (<em>proc</em>)</dt>
+<dd>Get the first member of the path (O(1) operation).</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">last</span></tt> (<em>proc</em>)</dt>
+<dd>Get the last member of the path (O(1) operation).</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">nth</span></tt> (<em>proc</em>)</dt>
+<dd>Get the n:th member of the path (O(n) operation).</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">copy</span></tt> (<em>proc</em>)</dt>
+<dd>Copy all members and return a new path (O(n) operation).</dd>
+</dl>
+</li>
+</ul>
+
+<h3><a class="toc-backref" id="paths-pathcollection" href="#paths-pathcollection">PathCollection</a></h3><ul class="simple"><li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">step</span></tt></dt>
+<dd>Take a single step while matching paths on node/edge patterns.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">steps</span></tt></dt>
+<dd>Take multiple steps while matching paths on node/edge patterns.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">follow</span></tt></dt>
+<dd>Keep taking steps until no more paths match the node/edge pattern.</dd>
 </dl>
 </li>
 </ul>
@@ -908,6 +953,17 @@ requires &quot;grim&quot;</pre><p>in the .nimble file in the root folder. Then t
 <h2><a class="toc-backref" id="📝-user-guide-dsl" href="#📝-user-guide-dsl">dsl</a></h2><p>The submodule contains a domain specific language (DSL) macro to create LPGs.</p>
 <ul class="simple"><li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">graph</span></tt> (<em>macro</em>)</dt>
 <dd>DSL to easily create LPGs with minimal boilerplate. Usage examples can be found in the unit tests and in the README.</dd>
+</dl>
+</li>
+</ul>
+
+<h2><a class="toc-backref" id="📝-user-guide-neo4j" href="#📝-user-guide-neo4j">neo4j</a></h2><p>The submodule contains a simple database client to communicate with a Neo4j database instance.</p>
+<ul class="simple"><li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">dump</span></tt> (<em>proc</em>)</dt>
+<dd>Dump a Neo4j database as a labeled property graph (LPG) in grim.</dd>
+</dl>
+</li>
+<li><dl class="docutils"><dt><tt class="docutils literal"><span class="pre">execute</span></tt> (<em>proc</em>)</dt>
+<dd>Execute a Cypher query on the database and return result as a grim graph.</dd>
 </dl>
 </li>
 </ul>
@@ -972,7 +1028,7 @@ requires &quot;grim&quot;</pre><p>in the .nimble file in the root folder. Then t
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-03-03 07:21:38 UTC</small>
+        <small>Made with Nim. Generated: 2020-03-08 19:57:09 UTC</small>
       </div>
     </div>
   </div>

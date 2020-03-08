@@ -2,13 +2,13 @@
 Grim brings the labeled property graph to Nim!
 ==============================================
 
-.. figure:: ./static/logo.svg
+.. figure:: logo.svg
    :alt: grim, the bringer of graphs
 
 .. contents::
 
 
-Grim provides a labeled `property graph <https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph>`_ (LPG) data structure for the Nim language, inspired by the storage model used in the `Neo4j <https://neo4j.com/>`_ database. This model consists of labeled Nodes and Edges with associated data stored as key/value-pairs.
+Grim provides a labeled `property graph <https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph>`_ (LPG) data structure for the Nim language, inspired by the storage model of the `Neo4j <https://neo4j.com/>`_ database. This model consists of labeled **entities** (Nodes and Edges) with associated data stored as key/value-pairs.
 
 🚀 Quickstart
 =============
@@ -77,8 +77,44 @@ The submodule contains the LPG data structure and various way of retrieving info
 - ``hasEdge`` (*proc*)
     Return whether there is an edge between two nodes.
 
+- ``pattern`` (*proc*)
+    Start a PathCollection for pattern matching.
+
+- ``describe`` (*proc*)
+    Return a summary of the graph.
+
 - ``update`` (*proc*)
     Update node or edge properties.
+
+paths
+-----
+
+Path
+******
+
+- ``first`` (*proc*)
+    Get the first member of the path (O(1) operation).
+
+- ``last`` (*proc*)
+    Get the last member of the path (O(1) operation).
+
+- ``nth`` (*proc*)
+    Get the n:th member of the path (O(n) operation).
+
+- ``copy`` (*proc*)
+    Copy all members and return a new path (O(n) operation).
+
+PathCollection
+**************
+
+- ``step``
+    Take a single step while matching paths on node/edge patterns.
+
+- ``steps``
+    Take multiple steps while matching paths on node/edge patterns.
+
+- ``follow``
+    Keep taking steps until no more paths match the node/edge pattern.
 
 dsl
 -----
@@ -86,6 +122,16 @@ The submodule contains a domain specific language (DSL) macro to create LPGs.
 
 - ``graph`` (*macro*)
     DSL to easily create LPGs with minimal boilerplate. Usage examples can be found in the unit tests and in the README.
+
+neo4j
+-----
+The submodule contains a simple database client to communicate with a Neo4j database instance.
+
+- ``dump`` (*proc*)
+    Dump a Neo4j database as a labeled property graph (LPG) in grim.
+
+- ``execute`` (*proc*)
+    Execute a Cypher query on the database and return result as a grim graph.
 
 io
 -----
