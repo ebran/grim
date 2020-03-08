@@ -979,10 +979,6 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="paths: follow(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection" href="grim/paths.html#follow%2CPathCollection%2Cstring%2Cstring">paths: follow(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection</a></li>
           </ul></dd>
-<dt><a name="get" href="#get"><span>get:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="paths: get(p: Path; n: int): Edge" href="grim/paths.html#get%2CPath%2Cint">paths: get(p: Path; n: int): Edge</a></li>
-          </ul></dd>
 <dt><a name="getBool" href="#getBool"><span>getBool:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="box: getBool(b: Box): bool" href="grim/box.html#getBool%2CBox">box: getBool(b: Box): bool</a></li>
@@ -1077,6 +1073,10 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="io: loadYaml(fileName: string): Graph" href="grim/io.html#loadYaml%2Cstring">io: loadYaml(fileName: string): Graph</a></li>
           </ul></dd>
+<dt><a name="navigate" href="#navigate"><span>navigate:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="graph: navigate(g: Graph; anchor: string): PathCollection" href="grim/graph.html#navigate%2CGraph%2Cstring">graph: navigate(g: Graph; anchor: string): PathCollection</a></li>
+          </ul></dd>
 <dt><a name="neighbors" href="#neighbors"><span>neighbors:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="entities: neighbors(n: Node; direction: Direction = Direction.Out): (iterator (): string)" href="grim/entities.html#neighbors%2CNode%2CDirection">entities: neighbors(n: Node; direction: Direction = Direction.Out): (iterator (): string)</a></li>
@@ -1119,6 +1119,10 @@ function main() {
 <li><a class="reference external"
           data-doc-search-tag="graph: nodes(self: Graph; labels: varargs[string]): (iterator (): Node)" href="grim/graph.html#nodes%2CGraph%2Cvarargs%5Bstring%5D">graph: nodes(self: Graph; labels: varargs[string]): (iterator (): Node)</a></li>
           </ul></dd>
+<dt><a name="nth" href="#nth"><span>nth:</span></a></dt><dd><ul class="simple">
+<li><a class="reference external"
+          data-doc-search-tag="paths: nth(p: Path; n: int): Edge" href="grim/paths.html#nth%2CPath%2Cint">paths: nth(p: Path; n: int): Edge</a></li>
+          </ul></dd>
 <dt><a name="numberOfEdges" href="#numberOfEdges"><span>numberOfEdges:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="graph: numberOfEdges(self: Graph): int" href="grim/graph.html#numberOfEdges%2CGraph">graph: numberOfEdges(self: Graph): int</a></li>
@@ -1138,10 +1142,6 @@ function main() {
 <dt><a name="PathCollection" href="#PathCollection"><span>PathCollection:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
           data-doc-search-tag="paths: PathCollection" href="grim/paths.html#PathCollection">paths: PathCollection</a></li>
-          </ul></dd>
-<dt><a name="paths" href="#paths"><span>paths:</span></a></dt><dd><ul class="simple">
-<li><a class="reference external"
-          data-doc-search-tag="graph: paths(g: Graph; anchor: string): PathCollection" href="grim/graph.html#paths%2CGraph%2Cstring">graph: paths(g: Graph; anchor: string): PathCollection</a></li>
           </ul></dd>
 <dt><a name="pop" href="#pop"><span>pop:</span></a></dt><dd><ul class="simple">
 <li><a class="reference external"
@@ -1188,7 +1188,7 @@ function main() {
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-03-03 07:21:41 UTC</small>
+        <small>Made with Nim. Generated: 2020-03-08 19:57:13 UTC</small>
       </div>
     </div>
   </div>
