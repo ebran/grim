@@ -49,7 +49,7 @@ suite "path collections":
       pc.len == 3
       pc --> map(it.anchor["name"].getStr).sorted == @["Alice", "Bob", "Charlie"]
 
-  test "fixed number of steps mathcing no paths":
+  test "fixed number of steps matching no paths":
     var pc = g
       .navigate("Person")
       .steps("KNOWS", "Person", 4)
