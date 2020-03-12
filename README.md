@@ -149,13 +149,13 @@ import grim
 
 graph g "Some people":
   nodes:
-  	Person:
-  		"a nice guy":
-  		  name: "Santa Claus"
+    Person:
+      "a nice guy":
+        name: "Santa Claus"
   		  age: 108
-  		"a smart girl":
-  		  name: "Jane Austen"
-  		  wealth: 10304.3
+      "a smart girl":
+        name: "Jane Austen"
+        wealth: 10304.3
   edges:
     "a nice guy" -> "a smart girl":
       DELIVERS:
@@ -198,7 +198,7 @@ Start the client and dump the database as a grim LPG:
 ```nim
   var
     client = initNeo4jClient(hostname, auth = (username, password))
-    g = client.dump("SHAARP")
+    g = client.dump("my graph")
   
   echo g.describe
 ```
