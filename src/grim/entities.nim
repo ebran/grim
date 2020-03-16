@@ -223,7 +223,7 @@ proc between*(A, B: Node, direction: Direction = Direction.Out): (
   return choices[direction]
 
 proc connected*(A, B: Node, direction: Direction = Direction.Out): bool =
-  ## Check if `first` and `second`` node` is connected with an edge.
+  ## Check if `first` and `second` node is connected with an edge.
   let
     isOutgoing = B.oid in A.outgoing and A.oid in B.incoming
     isIncoming = B.oid in A.incoming and A.oid in B.outgoing
