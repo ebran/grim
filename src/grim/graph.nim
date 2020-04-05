@@ -243,6 +243,14 @@ proc edge*(self: Graph, edge: string): Edge =
   ## Return edge with `oid` in graph
   result = self.edgeTable[edge]
 
+proc hasEdge*(self: Graph, A: string, B: string,
+    direction: Direction = Direction.Out): bool =
+  ## Check if there is an edge between nodes `A` and `B` in `direction` in the graph.
+  if A notin self or B notin self:
+    return false
+
+  return self.nodeTable[A].connected(self.nodeTable[B], direction = direction)
+
 proc delEdge*(self: Graph, oid: string): bool =
   ## Delete edge with `oid` in graph, return true if edge was in graph and false otherwise.
   let
@@ -282,11 +290,6 @@ proc delNode*(self: Graph, oid: string): bool =
   self.nodeTable.del(n.oid)
   self.nodeIndex[n.label].del(n.oid)
 
-proc hasEdge*(self: Graph, A: string, B: string,
-    direction: Direction = Direction.Out): bool =
-  ## Check if there is an edge between nodes `A` and `B` in `direction` in the graph.
-  if A notin self or B notin self:
-    return false
 
   return self.nodeTable[A].connected(self.nodeTable[B], direction = direction)
 
