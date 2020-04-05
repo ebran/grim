@@ -4,7 +4,6 @@ import grim/[dsl, utils]
 import tables
 import algorithm
 import sequtils
-import sugar
 import unittest
 
 suite "Basic usage":
