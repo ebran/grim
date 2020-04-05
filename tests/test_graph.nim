@@ -42,7 +42,7 @@ suite "Basic usage":
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
-  test "add node with label and properties":
+  test "add node with label and data":
     var
       g = newGraph("People")
       oid = g.addNode("Person", %(name: "John Doe", age: 24))
@@ -55,7 +55,7 @@ suite "Basic usage":
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
-  test "add edge with label and properties":
+  test "add edge with label and data":
     var
       g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
@@ -70,7 +70,7 @@ suite "Basic usage":
       g.numberOfNodes == 2
       g.numberOfEdges == 1
 
-  test "update node properties":
+  test "update node data":
     var
       g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))
@@ -91,7 +91,7 @@ suite "Basic usage":
       g.numberOfNodes == 1
       g.numberOfEdges == 0
 
-  test "update edge properties":
+  test "update edge data":
     var
       g = newGraph("People")
       p1 = g.addNode("Person", %(name: "John Doe", age: 24))

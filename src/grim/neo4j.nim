@@ -73,9 +73,9 @@ proc execute*(client: Neo4jClient, query: string): Graph =
     for node in elem["graph"]["nodes"]:
       let
         label = node["labels"][0].getStr
-        properties = node["properties"].toTable
+        data = node["data"].toTable
         oid = node["id"].getStr
-      discard result.addNode(label, properties, oid)
+      discard result.addNode(label, data, oid)
 
     # Add relationships between nodes
     for rel in elem["graph"]["relationships"]:
@@ -83,9 +83,9 @@ proc execute*(client: Neo4jClient, query: string): Graph =
         startsAt = rel["startNode"].getStr
         endsAt = rel["endNode"].getStr
         label = rel["type"].getStr
-        properties = rel["properties"].toTable
+        data = rel["data"].toTable
         oid = rel["id"].getStr
-      discard result.addEdge(startsAt, endsAt, label, properties, oid)
+      discard result.addEdge(startsAt, endsAt, label, data, oid)
 
 proc dump*(client: Neo4jClient, name: string = "graph"): Graph =
   ## Dump Neo4j database as a labeled property graph (LPG).

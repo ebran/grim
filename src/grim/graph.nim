@@ -112,10 +112,10 @@ proc newGraph*(name: string = "graph"): Graph =
 
   result.name = name
 
-proc addNode*(self: Graph, label: string, properties: Table[string,
+proc addNode*(self: Graph, label: string, data: Table[string,
     Box] = initTable[string, Box](), oid: string = $genOid()): string =
   ## Add node to graph.
-  let n = newNode(label, properties = properties, oid = oid)
+  let n = newNode(label, data = data, oid = oid)
 
   # Don't add if node already in graph
   if n in self:
@@ -157,7 +157,7 @@ proc addEdge*(self: Graph, e: Edge): string =
     .mgetOrPut(e.oid, e)
 
 proc addEdge*(self: Graph, A: Node, B: Node, label: string,
-    properties: Table[string, Box] = initTable[string, Box](),
+    data: Table[string, Box] = initTable[string, Box](),
         oid: string = $genOid()): string =
   ## Add edge to graph
   # Add nodes to graph if not already there
@@ -167,7 +167,7 @@ proc addEdge*(self: Graph, A: Node, B: Node, label: string,
     discard self.addNode(B)
 
   # Add edge A -> B
-  let e = newEdge(A, B, label, properties = properties, oid = oid)
+  let e = newEdge(A, B, label, data = data, oid = oid)
 
   # Don't add if edge already in graph
   if e in self:
@@ -183,11 +183,11 @@ proc addEdge*(self: Graph, A: Node, B: Node, label: string,
   result = e.oid
 
 proc addEdge*(self: Graph, A: string, B: string, label: string,
-  properties: Table[string, Box] = initTable[string, Box](),
+  data: Table[string, Box] = initTable[string, Box](),
       oid: string = $genOid()): string =
   ## Add edge to graph.
   let e = newEdge(self.nodeTable[A], self.nodeTable[B], label,
-      properties = properties, oid = oid)
+      data = data, oid = oid)
 
   # Don't add if edge already in graph
   if e in self:
@@ -319,13 +319,13 @@ proc describe*(g: Graph, lineWidth = 100): string =
   # Print node information
   result.add("NODES".center(lineWidth) & "\n\n")
   for label, nodeTable in g.nodeIndex.pairs:
-    # Count properties for node type
+    # Count data for node type
     propertyCounter = initCountTable[string]()
     for oid in nodeTable.keys:
       propertyCounter.merge(sequalizeIt(g.node(oid).keys).toCountTable)
     propertyCounter.sort()
 
-    # Pretty-print node properties
+    # Pretty-print node data
     info = ""
     for key, value in propertyCounter.pairs:
       info.add("$1 ($2), ".format(key, value))
@@ -335,7 +335,7 @@ proc describe*(g: Graph, lineWidth = 100): string =
     info = indent(info.wrapWords(72, false), indentLevel)
     info = info & "\n"
 
-    # Paste label before node properties
+    # Paste label before node data
     info[0..indentLevel-1] = "$1 ($2):".format(label, g.nodeIndex[
         label].len).alignLeft(indentLevel)
 
@@ -347,13 +347,13 @@ proc describe*(g: Graph, lineWidth = 100): string =
   # Print edge information
   result.add("EDGES".center(lineWidth) & "\n\n")
   for label, edgeTable in g.edgeIndex.pairs:
-    # Count properties for edge type
+    # Count data for edge type
     propertyCounter = initCountTable[string]()
     for oid in edgeTable.keys:
       propertyCounter.merge(sequalizeIt(g.edge(oid).keys).toCountTable)
     propertyCounter.sort()
 
-    # Pretty-print edge properties
+    # Pretty-print edge data
     info = ""
     for key, value in propertyCounter.pairs:
       info.add("$1 ($2), ".format(key, value))
@@ -363,7 +363,7 @@ proc describe*(g: Graph, lineWidth = 100): string =
     info = indent(info.wrapWords(72, false), indentLevel)
     info = info & "\n"
 
-    # Paste label before edge properties
+    # Paste label before edge data
     info[0..indentLevel-1] = "$1 ($2):".format(label, g.edgeIndex[
         label].len).alignLeft(indentLevel)
 

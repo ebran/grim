@@ -44,16 +44,16 @@ proc loadYaml*(fileName: string): Graph =
 
   # Load nodes
   for node in dom.root["graph"]["nodes"]:
-    # Read properties if they exist
-    let properties =
-      if "properties" in toSeq(node.pairs).map(x => x[0].content):
-        node["properties"].toTable
+    # Read dataif they exist
+    let data =
+      if "data" in toSeq(node.pairs).map(x => x[0].content):
+        node["data"].toTable
       else:
         initTable[string, Box]()
 
     discard result.addNode(
       node["label"].content,
-      properties,
+      data,
       oid = node["oid"].content
     )
 
@@ -66,10 +66,10 @@ proc loadYaml*(fileName: string): Graph =
       else:
         $genOid()
 
-    # Read properties if they exist
-    let properties =
-      if "properties" in toSeq(edge.pairs).map(x => x[0].content):
-        edge["properties"].toTable
+    # Read data if they exist
+    let data =
+      if "data" in toSeq(edge.pairs).map(x => x[0].content):
+        edge["data"].toTable
       else:
         initTable[string, Box]()
 
@@ -77,7 +77,7 @@ proc loadYaml*(fileName: string): Graph =
       edge["startsAt"].content,
       edge["endsAt"].content,
       edge["label"].content,
-      properties,
+      data,
       oid = oid
     )
 
@@ -101,7 +101,7 @@ proc saveYaml*(g: var Graph, fileName: string, force_overwrite: bool = false) =
 
     if node.len > 0:
       let v = toSeq(node.pairs).map(x => (x[0].toYaml, ($x[1]).toYaml))
-      n.add(("properties".toYaml, v.toYaml))
+      n.add(("data".toYaml, v.toYaml))
 
     domNodes.add(n.toYaml)
 
@@ -116,7 +116,7 @@ proc saveYaml*(g: var Graph, fileName: string, force_overwrite: bool = false) =
 
     if edge.len > 0:
       let v = toSeq(edge.pairs).map(x => (x[0].toYaml, ($x[1]).toYaml))
-      e.add(("properties".toYaml, v.toYaml))
+      e.add(("data".toYaml, v.toYaml))
 
     domEdges.add(e.toYaml)
 
