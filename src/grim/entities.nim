@@ -139,8 +139,7 @@ proc update*[T](self: T, p: Table[string, Box]): string =
 
   result = self.oid
 
-proc neighbors*(n: Node, direction: Direction = Direction.Out): (
-    iterator: string) =
+proc neighbors*(n: Node, direction: Direction = Direction.Out): (iterator: string) =
   ## Return neighbors to `n` counting edges with `direction`.
   # Create closure iterator for neighbors
   iterator outgoingIt: string {.closure.} =
@@ -157,13 +156,16 @@ proc neighbors*(n: Node, direction: Direction = Direction.Out): (
     for oid in n.incoming.keys:
       yield oid
 
-  let choices = {Direction.Out: outgoingIt, Direction.In: incomingIt,
-      Direction.OutIn: bothIt}.toTable
-  return choices[direction]
+  let choices = {
+    Direction.Out: outgoingIt,
+    Direction.In: incomingIt,
+    Direction.OutIn: bothIt
+    }.toTable
 
-proc edges*(n: Node, direction: Direction = Direction.Out): (
-    iterator: Edge) =
-  ## Iterator over node edges
+  result = choices[direction]
+
+proc edges*(n: Node, direction: Direction = Direction.Out): (iterator: Edge) =
+  ## Iterator over node edges, counting edges with `direction`.
   # Create closure iterator for edges
   iterator outgoingIt: Edge {.closure.} =
     for n_oid, edgeTable in n.outgoing.pairs:
@@ -185,10 +187,10 @@ proc edges*(n: Node, direction: Direction = Direction.Out): (
 
   let choices = {Direction.Out: outgoingIt, Direction.In: incomingIt,
       Direction.OutIn: bothIt}.toTable
-  return choices[direction]
 
-proc between*(A, B: Node, direction: Direction = Direction.Out): (
-    iterator: Edge) =
+  result = choices[direction]
+
+proc between*(A, B: Node, direction: Direction = Direction.Out): (iterator: Edge) =
   ## Iterator for all edges between nodes `A` and `B` in `direction`.
 
   let
@@ -220,7 +222,7 @@ proc between*(A, B: Node, direction: Direction = Direction.Out): (
   let choices = {Direction.Out: outgoingIt, Direction.In: incomingIt,
       Direction.OutIn: bothIt}.toTable
 
-  return choices[direction]
+  result = choices[direction]
 
 proc connected*(A, B: Node, direction: Direction = Direction.Out): bool =
   ## Check if `first` and `second` node is connected with an edge.
