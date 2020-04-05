@@ -122,3 +122,4 @@ macro graph*(varName: untyped, statements: untyped): untyped =
 
       # Add edges to graph
       result.add(addEdgeString.parseExpr)
+      
