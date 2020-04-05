@@ -8,7 +8,7 @@ from yaml import guessType, TypeHint
 
 type
   ## Determines what value is kept in the box.
-  BoxKind* = enum
+  BoxKind = enum
     bxNull,
     bxInt,
     bxFloat,
