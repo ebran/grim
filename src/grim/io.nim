@@ -6,7 +6,7 @@ import oids
 
 from streams import newFileStream, close
 from os import fileExists
-from sugar import `=>`
+import sugar
 
 # grim modules
 import grim
