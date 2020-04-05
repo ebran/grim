@@ -153,15 +153,15 @@ proc update*[T](self: T, p: Table[string, Box]): string =
 proc neighbors*(n: Node, direction: Direction = Direction.Out): (iterator: string) =
   ## Return neighbors to `n` counting edges with `direction`.
   # Create closure iterator for neighbors
-  iterator outgoingIt: string {.closure.} =
+  iterator outgoingIt: string {.closure, gensym.} =
     for oid in n.outgoing.keys:
       yield oid
 
-  iterator incomingIt: string {.closure.} =
+  iterator incomingIt: string {.closure, gensym.} =
     for oid in n.incoming.keys:
       yield oid
 
-  iterator bothIt: string {.closure.} =
+  iterator bothIt: string {.closure, gensym.} =
     for oid in n.outgoing.keys:
       yield oid
     for oid in n.incoming.keys:
@@ -178,17 +178,17 @@ proc neighbors*(n: Node, direction: Direction = Direction.Out): (iterator: strin
 proc edges*(n: Node, direction: Direction = Direction.Out): (iterator: Edge) =
   ## Iterator over node edges, counting edges with `direction`.
   # Create closure iterator for edges
-  iterator outgoingIt: Edge {.closure.} =
+  iterator outgoingIt: Edge {.closure, gensym.} =
     for n_oid, edgeTable in n.outgoing.pairs:
       for e_oid, e in edgeTable.pairs:
         yield e
 
-  iterator incomingIt: Edge {.closure.} =
+  iterator incomingIt: Edge {.closure, gensym.} =
     for n_oid, edgeTable in n.incoming.pairs:
       for e_oid, e in edgeTable.pairs:
         yield e
 
-  iterator bothIt: Edge {.closure.} =
+  iterator bothIt: Edge {.closure, gensym.} =
     for n_oid, edgeTable in n.outgoing.pairs:
       for e_oid, e in edgeTable.pairs:
         yield e
@@ -216,15 +216,15 @@ proc between*(A, B: Node, direction: Direction = Direction.Out): (iterator: Edge
       .getOrDefault(B.oid, initTable[EntityOid, Edge]())
 
   # Create closure iterators for edges between A and B
-  iterator outgoingIt: Edge {.closure.} =
+  iterator outgoingIt: Edge {.closure, gensym.} =
     for e in outgoing.values:
       yield e
 
-  iterator incomingIt: Edge {.closure.} =
+  iterator incomingIt: Edge {.closure, gensym.} =
     for e in incoming.values:
       yield e
 
-  iterator bothIt: Edge {.closure.} =
+  iterator bothIt: Edge {.closure, gensym.} =
     for e in outgoing.values:
       yield e
     for e in incoming.values:
