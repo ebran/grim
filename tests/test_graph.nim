@@ -134,144 +134,138 @@ suite "Basic usage":
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
-    check g.edgesBetween(p1, p2).sequalizeIt == @[g.edge(r)]
+suite "Delete nodes and edges":
+  setup:
+    var
+      g = newGraph("People")
+      p1 = g.addNode("Person", %(name: "John Doe", age: 24))
+      p2 = g.addNode("Person", %(name: "Jane Smith", age: 22))
+      p3 = g.addNode("Person", %(name: "Thomas Smith", age: 37))
+      r1 = g.addEdge(p1, p2, "MARRIED_TO", %(began: 2008, ended: 2012))
+      r2 = g.addEdge(p2, p3, "MARRIED_TO", %(began: 2014, ended: 2020))
 
-  suite "delete nodes and edges":
-    setup:
-      var
-        g = newGraph("People")
-        p1 = g.addNode("Person", %(name: "John Doe", age: 24))
-        p2 = g.addNode("Person", %(name: "Jane Smith", age: 22))
-        p3 = g.addNode("Person", %(name: "Thomas Smith", age: 37))
-        r1 = g.addEdge(p1, p2, "MARRIED_TO", %(began: 2008, ended: 2012))
-        r2 = g.addEdge(p2, p3, "MARRIED_TO", %(began: 2014, ended: 2020))
+  test "delete edge":
+    check:
+      # g has 3 Persons (John, Jane, Thomas) and 2 edges (John->Jane, Jane->Thomas)
+      g.delEdge(r2)
+      # g has 3 Persons (John, Jane, Thomas) and 1 edge (John->Jane)
+      p1 in g
+      p2 in g
+      p3 in g
+      r1 in g
+      r2 notin g
+      g.numberOfNodes == 3
+      g.numberOfEdges == 1
+      g.hasEdge(p1, p2) == true
+      g.hasEdge(p2, p3) == false
 
-    test "delete edge":
-      check:
-        # g has 3 Persons (John, Jane, Thomas) and 2 edges (John->Jane, Jane->Thomas)
-        g.delEdge(r2)
-        # g has 3 Persons (John, Jane, Thomas) and 1 edge (John->Jane)
-        p1 in g
-        p2 in g
-        p3 in g
-        r1 in g
-        r2 notin g
-        g.numberOfNodes == 3
-        g.numberOfEdges == 1
-        g.hasEdge(p1, p2) == true
-        g.hasEdge(p2, p3) == false
+  test "delete node":
+    check:
+      # g has 3 Persons (John, Jane, Thomas) and 2 edges (John->Jane, Jane->Thomas)
+      g.delEdge(r2)
+      # g has 3 Persons (John, Jane, Thomas) and 1 edge (John->Jane)
+      g.delNode(p1)
+      # g has 2 Persons (Jane, Thomas) and 0 edges
+      p1 notin g
+      p2 in g
+      p3 in g
+      r1 notin g
+      r2 notin g
+      g.numberOfNodes == 2
+      g.numberOfEdges == 0
+      g.hasEdge(p1, p2, direction = Direction.OutIn) == false
+      g.hasEdge(p2, p3, direction = Direction.OutIn) == false
 
-    test "delete node":
-      check:
-        # g has 3 Persons (John, Jane, Thomas) and 2 edges (John->Jane, Jane->Thomas)
-        g.delEdge(r2)
-        # g has 3 Persons (John, Jane, Thomas) and 1 edge (John->Jane)
-        g.delNode(p1)
-        # g has 2 Persons (Jane, Thomas) and 0 edges
-        p1 notin g
-        p2 in g
-        p3 in g
-        r1 notin g
-        r2 notin g
-        g.numberOfNodes == 2
-        g.numberOfEdges == 0
-        g.hasEdge(p1, p2, direction = Direction.OutIn) == false
-        g.hasEdge(p2, p3, direction = Direction.OutIn) == false
+suite "Node/edge iterators for getting and setting":
+  setup:
+    graph g "People and Pets":
+      nodes:
+        Person:
+          "new gal":
+            name: "Jane Doe"
+            age: 22
+          "new guy":
+            name: "John Doe"
+            age: 24
+        Pet:
+          "famous cat":
+            name: "Tom"
+      edges:
+        "new gal" -> "new guy":
+          MARRIED_TO:
+            since: 2012
+        "new gal" -> "new guy":
+          INHERITS:
+            amount: 20004.5
+        "new guy" -> "famous cat":
+          OWNS:
+            insured: true
+            since: 2014
 
-      suite "node/edge iterators for getting and setting":
-        setup:
-          graph g "People and Pets":
-            nodes:
-              Person:
-                "new gal":
-                  name: "Jane Doe"
-                  age: 22
-                "new guy":
-                  name: "John Doe"
-                  age: 24
-              Pet:
-                "famous cat":
-                  name: "Tom"
-            edges:
-              "new gal" -> "new guy":
-                MARRIED_TO:
-                  since: 2012
-              "new gal" -> "new guy":
-                INHERITS:
-                  amount: 20004.5
-              "new guy" -> "famous cat":
-                OWNS:
-                  insured: true
-                  since: 2014
+  test "getting through node iterators":
+    check:
+      sorted(g.nodes() --> map(it["name"].getStr)) == @["Jane Doe", "John Doe", "Tom"]
+      sorted(g.nodes("Person") --> map(it["name"].getStr)) == @["Jane Doe", "John Doe"]
 
-        test "getting through node iterators":
-          let
-            allNames = sequalizeIt(g.nodes).map(x => x["name"].getStr).sorted
-            someNames = sequalizeIt(g.nodes("Person")).map(x => x[
-                "name"].getStr).sorted
+  test "getting through edge iterators":
+    var
+      allP: seq[string]
+      someP: seq[string]
 
-          check:
-            allNames == @["Jane Doe", "John Doe", "Tom"]
-            someNames == @["Jane Doe", "John Doe"]
+    for edge in g.edges:
+      allP = concat(allP, sequalizeIt(edge.keys))
+    for edge in g.edges(["MARRIED_TO", "OWNS"]):
+      someP = concat(someP, sequalizeIt(edge.keys))
 
-        test "getting through edge iterators":
-          var
-            allP: seq[string]
-            someP: seq[string]
+    check:
+      allP.sorted == @["amount", "insured", "since", "since"]
+      someP.sorted == @["insured", "since", "since"]
 
-          for edge in g.edges:
-            allP = concat(allP, sequalizeIt(edge.keys))
-          for edge in g.edges("MARRIED_TO", "OWNS"):
-            someP = concat(someP, sequalizeIt(edge.keys))
+  test "setting through node iterators":
+    for node in g.nodes("Pet"):
+      discard node.update(%(name: "Garfield"))
 
-          check:
-            allP.sorted == @["amount", "insured", "since", "since"]
-            someP.sorted == @["insured", "since", "since"]
+    check g.node("famous cat")["name"].getStr == "Garfield"
 
-          test "setting through node iterators":
-            for node in g.nodes("Pet"):
-              discard node.update(%(name: "Garfield"))
+  test "setting through edge iterators":
+    for edge in g.edges(["MARRIED_TO", "OWNS"]):
+      discard edge.update(%(since: 2011))
 
-            check g.node("famous cat")["name"].getStr == "Garfield"
+    for edge in g.edgesBetween("new gal", "new guy"):
+      if edge.label == "MARRIED_TO":
+        check edge["since"].getInt == 2011
+    check sequalizeIt(g.edgesBetween("new guy", "famous cat"))[0][
+        "since"].getInt == 2011
 
-          test "setting through edge iterators":
-            for edge in g.edges("MARRIED_TO", "OWNS"):
-              discard edge.update(%(since: 2011))
+suite "getting node/edge labels":
+  setup:
+    graph g "People and Pets":
+      nodes:
+        Person:
+          "new gal":
+            name: "Jane Doe"
+            age: 22
+          "new guy":
+            name: "John Doe"
+            age: 24
+        Pet:
+          "famous cat":
+            name: "Tom"
+      edges:
+        "new gal" -> "new guy":
+          MARRIED_TO:
+            since: 2012
+        "new gal" -> "new guy":
+          INHERITS:
+            amount: 20004.5
+        "new guy" -> "famous cat":
+          OWNS:
+            insured: true
+            since: 2014
 
-            for edge in g.edgesBetween("new gal", "new guy"):
-              if edge.label == "MARRIED_TO":
-                check edge["since"].getInt == 2011
-            check sequalizeIt(g.edgesBetween("new guy", "famous cat"))[0][
-                "since"].getInt == 2011
+  test "getting node labels":
+    check g.nodeLabels.sorted == @["Person", "Pet"]
 
-        suite "getting node/edge labels":
-          setup:
-            graph g "People and Pets":
-              nodes:
-                Person:
-                  "new gal":
-                    name: "Jane Doe"
-                    age: 22
-                  "new guy":
-                    name: "John Doe"
-                    age: 24
-                Pet:
-                  "famous cat":
-                    name: "Tom"
-              edges:
-                "new gal" -> "new guy":
-                  MARRIED_TO:
-                    since: 2012
-                "new gal" -> "new guy":
-                  INHERITS:
-                    amount: 20004.5
-                "new guy" -> "famous cat":
-                  OWNS:
-                    insured: true
-                    since: 2014
+  test "getting edge labels":
+    check g.edgeLabels.sorted == @["INHERITS", "MARRIED_TO", "OWNS"]
 
-          test "getting node labels":
-            check g.nodeLabels.sorted == @["Person", "Pet"]
-
-          test "getting edge labels":
-            check g.edgeLabels.sorted == @["INHERITS", "MARRIED_TO", "OWNS"]
