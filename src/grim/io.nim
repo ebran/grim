@@ -81,7 +81,7 @@ proc loadYaml*(fileName: string): Graph =
       oid = oid
     )
 
-proc saveYaml*(g: var Graph, fileName: string, force_overwrite: bool = false) =
+proc saveYaml*(g: Graph, fileName: string, force_overwrite: bool = false) =
   ## Save graph as YAML file.
   # Exception if file exists and overwrite not forced
   if fileExists(fileName) and force_overwrite == false:
