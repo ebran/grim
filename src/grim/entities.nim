@@ -23,13 +23,13 @@ type
     label*: string
     startsAt*: Node
     endsAt*: Node
-    properties: Table[string, Box]
+    data: Table[string, Box]
 
   ## Node entity
   Node* = ref object
     oid*: EntityOid
     label*: string
-    properties: Table[string, Box]
+    data: Table[string, Box]
     incoming: Table[EntityOid, Table[EntityOid, Edge]]
     outgoing: Table[EntityOid, Table[EntityOid, Edge]]
 
@@ -39,11 +39,11 @@ Box](), oid: string = $genOid()): Node =
   new result
 
   result.label = label
-  result.properties = properties
+  result.data = data
   result.oid = oid
 
 proc newEdge*(A: Node, B: Node, label: string,
-    properties: Table[string, Box] = initTable[string, Box](),
+    data: Table[string, Box] = initTable[string, Box](),
         oid: string = $genOid()): Edge =
   ## Create a new edge
   new result
@@ -51,7 +51,7 @@ proc newEdge*(A: Node, B: Node, label: string,
   result.startsAt = A
   result.endsAt = B
   result.label = label
-  result.properties = properties
+  result.data = data
   result.oid = oid
 
   # Modify nodes' adjacency tables
@@ -89,23 +89,23 @@ proc `==`*(self, other: Edge): bool =
 
 proc `[]`*(node: Node, property: string): Box =
   ## Get `property` of `node`
-  result = node.properties[property]
+  result = node.data[property]
 
 proc `[]=`*(node: Node, property: string, value: Box) =
   ## Set `property` of `node` to `value`
-  node.properties[property] = value
+  node.data[property] = value
 
 proc `[]`*(edge: Edge, property: string): Box =
   ## Get `property` of `edge`
-  result = edge.properties[property]
+  result = edge.data[property]
 
 proc `[]=`*(edge: Edge, property: string, value: Box) =
   ## Set `property` of `edge` to `value`
-  edge.properties[property] = value
+  edge.data[property] = value
 
 proc len*[T: Node | Edge](entity: T): int =
-  ## Return number of properties of node or edge
-  result = entity.properties.len
+  ## Return number of data of node or edge
+  result = entity.data.len
 
 proc numberOfNeighbors*(n: Node, direction: Direction = Direction.Out): int =
   ## Return the number of neighbors of node `n` in `direction`.
@@ -119,21 +119,21 @@ proc numberOfNeighbors*(n: Node, direction: Direction = Direction.Out): int =
 
 iterator pairs*[T: Node | Edge](obj: T): (string, Box) {.closure.} =
   ## Iterate over property pairs
-  for property, value in obj.properties.pairs:
+  for property, value in obj.data.pairs:
     yield (property, value)
 
 iterator keys*[T: Node | Edge](obj: T): string {.closure.} =
   ## Iterate over property keys
-  for property in obj.properties.keys:
+  for property in obj.data.keys:
     yield property
 
 iterator values*[T: Node | Edge](obj: T): Box {.closure.} =
   ## Iterate over property values
-  for value in obj.properties.values:
+  for value in obj.data.values:
     yield value
 
 proc update*[T](self: T, p: Table[string, Box]): string =
-  ## Update node or edge properties
+  ## Update node or edge data
   for prop, val in p.pairs:
     self[prop] = val
 
@@ -251,7 +251,7 @@ proc describe*(e: Edge, lineWidth: int = 100,
   result.add(fmt("{e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"") & "\n")
   result.add("=".repeat(lineWidth) & "\n")
 
-  # Pretty-print properties
+  # Pretty-print data
   for prop, val in e.pairs:
     result.add(prop.alignLeft(propertyWidth, '.')[
         0..propertyWidth-1] & " ")
@@ -261,7 +261,7 @@ proc describe*(e: Edge, lineWidth: int = 100,
     result.add(desc & "\n")
 
   if e.len == 0:
-    result.add("No properties")
+    result.add("No data")
 
   result.add("\n")
 
@@ -272,7 +272,7 @@ proc describe*(n: Node, lineWidth: int = 100,
   result.add(fmt("{n.label} \"{n.oid}\"") & "\n")
   result.add("=".repeat(lineWidth) & "\n")
 
-  # Pretty-print properties
+  # Pretty-print data
   for prop, val in n.pairs:
     result.add(prop.alignLeft(propertyWidth, '.')[
         0..propertyWidth-1] & " ")
@@ -282,6 +282,6 @@ proc describe*(n: Node, lineWidth: int = 100,
     result.add(desc & "\n")
 
   if n.len == 0:
-    result.add("No properties")
+    result.add("No data")
 
   result.add("\n")

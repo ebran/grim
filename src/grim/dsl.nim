@@ -4,8 +4,8 @@ import tables
 import strutils
 import strformat
 
-proc toPropertyString(statements: NimNode): string =
-  ## Helper proc to parse properties as string
+proc toDataString(statements: NimNode): string =
+  ## Helper proc to parse data as string
   # Check that we have a statement list
   expectKind(statements, nnkStmtList)
   result.add("%(")
@@ -80,14 +80,14 @@ macro graph*(varName: untyped, statements: untyped): untyped =
           else:
             node[0].strVal
 
-        # Parse properties if available
-        properties =
+        # Parse data if available
+        data =
           if node.len == 0:
             ""
           else:
-            node[1].toPropertyString & ","
+            node[1].toDataString & ","
 
-        addNodeString = fmt("discard {g}.addNode(\"{nodeLabel}\", {properties} oid=\"{oid}\")")
+        addNodeString = fmt("discard {g}.addNode(\"{nodeLabel}\", {data} oid=\"{oid}\")")
 
       # Add nodes to graph
       result.add(addNodeString.parseExpr)
@@ -112,13 +112,13 @@ macro graph*(varName: untyped, statements: untyped): untyped =
           else:
             rel[0].strVal
 
-        properties =
+        data =
           if rel.len == 0:
             ""
           else:
-            ", properties = " & rel[1].toPropertyString
+            ", data = " & rel[1].toDataString
 
-        addEdgeString = fmt("discard {g}.addEdge(\"{oidA}\", \"{oidB}\", \"{edgeLabel}\"{properties})")
+        addEdgeString = fmt("discard {g}.addEdge(\"{oidA}\", \"{oidB}\", \"{edgeLabel}\"{data})")
 
       # Add edges to graph
       result.add(addEdgeString.parseExpr)
