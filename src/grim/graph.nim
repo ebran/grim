@@ -213,20 +213,27 @@ proc addEdge*(self: Graph, A: string, B: string, label: string,
 
   result = e.oid
 
-iterator neighbors*(self: Graph, n: string,
-    direction: Direction = Direction.Out): string {.closure.} =
-  ## Return neighbors to node oid `n` in graph `g`.
-  for n in self.nodeTable[n].neighbors(direction = direction):
-    yield n
+template neighbors*(self: Graph, oid: string, filter: untyped = true, direction: Direction = Direction.Out): (
+        iterator: string) =
+  ## Return neighbors to node `oid` in graph `g`, in `direction`, conditioned on `filter`.
+  iterator it: string {.closure, gensym.} =
+    for n_oid in self.nodeTable[oid].neighbors(direction):
+      let node {.inject, used.} = self.nodeTable[n_oid].toMap
+      if filter:
+        yield n_oid
 
-proc edgesBetween*(self: Graph, A: string, B: string,
-    direction: Direction = Direction.Out): (iterator: Edge) =
-  ## Iterator for all edges between nodes `A` and `B` in `direction`.
-  # Return empty iterator if A or B not in graph
-  if A notin self or B notin self:
-    return iterator(): Edge {.closure.} = discard
-  else:
-    return between(self.nodeTable[A], self.nodeTable[B], direction = direction)
+  it
+
+template edgesBetween*(self: Graph, A: string, B: string,  filter: untyped = true, direction: Direction = Direction.Out): (iterator: Edge) =
+  ## Iterator for all edges between nodes `A` and `B` in `direction`, conditioned on `filter`.
+  iterator it: Edge {.closure, gensym.} =
+    if A in self and B in self:
+      for e in between(self.nodeTable[A], self.nodeTable[B], direction):
+        let edge {.inject, used.} = e.toMap
+        if filter:
+          yield e
+
+  it
 
 proc node*(self: Graph, node: string): Node =
   ## Return node with `oid` in graph
