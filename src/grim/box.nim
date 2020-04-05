@@ -155,22 +155,70 @@ proc update*(b: var Box, value: bool) =
   ## Update value in boolean box
   b.boolVal = value
 
-proc `==`*(self, other: Box): bool =
-  ## Check whether two boxes have the same content
+template operator(op: untyped, self, other: Box): bool =
+  ## Template for operators acting on two boxes.
   if self.kind != other.kind:
     return false
 
   case self.kind:
     of bxInt:
-      return self.intVal == other.intVal
+      `op`(self.intVal, other.intVal)
     of bxStr:
-      return self.strVal == other.strVal
+      `op`(self.strVal, other.strVal)
     of bxFloat:
-      return self.floatVal == other.floatVal
+      `op`(self.floatVal, other.floatVal)
     of bxBool:
-      return self.boolVal == other.boolVal
+      `op`(self.boolVal, other.boolVal)
     of bxNull:
-      return true
+      false
+
+proc `==`*(self, other: Box): bool =
+  ## Check if self.value == other.value for two boxes, different box kinds returns false.
+  result = operator(`==`, self, other)
+
+proc `!=`*(self, other: Box): bool =
+  ## Check if self.value != other.value for two boxes, different box kinds returns false.
+  result = operator(`!=`, self, other)
+
+proc `<`*(self, other: Box): bool =
+  ## Check if self.value < other.value for two boxes, different box kinds returns false.
+  result = operator(`<`, self, other)
+
+proc `<=`*(self, other: Box): bool =
+  ## Check if self.value <= other.value for two boxes, different box kinds returns false.
+  result = operator(`<=`, self, other)
+
+proc `>`*(self, other: Box): bool =
+  ## Check if self.value > other.value for two boxes, different box kinds returns false.
+  result = operator(`>`, self, other)
+
+proc `>=`*(self, other: Box): bool =
+  ## Check if self.value >= other.value for two boxes, different box kinds returns false.
+  result = operator(`>=`, self, other)
+
+proc `==`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is == some value, value not of box kind returns false.
+  result = (self == initBox(value))
+
+proc `!=`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is != some value, value not of box kind returns false.
+  result = (self != initBox(value))
+
+proc `<`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is < some value, value not of box kind returns false.
+  result = (self < initBox(value))
+
+proc `<=`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is <= some value, value not of box kind returns false.
+  result = (self <= initBox(value))
+
+proc `>`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is > some value, value not of box kind returns false.
+  result = (self > initBox(value))
+
+proc `>=`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is >= some value, value not of box kind returns false.
+  result = (self >= initBox(value))
 
 proc `%`*(t: tuple): Table[string, Box] =
   ## Convert tuple to Table[string, Box]
