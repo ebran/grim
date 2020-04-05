@@ -162,7 +162,7 @@ graph g "Some people":
         category: "writing material"
         value: 204
 ```
-This will expose the graph in the remainder of the code as the mutable variable `g`. This example shows how to access graph properties:
+This will expose the graph in the remainder of the code as the mutable variable `g`. This example shows how to access graph data:
 ```nim
 let
   p1 = g.node("a nice guy")
