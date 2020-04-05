@@ -35,7 +35,7 @@ type
     label: string       # The edge label
     A: tuple[label: string, key: string] # Tuple for the start node (label: Node label, key: SQL foreign key)
     B: tuple[label: string, key: string] # Tuple for the end node (label: Node label, key: SQL foreign key)
-    useProperties: bool # Convert non-foreign keys to edge properties
+    useData: bool # Convert non-foreign keys to edge data
 
 const
   ## SQL queries
@@ -68,7 +68,7 @@ const
       A: (label: "Order", key: "OrderId"),
       B: (label: "Product", key: "ProductId"),
       label: "PRODUCT",
-      use_properties: true),         # convert the non-foreign keys to edge properties
+      useData: true),         # convert the non-foreign keys to edge data
     Relationship(
       # Product - PART_OF -> Category
       table: "Product",
@@ -131,13 +131,13 @@ for rel in relationships:
     if data[rel.A.key].isEmpty or data[rel.B.key].isEmpty:
       continue
 
-    if rel.use_properties:
-      # Transfer `data` to edge properties
-      # delete the foreign keys from the properties
+    if rel.useData:
+      # Transfer `data` to edge data
+      # delete the foreign keys from the data
       data.del(rel.A.key)
       data.del(rel.B.key)
       # Add the edge
-      discard g.addEdge(A, B, rel.label, properties = data,
+      discard g.addEdge(A, B, rel.label, data = data,
           oid = "$1-$2".format(A, B))
     else:
       discard g.addEdge(A, B, rel.label, oid = "$1-$2".format(A, B))
