@@ -279,19 +279,16 @@ proc delNode*(self: Graph, oid: string): bool =
 
   # Delete all edges that node is involved in.
   # Need seqs because we can not modify iterators in-place
-  for n in sequalizeIt(self.neighbors(oid)):
-    for e in sequalizeIt(self.edgesBetween(oid, n)):
+  for n_oid in self.neighbors(oid, direction = Direction.OutIn):
+    for e in self.edgesBetween(oid, n_oid, filter=true, direction=Direction.OutIn):
       ok = self.delEdge(e.oid)
 
   result = ok
 
   # Delete node from nodeTable and nodeIndex
-  let n = self.nodeTable[oid]
-  self.nodeTable.del(n.oid)
-  self.nodeIndex[n.label].del(n.oid)
-
-
-  return self.nodeTable[A].connected(self.nodeTable[B], direction = direction)
+  let node = self.nodeTable[oid]
+  self.nodeTable.del(node.oid)
+  self.nodeIndex[node.label].del(node.oid)
 
 proc describe*(g: Graph, lineWidth = 100): string =
   ## Return a nice pretty-printed summary of the graph `g`
