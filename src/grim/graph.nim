@@ -38,44 +38,55 @@ proc edgeLabels*(self: Graph): seq[string] =
   for label in self.edgeIndex.keys:
     result.add(label)
 
-proc nodes*(self: Graph, labels: varargs[string]): (iterator: Node) =
-  ## Return iterator for nodes with `labels` in graph
+template nodes*(self: Graph, labels: untyped = newSeq[string](),
+    filter: untyped = true): (iterator: Node) =
+  ## Return iterator for nodes with `labels` in graph, conditioned on `filter`.
   # Empty `labels` means use all labels
   let markers =
-    if labels.len == 0:
-      self.nodeLabels
+    when type(labels) is string:
+      @[labels]
     else:
-      @labels
+      if labels.len == 0:
+        self.nodeLabels
+      else:
+        @labels
 
   # Create closure iterator for nodes
-  iterator it: Node {.closure.} =
+  iterator it: Node {.closure, gensym.} =
     for label in markers:
       if label notin self.nodeLabels:
         continue
-      for node in self.nodeIndex[label].values:
-        yield node
+      for n in self.nodeIndex[label].values:
+        let node {.inject, used.} = n.toMap
+        if filter:
+          yield n
+  
+  it
 
-  return it
-
-proc edges*(self: Graph, labels: varargs[string]): (
-    iterator: Edge) =
-  ## Return iterator for edges with `labels` in graph
+template edges*(self: Graph, labels: untyped = newSeq[string](),
+    filter: untyped = true): (iterator: Edge) =
+  ## Return iterator for edges with `labels` in graph, conditioned on `filter`.
   # Empty `labels` means use all labels
   let markers =
-    if labels.len == 0:
-      self.edgeLabels
+    when type(labels) is string:
+      @[labels]
     else:
-      @labels
+      if labels.len == 0:
+        self.edgeLabels
+      else:
+        @labels
 
   # Create closure iterator for edges
-  iterator it: Edge {.closure.} =
+  iterator it: Edge {.closure, gensym.} =
     for label in markers:
       if label notin self.edgeLabels:
         continue
       for e in self.edgeIndex[label].values:
-        yield e
+        let edge {.inject, used.} = e.toMap
+        if filter:
+          yield e
 
-  return it
+  it
 
 proc `$`*(self: Graph): string =
   ## Pretty-print Graph
