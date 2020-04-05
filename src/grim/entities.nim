@@ -33,7 +33,7 @@ type
     incoming: Table[EntityOid, Table[EntityOid, Edge]]
     outgoing: Table[EntityOid, Table[EntityOid, Edge]]
 
-proc newNode*(label: string, properties: Table[string, Box] = initTable[string,
+proc newNode*(label: string, data: Table[string, Box] = initTable[string,
 Box](), oid: string = $genOid()): Node =
   ## Create a new node
   new result
