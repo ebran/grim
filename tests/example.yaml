@@ -4,13 +4,13 @@ graph:
   nodes:
     - label: Person
       oid: new gal
-      properties:
+      data:
         name: Jane Doe
         smoker: true
         age: 22
     - label: Person
       oid: new guy
-      properties:
+      data:
         weight: 37.2
         name: John Doe
         age: 24
@@ -21,10 +21,10 @@ graph:
     - endsAt: new guy
       startsAt: new gal
       label: MARRIED_TO
-      properties:
+      data:
         since: 2012
     - endsAt: new guy
       startsAt: new gal
       label: INHERITS
-      properties:
+      data:
         amount: 1937.2
