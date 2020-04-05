@@ -5,6 +5,7 @@ import tables
 import algorithm
 import sequtils
 import unittest
+import zero_functional
 
 suite "Basic usage":
   test "create graph":
