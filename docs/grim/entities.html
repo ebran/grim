@@ -844,12 +844,12 @@ function main() {
   label*: string
   startsAt*: Node
   endsAt*: Node
-  properties: Table[string, Box]"><wbr />Edge<span class="attachedType"></span></a></li>
+  data: Table[string, Box]"><wbr />Edge<span class="attachedType"></span></a></li>
   <li><a class="reference" href="#Node"
     title="Node = ref object
   oid*: EntityOid
   label*: string
-  properties: Table[string, Box]
+  data: Table[string, Box]
   incoming: Table[EntityOid, Table[EntityOid, Edge]]
   outgoing: Table[EntityOid, Table[EntityOid, Edge]]"><wbr />Node<span class="attachedType"></span></a></li>
 
@@ -858,11 +858,12 @@ function main() {
 <li>
   <a class="reference reference-toplevel" href="#12" id="62">Procs</a>
   <ul class="simple simple-toc-section">
-      <li><a class="reference" href="#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"
-    title="newNode(label: string; properties: Table[string, Box] = initTable();
-        oid: string = $genOid()): Node"><wbr />new<wbr />Node<span class="attachedType">Node</span></a></li>
+      <li><a class="reference" href="#toMap%2CT"
+    title="toMap[T: Node | Edge](entity: T): Map"><wbr />to<wbr />Map<span class="attachedType"></span></a></li>
+  <li><a class="reference" href="#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"
+    title="newNode(label: string; data: Table[string, Box] = initTable(); oid: string = $genOid()): Node"><wbr />new<wbr />Node<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#newEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"
-    title="newEdge(A: Node; B: Node; label: string; properties: Table[string, Box] = initTable();
+    title="newEdge(A: Node; B: Node; label: string; data: Table[string, Box] = initTable();
         oid: string = $genOid()): Edge"><wbr />new<wbr />Edge<span class="attachedType">Node</span></a></li>
   <li><a class="reference" href="#delete%2CEdge"
     title="delete(e: Edge)"><wbr />delete<span class="attachedType">Edge</span></a></li>
@@ -915,6 +916,14 @@ function main() {
 
   </ul>
 </li>
+<li>
+  <a class="reference reference-toplevel" href="#18" id="68">Templates</a>
+  <ul class="simple simple-toc-section">
+      <li><a class="reference" href="#..t%2CMap%2Cuntyped"
+    title="`.`(map: Map; entry: untyped): untyped"><wbr />`.`<span class="attachedType"></span></a></li>
+
+  </ul>
+</li>
 
 </ul>
 
@@ -960,7 +969,7 @@ class="link-seesrc" target="_blank">Source</a>
   <span class="Identifier">label</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
   <span class="Identifier">startsAt</span><span class="Operator">*</span><span class="Other">:</span> <a href="entities.html#Node"><span class="Identifier">Node</span></a>
   <span class="Identifier">endsAt</span><span class="Operator">*</span><span class="Other">:</span> <a href="entities.html#Node"><span class="Identifier">Node</span></a>
-  <span class="Identifier">properties</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span>
+  <span class="Identifier">data</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span>
 </pre></dt>
 <dd>
 
@@ -975,7 +984,7 @@ class="link-seesrc" target="_blank">Source</a>
 <dt><pre><a href="entities.html#Node"><span class="Identifier">Node</span></a> <span class="Other">=</span> <span class="Keyword">ref</span> <span class="Keyword">object</span>
   <span class="Identifier">oid</span><span class="Operator">*</span><span class="Other">:</span> <a href="entities.html#EntityOid"><span class="Identifier">EntityOid</span></a>
   <span class="Identifier">label</span><span class="Operator">*</span><span class="Other">:</span> <span class="Identifier">string</span>
-  <span class="Identifier">properties</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span>
+  <span class="Identifier">data</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span>
   <span class="Identifier">incoming</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="entities.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="entities.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <a href="entities.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">]</span>
   <span class="Identifier">outgoing</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="entities.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <span class="Identifier">Table</span><span class="Other">[</span><a href="entities.html#EntityOid"><span class="Identifier">EntityOid</span></a><span class="Other">,</span> <a href="entities.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">]</span>
 </pre></dt>
@@ -993,29 +1002,39 @@ class="link-seesrc" target="_blank">Source</a>
 <div class="section" id="12">
 <h1><a class="toc-backref" href="#12">Procs</a></h1>
 <dl class="item">
+<a id="toMap,T"></a>
+<dt><pre><span class="Keyword">proc</span> <a href="#toMap%2CT"><span class="Identifier">toMap</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <a href="entities.html#Node"><span class="Identifier">Node</span></a> <span class="Operator">|</span> <a href="entities.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">(</span><span class="Identifier">entity</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">Map</span></pre></dt>
+<dd>
+
+Convert entity data to Map object.
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L39"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L39" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
 <a id="newNode,string,Table[string,Box],string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"><span class="Identifier">newNode</span></a><span class="Other">(</span><span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">properties</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">initTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">;</span>
+<dt><pre><span class="Keyword">proc</span> <a href="#newNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"><span class="Identifier">newNode</span></a><span class="Other">(</span><span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">data</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">initTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">;</span>
             <span class="Identifier">oid</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Operator">$</span><span class="Identifier">genOid</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <a href="entities.html#Node"><span class="Identifier">Node</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Create a new node
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L36"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L47"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L36" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L47" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="newEdge,Node,Node,string,Table[string,Box],string"></a>
-<dt><pre><span class="Keyword">proc</span> <a href="#newEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"><span class="Identifier">newEdge</span></a><span class="Other">(</span><span class="Identifier">A</span><span class="Other">:</span> <a href="entities.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">B</span><span class="Other">:</span> <a href="entities.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span>
-            <span class="Identifier">properties</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">initTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">;</span> <span class="Identifier">oid</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Operator">$</span><span class="Identifier">genOid</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <a href="entities.html#Edge"><span class="Identifier">Edge</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma">
-    <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
+<dt><pre><span class="Keyword">proc</span> <a href="#newEdge%2CNode%2CNode%2Cstring%2CTable%5Bstring%2CBox%5D%2Cstring"><span class="Identifier">newEdge</span></a><span class="Other">(</span><span class="Identifier">A</span><span class="Other">:</span> <a href="entities.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">B</span><span class="Other">:</span> <a href="entities.html#Node"><span class="Identifier">Node</span></a><span class="Other">;</span> <span class="Identifier">label</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">data</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span> <span class="Other">=</span> <span class="Identifier">initTable</span><span class="Other">(</span><span class="Other">)</span><span class="Other">;</span>
+            <span class="Identifier">oid</span><span class="Other">:</span> <span class="Identifier">string</span> <span class="Other">=</span> <span class="Operator">$</span><span class="Identifier">genOid</span><span class="Other">(</span><span class="Other">)</span><span class="Other">)</span><span class="Other">:</span> <a href="entities.html#Edge"><span class="Identifier">Edge</span></a> <span><span class="Other">{</span><span class="Other pragmadots">...</span><span class="Other">}</span></span><span class="pragmawrap"><span class="Other">{.</span><span class="pragma"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
 Create a new edge
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L45"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L56"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L45" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L56" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="delete,Edge"></a>
@@ -1024,9 +1043,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Delete an edge
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L66"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L77"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L66" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L77" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="==,Node,Node"></a>
@@ -1035,9 +1054,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if two Nodes are equal
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L82"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L93"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L82" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L93" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="==,Edge,Edge"></a>
@@ -1046,9 +1065,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Check if two Edges are equal
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L86"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L97"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L86" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L97" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[],Node,string"></a>
@@ -1057,9 +1076,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Get <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">node</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L90"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L101"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L90" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L101" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[]=,Node,string,Box"></a>
@@ -1068,9 +1087,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Set <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">node</span></tt> to <tt class="docutils literal"><span class="pre">value</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L94"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L105"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L94" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L105" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[],Edge,string"></a>
@@ -1079,9 +1098,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Get <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">edge</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L98"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L109"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L98" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L109" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="[]=,Edge,string,Box"></a>
@@ -1090,20 +1109,20 @@ class="link-seesrc" target="_blank">Source</a>
 
 Set <tt class="docutils literal"><span class="pre">property</span></tt> of <tt class="docutils literal"><span class="pre">edge</span></tt> to <tt class="docutils literal"><span class="pre">value</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L102"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L113"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L102" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L113" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="len,T"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#len%2CT"><span class="Identifier">len</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <a href="entities.html#Node"><span class="Identifier">Node</span></a> <span class="Operator">|</span> <a href="entities.html#Edge"><span class="Identifier">Edge</span></a><span class="Other">]</span><span class="Other">(</span><span class="Identifier">entity</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">int</span></pre></dt>
 <dd>
 
-Return number of properties of node or edge
+Return number of data of node or edge
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L106"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L117"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L106" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L117" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="numberOfNeighbors,Node,Direction"></a>
@@ -1113,20 +1132,20 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return the number of neighbors of node <tt class="docutils literal"><span class="pre">n</span></tt> in <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L110"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L121"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L110" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L121" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="update,T,Table[string,Box]"></a>
 <dt><pre><span class="Keyword">proc</span> <a href="#update%2CT%2CTable%5Bstring%2CBox%5D"><span class="Identifier">update</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">self</span><span class="Other">:</span> <span class="Identifier">T</span><span class="Other">;</span> <span class="Identifier">p</span><span class="Other">:</span> <span class="Identifier">Table</span><span class="Other">[</span><span class="Identifier">string</span><span class="Other">,</span> <a href="box.html#Box"><span class="Identifier">Box</span></a><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span></pre></dt>
 <dd>
 
-Update node or edge properties
+Update node or edge data
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L135"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L146"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L135" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L146" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="neighbors,Node,Direction"></a>
@@ -1136,9 +1155,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return neighbors to <tt class="docutils literal"><span class="pre">n</span></tt> counting edges with <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L142"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L153"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L142" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L153" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="edges,Node,Direction"></a>
@@ -1146,11 +1165,11 @@ class="link-seesrc" target="_blank">Source</a>
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Iterator over node edges
+Iterator over node edges, counting edges with <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L164"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L178"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L164" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L178" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="between,Node,Node,Direction"></a>
@@ -1160,9 +1179,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Iterator for all edges between nodes <tt class="docutils literal"><span class="pre">A</span></tt> and <tt class="docutils literal"><span class="pre">B</span></tt> in <tt class="docutils literal"><span class="pre">direction</span></tt>.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L190"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L204"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L190" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L204" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="connected,Node,Node,Direction"></a>
@@ -1170,11 +1189,11 @@ class="link-seesrc" target="_blank">Source</a>
     <span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">KeyError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span><span class="Other">.}</span></span></pre></dt>
 <dd>
 
-Check if <tt class="docutils literal"><span class="pre">first</span></tt> and <tt class="docutils literal"><span class="pre">second`` node</span></tt> is connected with an edge.
+Check if <tt class="docutils literal"><span class="pre">first</span></tt> and <tt class="docutils literal"><span class="pre">second</span></tt> node is connected with an edge.
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L225"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L238"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L225" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L238" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="$,Node"></a>
@@ -1183,9 +1202,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Pretty-print Node
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L239"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L252"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L239" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L252" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="$,Edge"></a>
@@ -1194,9 +1213,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Pretty-print Edge
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L243"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L256"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L243" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L256" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="describe,Edge,int,int"></a>
@@ -1206,9 +1225,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return a nice pretty-printed summary of edge <tt class="docutils literal"><span class="pre">e</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L247"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L260"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L247" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L260" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="describe,Node,int,int"></a>
@@ -1218,9 +1237,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Return a nice pretty-printed summary of node <tt class="docutils literal"><span class="pre">n</span></tt>
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L268"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L281"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L268" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L281" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1234,9 +1253,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Iterate over property pairs
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L120"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L131"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L120" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L131" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="keys.i,T"></a>
@@ -1245,9 +1264,9 @@ class="link-seesrc" target="_blank">Source</a>
 
 Iterate over property keys
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L125"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L136"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L125" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L136" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 <a id="values.i,T"></a>
@@ -1256,9 +1275,25 @@ class="link-seesrc" target="_blank">Source</a>
 
 Iterate over property values
 &nbsp;&nbsp;<a
-href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L130"
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L141"
 class="link-seesrc" target="_blank">Source</a>
-<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L130" class="link-seesrc" target="_blank" >Edit</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L141" class="link-seesrc" target="_blank" >Edit</a>
+
+</dd>
+
+</dl></div>
+<div class="section" id="18">
+<h1><a class="toc-backref" href="#18">Templates</a></h1>
+<dl class="item">
+<a id="..t,Map,untyped"></a>
+<dt><pre><span class="Keyword">template</span> <a href="#..t%2CMap%2Cuntyped"><span class="Identifier">`.`</span></a><span class="Other">(</span><span class="Identifier">map</span><span class="Other">:</span> <span class="Identifier">Map</span><span class="Other">;</span> <span class="Identifier">entry</span><span class="Other">:</span> <span class="Identifier">untyped</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">untyped</span></pre></dt>
+<dd>
+
+Access entities by dot notation
+&nbsp;&nbsp;<a
+href="https://www.github.com/ebran/grim/tree/version-1-0/src/grim/entities.nim#L43"
+class="link-seesrc" target="_blank">Source</a>
+<a href="https://www.github.com/ebran/grim/edit/devel/src/grim/entities.nim#L43" class="link-seesrc" target="_blank" >Edit</a>
 
 </dd>
 
@@ -1271,7 +1306,7 @@ class="link-seesrc" target="_blank">Source</a>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br/>
-        <small>Made with Nim. Generated: 2020-03-08 19:57:13 UTC</small>
+        <small>Made with Nim. Generated: 2020-04-05 19:03:51 UTC</small>
       </div>
     </div>
   </div>
