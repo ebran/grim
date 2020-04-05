@@ -33,6 +33,17 @@ type
     incoming: Table[EntityOid, Table[EntityOid, Edge]]
     outgoing: Table[EntityOid, Table[EntityOid, Edge]]
 
+  Map = object
+    entries: Table[string, Box]
+
+proc toMap*[T: Node | Edge](entity: T): Map =
+  ## Convert entity data to Map object.
+  result = Map(entries: entity.data)
+
+template `.`*(map: Map, entry: untyped): untyped =
+  ## Access entities by dot notation
+  map.entries[astToStr(entry)]
+
 proc newNode*(label: string, data: Table[string, Box] = initTable[string,
 Box](), oid: string = $genOid()): Node =
   ## Create a new node
