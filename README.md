@@ -42,7 +42,7 @@ to its .nimble file.
 
 [Basic](#basic) | [Iteration](#iteration) | [Loading/saving](loading-and-saving-graphs) | [Graph-building DSL](#dsl-for-building-graphs) | [Neo4j](#communicating-with-neo4j-database) | [Paths](#paths) | [Navigating paths](#navigating-paths)
 
-The `grim` API is quite user-friendly. Use examples are found in the .nim files in the tests/ folder. The [Northwind tutorial](./tutorials/Northwind.nim) demonstrates how a relational SQL model (of the sales in a small company) is translated to the labeled property graph provided by `grim`. 
+The `grim` API is quite user-friendly. Use examples are found in the .nim files in the tests/ folder. The [Northwind tutorial](./tutorials/northwind.md) demonstrates how a relational SQL model (of the sales in a small company) is translated to the labeled property graph provided by `grim`. 
 
 The `grim` documentation is continuously improved and is [hosted on Github](https://ebran.github.io/grim). 
 
