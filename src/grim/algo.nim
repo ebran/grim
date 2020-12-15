@@ -2,14 +2,13 @@
 import tables
 
 # grim imports
-import graph
-import box
+import grim/[entities, box]
 
-proc find*[T: GrimNode | GrimEdge](self: Graph, label: string,
-    properties: Table[string, Box]): seq[T] =
+proc find*[T: Node | Edge](self: Graph, label: string,
+    data: Table[string, Box]): seq[Node] =
   ## Find patterns in the graph
-  doAssert(false, "Proc not implemented")
+  doAssert(false, "Not implemented")
 
-proc shortestPath*(self: Graph, A: string, B: string): seq[GrimNode] =
+proc shortestPath*(self: Graph, A: string, B: string): seq[Node] =
   ## Find shortest path between nodes `A` and `B`.
-  assert(false, "Proc not implemented")
+  assert(false, "Not implemented")
