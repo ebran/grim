@@ -269,3 +269,40 @@ suite "getting node/edge labels":
   test "getting edge labels":
     check g.edgeLabels.sorted == @["INHERITS", "MARRIED_TO", "OWNS"]
 
+
+suite "Filters":
+  setup:
+    graph g "People":
+      nodes:
+        Person:
+          "alice":
+            name: "Alice"
+            age: 20
+          "alice2":
+            name: "Alice"
+            age: 25
+          "bob":
+            name: "Bob"
+          "charlie":
+            name: "Charlie"
+
+      edges:
+        "alice" -> "bob":
+          KNOWS
+        "alice2" -> "bob":
+          KNOWS:
+            since: 2012
+        "bob" -> "charlie":
+          KNOWS
+
+#   test "node filter":
+#     for node in g.nodes("Person", node.name == "Alice" and node.age < 22):
+#       echo node
+
+#     # var pc = g
+#     #   .navigate("Person").filter(node.name == "Alice" and node.age < 22))
+#     #   .step("KNOWS", "Person").filter(edge.since > 2012 and node.name == "Bob")
+
+
+#   # test "edge filter":
+#   #   check 1==1
