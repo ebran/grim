@@ -231,9 +231,14 @@ for edge in g.edges("REPORTS_TO"):
     break
 
 # Delete Janet's reporting relationships
+var edgesToDelete: seq[string]
+
 for edge in g.node(janet).edges:
   if edge.label == "REPORTS_TO":
-    discard g.delEdge(edge.oid)
+    edgesToDelete.add(edge.oid)
+
+for e_oid in edgesToDelete:
+  discard g.delEdge(e_oid)
 
 # Add a new reporting relation for Janet
 discard g.addEdge(janet, steven, "REPORTS_TO")
