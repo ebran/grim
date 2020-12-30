@@ -111,7 +111,7 @@ proc toMap*[T: Node | Edge](entity: T): Map =
 
 template `.`*(map: Map, entry: untyped): untyped =
   ## Access entities by dot notation
-  map.entries[astToStr(entry)]
+  map.entries.getOrDefault(astToStr(entry), initBox())
 
 proc newNode*(label: string, data: Table[string, Box] = initTable[string,
 Box](), oid: string = $genOid()): Node =
