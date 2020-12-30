@@ -24,7 +24,7 @@ task docs, "Build the documentation (in HTML)":
   
   # Build reference documentation from comments in code
   selfExec "doc --outdir:docs/ --project --index:on --git.url:https://www.github.com/ebran/grim src/grim.nim"
-  selfExec "buildIndex --outdir:docs/ docs"
+  selfExec "buildIndex --outdir:docs/ -o:docs/theindex docs"
   # Get rid of xml header line
   exec "sed -i '1d' docs/index.html"
 
