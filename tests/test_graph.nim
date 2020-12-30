@@ -134,7 +134,7 @@ suite "Basic usage":
       p2 = g.addNode("Person", %(name: "Jane Doe", age: 22))
       r = g.addEdge(p1, p2, "MARRIED_TO", %(since: 2012))
 
-suite "Delete nodes and edges":
+suite "delete edges and nodes":
   setup:
     var
       g = newGraph("People")
@@ -270,7 +270,7 @@ suite "getting node/edge labels":
     check g.edgeLabels.sorted == @["INHERITS", "MARRIED_TO", "OWNS"]
 
 
-suite "Filters":
+suite "node and edge filters":
   setup:
     graph g "People":
       nodes:
@@ -295,14 +295,14 @@ suite "Filters":
         "bob" -> "charlie":
           KNOWS
 
-#   test "node filter":
-#     for node in g.nodes("Person", node.name == "Alice" and node.age < 22):
-#       echo node
+  test "node filter":
+    let age = zfun(g.nodes("Person", node.name == "Alice" and node.age < 22) --> map(toMap(it)), node):
+        map(node.age)
+        reduce(node.elem)
+    check age == 20
 
-#     # var pc = g
-#     #   .navigate("Person").filter(node.name == "Alice" and node.age < 22))
-#     #   .step("KNOWS", "Person").filter(edge.since > 2012 and node.name == "Bob")
+  test "edge filter":
+    let couple = zfun(g.edges("KNOWS", edge.since == 2012), edge):
+      map((edge.startsAt["name"].getStr, edge.endsAt["name"].getStr))
 
-
-#   # test "edge filter":
-#   #   check 1==1
+    check couple == @[("Alice", "Bob")]
