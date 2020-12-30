@@ -275,13 +275,18 @@ proc delNode*(self: Graph, oid: string): bool =
   if oid notin self:
     return false
 
-  var ok: bool
+  var 
+    edgesToDelete: seq[string]
+    ok: bool
 
   # Delete all edges that node is involved in.
   # Need seqs because we can not modify iterators in-place
   for n_oid in self.neighbors(oid, direction = Direction.OutIn):
     for e in self.edgesBetween(oid, n_oid, filter=true, direction=Direction.OutIn):
-      ok = self.delEdge(e.oid)
+      edgesToDelete.add(e.oid)
+
+  for e_oid in edgesToDelete:      
+      ok = self.delEdge(e_oid)
 
   result = ok
 
