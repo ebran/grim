@@ -1,0 +1,19 @@
+PathCollection	grim/paths.html#PathCollection	paths: PathCollection	
+newPath	grim/paths.html#newPath,Node	paths: newPath(anchor: Node): Path	
+initPathCollection	grim/paths.html#initPathCollection	paths: initPathCollection(): PathCollection	
+len	grim/paths.html#len,Path	paths: len(p: Path): int	
+items	grim/paths.html#items.i,Path	paths: items(p: Path): Edge	
+first	grim/paths.html#first,Path	paths: first(p: Path): Edge	
+last	grim/paths.html#last,Path	paths: last(p: Path): Edge	
+nth	grim/paths.html#nth,Path,int	paths: nth(p: Path; n: int): Edge	
+hash	grim/paths.html#hash,Path	paths: hash(p: Path): Hash	
+`==`	grim/paths.html#==,Path,Path	paths: `==`(self, other: Path): bool	
+`$`	grim/paths.html#$,Member	paths: `$`(m: Member): string	
+`$`	grim/paths.html#$,Path	paths: `$`(p: Path): string	
+pop	grim/paths.html#pop,Path	paths: pop(p: Path): Edge	
+add	grim/paths.html#add,PathCollection,Path	paths: add(pc: var PathCollection; p: Path)	
+items	grim/paths.html#items.i,PathCollection	paths: items(pc: PathCollection): Path	
+len	grim/paths.html#len,PathCollection	paths: len(pc: PathCollection): int	
+step	grim/paths.html#step,PathCollection,string,string	paths: step(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection	
+steps	grim/paths.html#steps,PathCollection,string,string,int	paths: steps(pc: PathCollection; edgeLabel, nodeLabel: string; nsteps: int = 1): PathCollection	
+follow	grim/paths.html#follow,PathCollection,string,string	paths: follow(pc: PathCollection; edgeLabel, nodeLabel: string): PathCollection	
