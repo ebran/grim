@@ -1,2 +1,2 @@
 switch("outdir", "$projectDir/../bin")
---hints: off
+switch("hints", "off")
