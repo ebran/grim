@@ -36,6 +36,75 @@ type
   Map = object
     entries: Table[string, Box]
 
+iterator pairs*[T: Node | Edge](obj: T): (string, Box) {.closure.} =
+  ## Iterate over property pairs
+  for property, value in obj.data.pairs:
+    yield (property, value)
+
+iterator keys*[T: Node | Edge](obj: T): string {.closure.} =
+  ## Iterate over property keys
+  for property in obj.data.keys:
+    yield property
+
+iterator values*[T: Node | Edge](obj: T): Box {.closure.} =
+  ## Iterate over property values
+  for value in obj.data.values:
+    yield value
+
+proc len*[T: Node | Edge](entity: T): int =
+  ## Return number of data of node or edge
+  result = entity.data.len
+
+proc `$`*(n: Node): string =
+  ## Pretty-print Node
+  result = fmt("[Node {n.label} \"{n.oid}\"]")
+
+proc `$`*(e: Edge): string =
+  ## Pretty-print Edge
+  result = fmt("[Edge {e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"]")
+
+proc describe*(e: Edge, lineWidth: int = 100,
+    propertyWidth: int = 20): string =
+  ## Return a nice pretty-printed summary of edge `e`
+  # Edge header
+  result.add(fmt("{e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"") & "\n")
+  result.add("=".repeat(lineWidth) & "\n")
+
+  # Pretty-print data
+  for prop, val in e.pairs:
+    result.add(prop.alignLeft(propertyWidth, '.')[
+        0..propertyWidth-1] & " ")
+
+    let desc = wrapWords($val, 72, false).indent(propertyWidth+1)[
+        propertyWidth+1..^1]
+    result.add(desc & "\n")
+
+  if e.len == 0:
+    result.add("No data")
+
+  result.add("\n")
+
+proc describe*(n: Node, lineWidth: int = 100,
+    propertyWidth: int = 20): string =
+  ## Return a nice pretty-printed summary of node `n`
+  # Node header
+  result.add(fmt("{n.label} \"{n.oid}\"") & "\n")
+  result.add("=".repeat(lineWidth) & "\n")
+
+  # Pretty-print data
+  for prop, val in n.pairs:
+    result.add(prop.alignLeft(propertyWidth, '.')[
+        0..propertyWidth-1] & " ")
+
+    let desc = wrapWords($val, 72, false).indent(propertyWidth+1)[
+        propertyWidth+1..^1]
+    result.add(desc & "\n")
+
+  if n.len == 0:
+    result.add("No data")
+
+  result.add("\n")
+
 proc toMap*[T: Node | Edge](entity: T): Map =
   ## Convert entity data to Map object.
   result = Map(entries: entity.data)
@@ -114,10 +183,6 @@ proc `[]=`*(edge: Edge, property: string, value: Box) =
   ## Set `property` of `edge` to `value`
   edge.data[property] = value
 
-proc len*[T: Node | Edge](entity: T): int =
-  ## Return number of data of node or edge
-  result = entity.data.len
-
 proc numberOfNeighbors*(n: Node, direction: Direction = Direction.Out): int =
   ## Return the number of neighbors of node `n` in `direction`.
   let choices = {
@@ -127,21 +192,6 @@ proc numberOfNeighbors*(n: Node, direction: Direction = Direction.Out): int =
   }.toTable
 
   return choices[direction]
-
-iterator pairs*[T: Node | Edge](obj: T): (string, Box) {.closure.} =
-  ## Iterate over property pairs
-  for property, value in obj.data.pairs:
-    yield (property, value)
-
-iterator keys*[T: Node | Edge](obj: T): string {.closure.} =
-  ## Iterate over property keys
-  for property in obj.data.keys:
-    yield property
-
-iterator values*[T: Node | Edge](obj: T): Box {.closure.} =
-  ## Iterate over property values
-  for value in obj.data.values:
-    yield value
 
 proc update*[T](self: T, p: Table[string, Box]): string =
   ## Update node or edge data
@@ -248,53 +298,3 @@ proc connected*(A, B: Node, direction: Direction = Direction.Out): bool =
     }.toTable
 
   result = choices[direction]
-
-proc `$`*(n: Node): string =
-  ## Pretty-print Node
-  result = fmt("[Node {n.label} \"{n.oid}\"]")
-
-proc `$`*(e: Edge): string =
-  ## Pretty-print Edge
-  result = fmt("[Edge {e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"]")
-
-proc describe*(e: Edge, lineWidth: int = 100,
-    propertyWidth: int = 20): string =
-  ## Return a nice pretty-printed summary of edge `e`
-  # Edge header
-  result.add(fmt("{e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"") & "\n")
-  result.add("=".repeat(lineWidth) & "\n")
-
-  # Pretty-print data
-  for prop, val in e.pairs:
-    result.add(prop.alignLeft(propertyWidth, '.')[
-        0..propertyWidth-1] & " ")
-
-    let desc = wrapWords($val, 72, false).indent(propertyWidth+1)[
-        propertyWidth+1..^1]
-    result.add(desc & "\n")
-
-  if e.len == 0:
-    result.add("No data")
-
-  result.add("\n")
-
-proc describe*(n: Node, lineWidth: int = 100,
-    propertyWidth: int = 20): string =
-  ## Return a nice pretty-printed summary of node `n`
-  # Node header
-  result.add(fmt("{n.label} \"{n.oid}\"") & "\n")
-  result.add("=".repeat(lineWidth) & "\n")
-
-  # Pretty-print data
-  for prop, val in n.pairs:
-    result.add(prop.alignLeft(propertyWidth, '.')[
-        0..propertyWidth-1] & " ")
-
-    let desc = wrapWords($val, 72, false).indent(propertyWidth+1)[
-        propertyWidth+1..^1]
-    result.add(desc & "\n")
-
-  if n.len == 0:
-    result.add("No data")
-
-  result.add("\n")
