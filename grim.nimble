@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.2.0"
+version       = "0.3.0"
 author        = "Erik G. Brandt"
 description   = "Bringer of property graphs to Nim!"
 license       = "MIT"
@@ -8,7 +8,7 @@ srcDir        = "src"
 
 # Dependencies
 
-requires "nim >= 1.4.0"
+requires "nim >= 1.4"
 requires "yaml#head"
 requires "zero_functional"
 
