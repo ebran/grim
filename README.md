@@ -2,7 +2,7 @@
 <img src="static/logo.svg" alt="grim" width=100>
 </p>
 
-# grim brings property graphs to Nim!
+# grim brings property graphs to Nim!!
 
 Grim brings the [labeled property graph](https://en.wikipedia.org/wiki/Graph_database#Labeled-property_graph) (LPG) data structure to the Nim language. This storage model is used in the [Neo4j](https://neo4j.com) database and consists of labeled **Nodes** and **Edges**. The data itself is stored in key/value-pairs on these entities.
 
