@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.3.0 [2020-12-30]
+## v0.3.0 [2021-01-01]
 
 - Filter when iterating nodes and edges
 - PathCollections to find similar paths under a common API (`navigate`, `step`, `steps`, and `follow` procs)
