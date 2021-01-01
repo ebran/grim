@@ -1,4 +1,6 @@
 # stdlib imports
+import tables
+import json
 import strutils
 
 # 3:rd party imports
@@ -6,7 +8,7 @@ from yaml import guessType, TypeHint
 
 type
   ## Determines what value is kept in the box.
-  BoxKind* = enum
+  BoxKind = enum
     bxNull,
     bxInt,
     bxFloat,
@@ -153,19 +155,87 @@ proc update*(b: var Box, value: bool) =
   ## Update value in boolean box
   b.boolVal = value
 
-proc `==`*(self, other: Box): bool =
-  ## Check whether two boxes have the same content
+template operator(op: untyped, self, other: Box): bool =
+  ## Template for operators acting on two boxes.
   if self.kind != other.kind:
     return false
 
   case self.kind:
     of bxInt:
-      return self.intVal == other.intVal
+      `op`(self.intVal, other.intVal)
     of bxStr:
-      return self.strVal == other.strVal
+      `op`(self.strVal, other.strVal)
     of bxFloat:
-      return self.floatVal == other.floatVal
+      `op`(self.floatVal, other.floatVal)
     of bxBool:
-      return self.boolVal == other.boolVal
+      `op`(self.boolVal, other.boolVal)
     of bxNull:
-      return true
+      false
+
+proc `==`*(self, other: Box): bool =
+  ## Check if self.value == other.value for two boxes, different box kinds returns false.
+  result = operator(`==`, self, other)
+
+proc `!=`*(self, other: Box): bool =
+  ## Check if self.value != other.value for two boxes, different box kinds returns false.
+  result = operator(`!=`, self, other)
+
+proc `<`*(self, other: Box): bool =
+  ## Check if self.value < other.value for two boxes, different box kinds returns false.
+  result = operator(`<`, self, other)
+
+proc `<=`*(self, other: Box): bool =
+  ## Check if self.value <= other.value for two boxes, different box kinds returns false.
+  result = operator(`<=`, self, other)
+
+proc `>`*(self, other: Box): bool =
+  ## Check if self.value > other.value for two boxes, different box kinds returns false.
+  result = operator(`>`, self, other)
+
+proc `>=`*(self, other: Box): bool =
+  ## Check if self.value >= other.value for two boxes, different box kinds returns false.
+  result = operator(`>=`, self, other)
+
+proc `==`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is == some value, value not of box kind returns false.
+  result = (self == initBox(value))
+
+proc `!=`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is != some value, value not of box kind returns false.
+  result = (self != initBox(value))
+
+proc `<`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is < some value, value not of box kind returns false.
+  result = (self < initBox(value))
+
+proc `<=`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is <= some value, value not of box kind returns false.
+  result = (self <= initBox(value))
+
+proc `>`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is > some value, value not of box kind returns false.
+  result = (self > initBox(value))
+
+proc `>=`*[T](self: Box, value: T): bool =
+  ## Check if the value of a box is >= some value, value not of box kind returns false.
+  result = (self >= initBox(value))
+
+proc `%`*(t: tuple): Table[string, Box] =
+  ## Convert tuple to Table[string, Box]
+  for label, value in t.fieldPairs:
+    result[label] = initBox(value)
+
+proc toTable*(j: JsonNode): Table[string, Box] =
+  ## Convert JsonNode with simple values to table with boxes.
+  for (property, value) in j.pairs:
+    result[property] = guessBox($value)
+
+proc `$`*(t: Table[string, Box]): string =
+  ## Pretty-print String table with Boxes
+  result.add("{")
+  for key, val in t.pairs:
+    result.add(key & ": " & val.describe & ", ")
+  if t.len > 0:
+    # Delete trailing comma
+    result.delete(result.len-2, result.len)
+  result.add("}")

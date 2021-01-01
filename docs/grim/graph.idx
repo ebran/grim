@@ -1,0 +1,26 @@
+Graph	grim/graph.html#Graph	graph: Graph	
+numberOfNodes	grim/graph.html#numberOfNodes,Graph	graph: numberOfNodes(self: Graph): int	
+numberOfEdges	grim/graph.html#numberOfEdges,Graph	graph: numberOfEdges(self: Graph): int	
+nodeLabels	grim/graph.html#nodeLabels,Graph	graph: nodeLabels(self: Graph): seq[string]	
+edgeLabels	grim/graph.html#edgeLabels,Graph	graph: edgeLabels(self: Graph): seq[string]	
+nodes	grim/graph.html#nodes.t,Graph,untyped,untyped	graph: nodes(self: Graph; labels: untyped = newSeq[string](); filter: untyped = true): (\n    iterator (): Node)	
+edges	grim/graph.html#edges.t,Graph,untyped,untyped	graph: edges(self: Graph; labels: untyped = newSeq[string](); filter: untyped = true): (\n    iterator (): Edge)	
+`$`	grim/graph.html#$,Graph	graph: `$`(self: Graph): string	
+contains	grim/graph.html#contains,Graph,string	graph: contains(self: Graph; key: string): bool	
+contains	grim/graph.html#contains,Graph,Node	graph: contains(self: Graph; key: Node): bool	
+contains	grim/graph.html#contains,Graph,Edge	graph: contains(self: Graph; key: Edge): bool	
+newGraph	grim/graph.html#newGraph,string	graph: newGraph(name: string = &quot;graph&quot;): Graph	
+addNode	grim/graph.html#addNode,Graph,string,Table[string,Box],string	graph: addNode(self: Graph; label: string; data: Table[string, Box] = initTable();\n        oid: string = $genOid()): string	
+addNode	grim/graph.html#addNode,Graph,Node	graph: addNode(self: Graph; n: Node): string	
+addEdge	grim/graph.html#addEdge,Graph,Edge	graph: addEdge(self: Graph; e: Edge): string	
+addEdge	grim/graph.html#addEdge,Graph,Node,Node,string,Table[string,Box],string	graph: addEdge(self: Graph; A: Node; B: Node; label: string;\n        data: Table[string, Box] = initTable(); oid: string = $genOid()): string	
+addEdge	grim/graph.html#addEdge,Graph,string,string,string,Table[string,Box],string	graph: addEdge(self: Graph; A: string; B: string; label: string;\n        data: Table[string, Box] = initTable(); oid: string = $genOid()): string	
+neighbors	grim/graph.html#neighbors.t,Graph,string,untyped,Direction	graph: neighbors(self: Graph; oid: string; filter: untyped = true;\n          direction: Direction = Direction.Out): (iterator (): string)	
+edgesBetween	grim/graph.html#edgesBetween.t,Graph,string,string,untyped,Direction	graph: edgesBetween(self: Graph; A: string; B: string; filter: untyped = true;\n             direction: Direction = Direction.Out): (iterator (): Edge)	
+node	grim/graph.html#node,Graph,string	graph: node(self: Graph; node: string): Node	
+edge	grim/graph.html#edge,Graph,string	graph: edge(self: Graph; edge: string): Edge	
+hasEdge	grim/graph.html#hasEdge,Graph,string,string,Direction	graph: hasEdge(self: Graph; A: string; B: string; direction: Direction = Direction.Out): bool	
+delEdge	grim/graph.html#delEdge,Graph,string	graph: delEdge(self: Graph; oid: string): bool	
+delNode	grim/graph.html#delNode,Graph,string	graph: delNode(self: Graph; oid: string): bool	
+describe	grim/graph.html#describe,Graph,int	graph: describe(g: Graph; lineWidth = 100): string	
+navigate	grim/graph.html#navigate,Graph,string	graph: navigate(g: Graph; anchor: string): PathCollection	

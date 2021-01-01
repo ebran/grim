@@ -21,6 +21,7 @@ suite "DSL":
           MARRIED_TO:
             since: 2012
 
+
   test "build graph":
     let
       p1 = g.node("new gal")

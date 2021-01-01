@@ -1,0 +1,37 @@
+Box	grim/box.html#Box	box: Box	
+`$`	grim/box.html#$,Box	box: `$`(b: Box): string	
+describe	grim/box.html#describe,Box	box: describe(b: Box): string	
+initBox	grim/box.html#initBox	box: initBox(): Box	
+initBox	grim/box.html#initBox,BiggestInt	box: initBox(value: BiggestInt): Box	
+initBox	grim/box.html#initBox,string	box: initBox(value: string): Box	
+initBox	grim/box.html#initBox,float	box: initBox(value: float): Box	
+initBox	grim/box.html#initBox,bool	box: initBox(value: bool): Box	
+guessBox	grim/box.html#guessBox,string	box: guessBox(s: string): Box	
+getStr	grim/box.html#getStr,Box	box: getStr(b: Box): string	
+getStr	grim/box.html#getStr,Box,string	box: getStr(b: Box; default: string): string	
+getInt	grim/box.html#getInt,Box	box: getInt(b: Box): BiggestInt	
+getInt	grim/box.html#getInt,Box,BiggestInt	box: getInt(b: Box; default: BiggestInt): BiggestInt	
+getFloat	grim/box.html#getFloat,Box	box: getFloat(b: Box): float	
+getFloat	grim/box.html#getFloat,Box,float	box: getFloat(b: Box; default: float): float	
+getBool	grim/box.html#getBool,Box	box: getBool(b: Box): bool	
+getBool	grim/box.html#getBool,Box,bool	box: getBool(b: Box; default: bool): bool	
+isEmpty	grim/box.html#isEmpty,Box	box: isEmpty(b: Box): bool	
+update	grim/box.html#update,Box,BiggestInt	box: update(b: var Box; value: BiggestInt)	
+update	grim/box.html#update,Box,float	box: update(b: var Box; value: float)	
+update	grim/box.html#update,Box,string	box: update(b: var Box; value: string)	
+update	grim/box.html#update,Box,bool	box: update(b: var Box; value: bool)	
+`==`	grim/box.html#==,Box,Box	box: `==`(self, other: Box): bool	
+`!=`	grim/box.html#!=,Box,Box	box: `!=`(self, other: Box): bool	
+`&lt;`	grim/box.html#<,Box,Box	box: `&lt;`(self, other: Box): bool	
+`&lt;=`	grim/box.html#<=,Box,Box	box: `&lt;=`(self, other: Box): bool	
+`&gt;`	grim/box.html#>,Box,Box	box: `&gt;`(self, other: Box): bool	
+`&gt;=`	grim/box.html#>=,Box,Box	box: `&gt;=`(self, other: Box): bool	
+`==`	grim/box.html#==,Box,T	box: `==`[T](self: Box; value: T): bool	
+`!=`	grim/box.html#!=,Box,T	box: `!=`[T](self: Box; value: T): bool	
+`&lt;`	grim/box.html#<,Box,T	box: `&lt;`[T](self: Box; value: T): bool	
+`&lt;=`	grim/box.html#<=,Box,T	box: `&lt;=`[T](self: Box; value: T): bool	
+`&gt;`	grim/box.html#>,Box,T	box: `&gt;`[T](self: Box; value: T): bool	
+`&gt;=`	grim/box.html#>=,Box,T	box: `&gt;=`[T](self: Box; value: T): bool	
+`%`	grim/box.html#%	box: `%`(t: tuple): Table[string, Box]	
+toTable	grim/box.html#toTable,JsonNode	box: toTable(j: JsonNode): Table[string, Box]	
+`$`	grim/box.html#$,Table[string,Box]	box: `$`(t: Table[string, Box]): string	

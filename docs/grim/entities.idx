@@ -1,0 +1,29 @@
+EntityOid	grim/entities.html#EntityOid	entities: EntityOid	
+Direction	grim/entities.html#Direction	entities: Direction	
+Edge	grim/entities.html#Edge	entities: Edge	
+Node	grim/entities.html#Node	entities: Node	
+pairs	grim/entities.html#pairs.i,T	entities: pairs[T: Node | Edge](obj: T): (string, Box)	
+keys	grim/entities.html#keys.i,T	entities: keys[T: Node | Edge](obj: T): string	
+values	grim/entities.html#values.i,T	entities: values[T: Node | Edge](obj: T): Box	
+len	grim/entities.html#len,T	entities: len[T: Node | Edge](entity: T): int	
+`$`	grim/entities.html#$,Node	entities: `$`(n: Node): string	
+`$`	grim/entities.html#$,Edge	entities: `$`(e: Edge): string	
+describe	grim/entities.html#describe,Edge,int,int	entities: describe(e: Edge; lineWidth: int = 100; propertyWidth: int = 20): string	
+describe	grim/entities.html#describe,Node,int,int	entities: describe(n: Node; lineWidth: int = 100; propertyWidth: int = 20): string	
+toMap	grim/entities.html#toMap,T	entities: toMap[T: Node | Edge](entity: T): Map	
+`.`	grim/entities.html#..t,Map,untyped	entities: `.`(map: Map; entry: untyped): untyped	
+newNode	grim/entities.html#newNode,string,Table[string,Box],string	entities: newNode(label: string; data: Table[string, Box] = initTable();\n        oid: string = $genOid()): Node	
+newEdge	grim/entities.html#newEdge,Node,Node,string,Table[string,Box],string	entities: newEdge(A: Node; B: Node; label: string; data: Table[string, Box] = initTable();\n        oid: string = $genOid()): Edge	
+delete	grim/entities.html#delete,Edge	entities: delete(e: Edge)	
+`==`	grim/entities.html#==,Node,Node	entities: `==`(self, other: Node): bool	
+`==`	grim/entities.html#==,Edge,Edge	entities: `==`(self, other: Edge): bool	
+`[]`	grim/entities.html#[],Node,string	entities: `[]`(node: Node; property: string): Box	
+`[]=`	grim/entities.html#[]=,Node,string,Box	entities: `[]=`(node: Node; property: string; value: Box)	
+`[]`	grim/entities.html#[],Edge,string	entities: `[]`(edge: Edge; property: string): Box	
+`[]=`	grim/entities.html#[]=,Edge,string,Box	entities: `[]=`(edge: Edge; property: string; value: Box)	
+numberOfNeighbors	grim/entities.html#numberOfNeighbors,Node,Direction	entities: numberOfNeighbors(n: Node; direction: Direction = Direction.Out): int	
+update	grim/entities.html#update,T,Table[string,Box]	entities: update[T](self: T; p: Table[string, Box]): string	
+neighbors	grim/entities.html#neighbors,Node,Direction	entities: neighbors(n: Node; direction: Direction = Direction.Out): (iterator (): string)	
+edges	grim/entities.html#edges,Node,Direction	entities: edges(n: Node; direction: Direction = Direction.Out): (iterator (): Edge)	
+between	grim/entities.html#between,Node,Node,Direction	entities: between(A, B: Node; direction: Direction = Direction.Out): (iterator (): Edge)	
+connected	grim/entities.html#connected,Node,Node,Direction	entities: connected(A, B: Node; direction: Direction = Direction.Out): bool	
