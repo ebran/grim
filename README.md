@@ -13,6 +13,7 @@ Grim brings the [labeled property graph](https://en.wikipedia.org/wiki/Graph_dat
 **News:**
 See the [Changelog](Changelog.md).
 
+- [2021-01-03] v0.3.1 released!
 - [2021-01-01] v0.3.0 released!
 - [2020-02-07] v0.2.0 released!
 
