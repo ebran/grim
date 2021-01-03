@@ -1,4 +1,5 @@
 import tables
+import sequtils
 
 export tables
 
@@ -13,3 +14,4 @@ export paths
 export box
 export io
 export graph
+export sequtils
