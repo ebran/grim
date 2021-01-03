@@ -188,7 +188,7 @@ g.saveYaml("example2.yaml")         # Save a copy of the file
 A small DSL is provided to reduce boilerplate when building graphs. A toy example:
 
 ```nim
-import grim
+import grim/dsl
 
 graph g "Some people":
   nodes:
