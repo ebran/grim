@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.3.1 [2021-01-03]
 
 - Prettier printing of nodes and edges
 - Fixed bug for iterating nodes/edges because sequtils was not exported (#29)
