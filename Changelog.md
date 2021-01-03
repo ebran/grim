@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Prettier printing of nodes and edges
+- Fixed bug for iterating nodes/edges because sequtils was not exported (#29)
+
 ## v0.3.0 [2021-01-01]
 
 - Filter when iterating nodes and edges
