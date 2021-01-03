@@ -57,11 +57,42 @@ proc len*[T: Node | Edge](entity: T): int =
 
 proc `$`*(n: Node): string =
   ## Pretty-print Node
-  result = fmt("[Node {n.label} \"{n.oid}\"]")
+  result = fmt("<({n.label}) \"{n.oid}\"") & " {"
+
+  var index = 0
+  for prop, val in n.pairs: 
+    result.add(fmt"{prop}: {val}")
+
+    if index + 1 == n.len:
+      break
+    elif index < 5:
+      result.add(", ")
+    else:
+      result.add("...")
+      break
+
+    inc index
+
+  result.add("}>")
 
 proc `$`*(e: Edge): string =
   ## Pretty-print Edge
-  result = fmt("[Edge {e.label} (\"{e.startsAt.oid}\" => \"{e.endsAt.oid}\") \"{e.oid}\"]")
+  result = fmt"<{e.startsAt.oid} =[{e.label}]=> {e.endsAt.oid} " & "{"
+
+  var index = 0
+  for prop, val in e.pairs:
+    result.add(fmt"{prop}: {val}")
+    if index + 1 == e.len:
+      break
+    elif index < 5:
+      result.add(", ")
+    else:
+      result.add("...")
+      break
+
+    inc index
+
+  result.add("}>")
 
 proc describe*(e: Edge, lineWidth: int = 100,
     propertyWidth: int = 20): string =
